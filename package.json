@@ -1,5 +1,5 @@
 {
-  "name": "cdk-pipelines-github",
+  "name": "@nextdoor/cdk-pipelines-github",
   "description": "GitHub Workflows support for CDK Pipelines",
   "repository": {
     "type": "git",
@@ -15,36 +15,28 @@
     "docgen": "npx projen docgen",
     "eject": "npx projen eject",
     "eslint": "npx projen eslint",
-    "integ": "npx projen integ",
-    "integ:update": "npx projen integ:update",
     "package": "npx projen package",
     "package-all": "npx projen package-all",
-    "package:dotnet": "npx projen package:dotnet",
-    "package:go": "npx projen package:go",
-    "package:java": "npx projen package:java",
     "package:js": "npx projen package:js",
-    "package:python": "npx projen package:python",
     "post-compile": "npx projen post-compile",
     "post-upgrade": "npx projen post-upgrade",
     "pre-compile": "npx projen pre-compile",
-    "release": "npx projen release",
-    "rosetta:extract": "npx projen rosetta:extract",
+    "release:nextdoor": "npx projen release:nextdoor",
     "test": "npx projen test",
     "test:update": "npx projen test:update",
     "test:watch": "npx projen test:watch",
     "unbump": "npx projen unbump",
     "upgrade": "npx projen upgrade",
-    "upgrade-cdklabs-projen-project-types": "npx projen upgrade-cdklabs-projen-project-types",
     "watch": "npx projen watch",
     "projen": "npx projen"
   },
   "author": {
     "name": "Amazon Web Services",
     "email": "aws-cdk-dev@amazon.com",
-    "organization": true
+    "organization": false
   },
   "devDependencies": {
-    "@aws-cdk/integ-runner": "latest",
+    "@aws-cdk/integ-runner": "^2.60.0",
     "@aws-cdk/integ-tests-alpha": "latest",
     "@types/jest": "^27",
     "@types/node": "^16",
@@ -63,7 +55,7 @@
     "jsii-diff": "^1.88.0",
     "jsii-docgen": "^7.2.9",
     "jsii-pacmak": "^1.88.0",
-    "jsii-rosetta": "^5.1.11",
+    "jsii-rosetta": "1.x",
     "npm-check-updates": "^16",
     "projen": "^0.73.6",
     "standard-version": "^9",
@@ -92,11 +84,11 @@
   "keywords": [
     "cdk"
   ],
-  "engines": {
-    "node": ">= 16.13.0"
-  },
   "main": "lib/index.js",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "version": "0.0.0",
   "jest": {
     "testMatch": [
@@ -139,29 +131,10 @@
     }
   },
   "types": "lib/index.d.ts",
-  "stability": "experimental",
+  "stability": "stable",
   "jsii": {
     "outdir": "dist",
-    "targets": {
-      "java": {
-        "package": "io.github.cdklabs.cdkpipelines.github",
-        "maven": {
-          "groupId": "io.github.cdklabs",
-          "artifactId": "cdk-pipelines-github"
-        }
-      },
-      "python": {
-        "distName": "cdk-pipelines-github",
-        "module": "cdk_pipelines_github"
-      },
-      "dotnet": {
-        "namespace": "Cdklabs.CdkPipelinesGitHub",
-        "packageId": "Cdklabs.CdkPipelinesGitHub"
-      },
-      "go": {
-        "moduleName": "github.com/cdklabs/cdk-pipelines-github-go"
-      }
-    },
+    "targets": {},
     "tsc": {
       "outDir": "lib",
       "rootDir": "src"
