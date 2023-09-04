@@ -3,7 +3,6 @@
 import { existsSync, mkdirSync, readFileSync } from 'fs';
 import * as path from 'path';
 import { Stage } from 'aws-cdk-lib';
-import { EnvironmentPlaceholders } from 'aws-cdk-lib/cx-api';
 import {
   PipelineBase,
   PipelineBaseProps,
@@ -461,16 +460,6 @@ export class GitHubWorkflow extends PipelineBase {
       throw new Error('"account" and "region" are required');
     }
 
-    const resolve = (s: string): string => {
-      return EnvironmentPlaceholders.replace(s, {
-        accountId: account,
-        region: region,
-        partition: 'aws',
-      });
-    };
-
-    const assumeRoleArn = stack.assumeRoleArn ? resolve(stack.assumeRoleArn) : undefined;
-
     return {
       id: node.uniqueId,
       definition: {
@@ -496,7 +485,7 @@ export class GitHubWorkflow extends PipelineBase {
             name: 'Unpackage',
             run: 'tar -zxvf workspace.tgz',
           },
-          ...this.stepsToConfigureAws(region, assumeRoleArn),
+          ...this.stepsToConfigureAws(region),
           {
             id: 'Deploy',
             run: `npx cdk deploy ${stack.constructPath}`,

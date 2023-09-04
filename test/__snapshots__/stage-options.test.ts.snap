@@ -75,8 +75,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyPrePostStack/MyStack
   MyPrePostStack-PostDeployAction:
@@ -157,8 +155,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStack/MyStack
 "
@@ -221,8 +217,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStack/MyStack
 "
@@ -286,8 +280,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStage1/MyStack
   MyStage2-MyStack-Deploy:
@@ -315,8 +307,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::222222222222:role/cdk-hnb659fds-deploy-role-222222222222-us-west-2
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStage2/MyStack
 "
@@ -399,8 +389,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStageA/MyStackA
   MyWave-MyStageB-MyStackB-Deploy:
@@ -428,8 +416,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::12345678901:role/cdk-hnb659fds-deploy-role-12345678901-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStageB/MyStackB
   MyWave-PostWaveAction:
@@ -513,8 +499,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStack/MyStack
 "
@@ -578,8 +562,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStageA/MyStackA
   MyWave-MyStageB-MyStackB-Deploy:
@@ -606,8 +588,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::12345678901:role/cdk-hnb659fds-deploy-role-12345678901-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStageB/MyStackB
 "
@@ -671,8 +651,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStageA/MyStackA
   MyStageB-MyStackB-Deploy:
@@ -700,8 +678,6 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: arn:aws:iam::12345678901:role/cdk-hnb659fds-deploy-role-12345678901-us-east-1
-          role-external-id: Pipeline
       - id: Deploy
         run: npx cdk deploy MyStageB/MyStackB
 "
