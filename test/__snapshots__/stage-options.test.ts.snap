@@ -27,42 +27,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Upload cdk.out
+      - name: Package
+        run: tar -zcf /tmp/workspace.tgz .
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: cdk.out
-          path: cdk.out
-  Assets-FileAsset1:
-    name: Publish Assets Assets-FileAsset1
-    if: contains(fromJson('[\\"push\\", \\"pull_request\\"]'), github.event_name)
-    needs:
-      - Build-Synth
-    permissions:
-      contents: read
-      id-token: none
-    runs-on: ubuntu-latest
-    outputs:
-      asset-hash: \${{ steps.Publish.outputs.asset-hash }}
-    steps:
-      - name: Download cdk.out
-        uses: actions/download-artifact@v3
-        with:
-          name: cdk.out
-          path: stage.out
-      - name: Install
-        run: npm install --no-save cdk-assets
-      - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-region: us-west-2
-          role-duration-seconds: 1800
-          role-skip-session-tagging: true
-          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Publish
-        name: Publish Assets-FileAsset1
-        run: /bin/bash
-          ./cdk.out/assembly-MyPrePostStack/publish-Assets-FileAsset1-step.sh
+          name: source
+          path: /tmp/workspace.tgz
+          if-no-files-found: error
   MyPrePostStack-PreDeployAction:
     name: PreDeployAction
     if: contains(fromJson('[\\"push\\", \\"pull_request\\"]'), github.event_name)
@@ -86,10 +58,15 @@ jobs:
       id-token: none
     needs:
       - Build-Synth
-      - Assets-FileAsset1
       - MyPrePostStack-PreDeployAction
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -101,13 +78,7 @@ jobs:
           role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyPrePostStack-MyStack
-          template: https://cdk-hnb659fds-assets-111111111111-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::111111111111:role/cdk-hnb659fds-cfn-exec-role-111111111111-us-east-1
+        run: npx cdk deploy MyPrePostStack/MyStack
   MyPrePostStack-PostDeployAction:
     name: PostDeployAction
     if: contains(fromJson('[\\"push\\", \\"pull_request\\"]'), github.event_name)
@@ -155,40 +126,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Upload cdk.out
+      - name: Package
+        run: tar -zcf /tmp/workspace.tgz .
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: cdk.out
-          path: cdk.out
-  Assets-FileAsset1:
-    name: Publish Assets Assets-FileAsset1
-    needs:
-      - Build-Build
-    permissions:
-      contents: read
-      id-token: none
-    runs-on: ubuntu-latest
-    outputs:
-      asset-hash: \${{ steps.Publish.outputs.asset-hash }}
-    steps:
-      - name: Download cdk.out
-        uses: actions/download-artifact@v3
-        with:
-          name: cdk.out
-          path: stage.out
-      - name: Install
-        run: npm install --no-save cdk-assets
-      - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-region: us-west-2
-          role-duration-seconds: 1800
-          role-skip-session-tagging: true
-          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Publish
-        name: Publish Assets-FileAsset1
-        run: /bin/bash ./cdk.out/assembly-MyStack/publish-Assets-FileAsset1-step.sh
+          name: source
+          path: /tmp/workspace.tgz
+          if-no-files-found: error
   MyStack-MyStack-Deploy:
     name: Deploy MyStack098574E7
     permissions:
@@ -196,9 +141,14 @@ jobs:
       id-token: none
     needs:
       - Build-Build
-      - Assets-FileAsset1
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -210,14 +160,7 @@ jobs:
           role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStack-MyStack
-          template: https://cdk-hnb659fds-assets-111111111111-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
-          role-arn: arn:aws:iam::111111111111:role/cdk-hnb659fds-cfn-exec-role-111111111111-us-east-1
+        run: npx cdk deploy MyStack/MyStack
 "
 `;
 
@@ -247,40 +190,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Upload cdk.out
+      - name: Package
+        run: tar -zcf /tmp/workspace.tgz .
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: cdk.out
-          path: cdk.out
-  Assets-FileAsset1:
-    name: Publish Assets Assets-FileAsset1
-    needs:
-      - Build-Build
-    permissions:
-      contents: read
-      id-token: none
-    runs-on: ubuntu-latest
-    outputs:
-      asset-hash: \${{ steps.Publish.outputs.asset-hash }}
-    steps:
-      - name: Download cdk.out
-        uses: actions/download-artifact@v3
-        with:
-          name: cdk.out
-          path: stage.out
-      - name: Install
-        run: npm install --no-save cdk-assets
-      - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-region: us-west-2
-          role-duration-seconds: 1800
-          role-skip-session-tagging: true
-          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Publish
-        name: Publish Assets-FileAsset1
-        run: /bin/bash ./cdk.out/assembly-MyStack/publish-Assets-FileAsset1-step.sh
+          name: source
+          path: /tmp/workspace.tgz
+          if-no-files-found: error
   MyStack-MyStack-Deploy:
     name: Deploy MyStack098574E7
     permissions:
@@ -288,9 +205,14 @@ jobs:
       id-token: none
     needs:
       - Build-Build
-      - Assets-FileAsset1
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -302,14 +224,7 @@ jobs:
           role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStack-MyStack
-          template: https://cdk-hnb659fds-assets-111111111111-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          capabilities: CAPABILITY_NAMED_IAM
-          role-arn: arn:aws:iam::111111111111:role/cdk-hnb659fds-cfn-exec-role-111111111111-us-east-1
+        run: npx cdk deploy MyStack/MyStack
 "
 `;
 
@@ -339,40 +254,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Upload cdk.out
+      - name: Package
+        run: tar -zcf /tmp/workspace.tgz .
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: cdk.out
-          path: cdk.out
-  Assets-FileAsset1:
-    name: Publish Assets Assets-FileAsset1
-    needs:
-      - Build-Build
-    permissions:
-      contents: read
-      id-token: none
-    runs-on: ubuntu-latest
-    outputs:
-      asset-hash: \${{ steps.Publish.outputs.asset-hash }}
-    steps:
-      - name: Download cdk.out
-        uses: actions/download-artifact@v3
-        with:
-          name: cdk.out
-          path: stage.out
-      - name: Install
-        run: npm install --no-save cdk-assets
-      - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-region: us-west-2
-          role-duration-seconds: 1800
-          role-skip-session-tagging: true
-          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Publish
-        name: Publish Assets-FileAsset1
-        run: /bin/bash ./cdk.out/assembly-MyStage1/publish-Assets-FileAsset1-step.sh
+          name: source
+          path: /tmp/workspace.tgz
+          if-no-files-found: error
   MyStage1-MyStack-Deploy:
     name: Deploy MyStage1MyStack61AF4CC5
     permissions:
@@ -381,9 +270,14 @@ jobs:
     environment: test
     needs:
       - Build-Build
-      - Assets-FileAsset1
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -395,13 +289,7 @@ jobs:
           role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStage1-MyStack
-          template: https://cdk-hnb659fds-assets-111111111111-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::111111111111:role/cdk-hnb659fds-cfn-exec-role-111111111111-us-east-1
+        run: npx cdk deploy MyStage1/MyStack
   MyStage2-MyStack-Deploy:
     name: Deploy MyStage2MyStack9B82AF96
     permissions:
@@ -410,10 +298,15 @@ jobs:
     environment: prod
     needs:
       - Build-Build
-      - Assets-FileAsset1
       - MyStage1-MyStack-Deploy
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -425,13 +318,7 @@ jobs:
           role-to-assume: arn:aws:iam::222222222222:role/cdk-hnb659fds-deploy-role-222222222222-us-west-2
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStage2-MyStack
-          template: https://cdk-hnb659fds-assets-222222222222-us-west-2.s3.us-west-2.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::222222222222:role/cdk-hnb659fds-cfn-exec-role-222222222222-us-west-2
+        run: npx cdk deploy MyStage2/MyStack
 "
 `;
 
@@ -463,42 +350,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Upload cdk.out
+      - name: Package
+        run: tar -zcf /tmp/workspace.tgz .
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: cdk.out
-          path: cdk.out
-  Assets-FileAsset1:
-    name: Publish Assets Assets-FileAsset1
-    if: contains(github.event.issue.labels.*.name, 'deployToA') ||
-      contains(github.event.issue.labels.*.name, 'deployToB')
-    needs:
-      - Build-Build
-    permissions:
-      contents: read
-      id-token: none
-    runs-on: ubuntu-latest
-    outputs:
-      asset-hash: \${{ steps.Publish.outputs.asset-hash }}
-    steps:
-      - name: Download cdk.out
-        uses: actions/download-artifact@v3
-        with:
-          name: cdk.out
-          path: stage.out
-      - name: Install
-        run: npm install --no-save cdk-assets
-      - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-region: us-west-2
-          role-duration-seconds: 1800
-          role-skip-session-tagging: true
-          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Publish
-        name: Publish Assets-FileAsset1
-        run: /bin/bash ./cdk.out/assembly-MyStageA/publish-Assets-FileAsset1-step.sh
+          name: source
+          path: /tmp/workspace.tgz
+          if-no-files-found: error
   MyWave-PreWaveAction:
     name: PreWaveAction
     if: contains(github.event.issue.labels.*.name, 'deployToA') ||
@@ -523,10 +382,15 @@ jobs:
       id-token: none
     needs:
       - Build-Build
-      - Assets-FileAsset1
       - MyWave-PreWaveAction
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -538,13 +402,7 @@ jobs:
           role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStageA-MyStackA
-          template: https://cdk-hnb659fds-assets-111111111111-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::111111111111:role/cdk-hnb659fds-cfn-exec-role-111111111111-us-east-1
+        run: npx cdk deploy MyStageA/MyStackA
   MyWave-MyStageB-MyStackB-Deploy:
     name: Deploy MyStageBMyStackBFE4B1ADE
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
@@ -553,10 +411,15 @@ jobs:
       id-token: none
     needs:
       - Build-Build
-      - Assets-FileAsset1
       - MyWave-PreWaveAction
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -568,13 +431,7 @@ jobs:
           role-to-assume: arn:aws:iam::12345678901:role/cdk-hnb659fds-deploy-role-12345678901-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStageB-MyStackB
-          template: https://cdk-hnb659fds-assets-12345678901-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::12345678901:role/cdk-hnb659fds-cfn-exec-role-12345678901-us-east-1
+        run: npx cdk deploy MyStageB/MyStackB
   MyWave-PostWaveAction:
     name: PostWaveAction
     if: contains(github.event.issue.labels.*.name, 'deployToA') ||
@@ -624,40 +481,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Upload cdk.out
+      - name: Package
+        run: tar -zcf /tmp/workspace.tgz .
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: cdk.out
-          path: cdk.out
-  Assets-FileAsset1:
-    name: Publish Assets Assets-FileAsset1
-    needs:
-      - Build-Build
-    permissions:
-      contents: read
-      id-token: none
-    runs-on: ubuntu-latest
-    outputs:
-      asset-hash: \${{ steps.Publish.outputs.asset-hash }}
-    steps:
-      - name: Download cdk.out
-        uses: actions/download-artifact@v3
-        with:
-          name: cdk.out
-          path: stage.out
-      - name: Install
-        run: npm install --no-save cdk-assets
-      - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-region: us-west-2
-          role-duration-seconds: 1800
-          role-skip-session-tagging: true
-          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Publish
-        name: Publish Assets-FileAsset1
-        run: /bin/bash ./cdk.out/assembly-MyStack/publish-Assets-FileAsset1-step.sh
+          name: source
+          path: /tmp/workspace.tgz
+          if-no-files-found: error
   MyStack-MyStack-Deploy:
     name: Deploy MyStack098574E7
     if: github.repository == 'github/repo'
@@ -666,9 +497,14 @@ jobs:
       id-token: none
     needs:
       - Build-Build
-      - Assets-FileAsset1
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -680,13 +516,7 @@ jobs:
           role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStack-MyStack
-          template: https://cdk-hnb659fds-assets-111111111111-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::111111111111:role/cdk-hnb659fds-cfn-exec-role-111111111111-us-east-1
+        run: npx cdk deploy MyStack/MyStack
 "
 `;
 
@@ -716,40 +546,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Upload cdk.out
+      - name: Package
+        run: tar -zcf /tmp/workspace.tgz .
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: cdk.out
-          path: cdk.out
-  Assets-FileAsset1:
-    name: Publish Assets Assets-FileAsset1
-    needs:
-      - Build-Build
-    permissions:
-      contents: read
-      id-token: none
-    runs-on: ubuntu-latest
-    outputs:
-      asset-hash: \${{ steps.Publish.outputs.asset-hash }}
-    steps:
-      - name: Download cdk.out
-        uses: actions/download-artifact@v3
-        with:
-          name: cdk.out
-          path: stage.out
-      - name: Install
-        run: npm install --no-save cdk-assets
-      - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-region: us-west-2
-          role-duration-seconds: 1800
-          role-skip-session-tagging: true
-          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Publish
-        name: Publish Assets-FileAsset1
-        run: /bin/bash ./cdk.out/assembly-MyStageA/publish-Assets-FileAsset1-step.sh
+          name: source
+          path: /tmp/workspace.tgz
+          if-no-files-found: error
   MyWave-MyStageA-MyStackA-Deploy:
     name: Deploy MyStageAMyStackA0F0BE321
     if: success() && contains(github.event.issue.labels.*.name, 'deployToA')
@@ -758,9 +562,14 @@ jobs:
       id-token: none
     needs:
       - Build-Build
-      - Assets-FileAsset1
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -772,13 +581,7 @@ jobs:
           role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStageA-MyStackA
-          template: https://cdk-hnb659fds-assets-111111111111-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::111111111111:role/cdk-hnb659fds-cfn-exec-role-111111111111-us-east-1
+        run: npx cdk deploy MyStageA/MyStackA
   MyWave-MyStageB-MyStackB-Deploy:
     name: Deploy MyStageBMyStackBFE4B1ADE
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
@@ -787,9 +590,14 @@ jobs:
       id-token: none
     needs:
       - Build-Build
-      - Assets-FileAsset1
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -801,13 +609,7 @@ jobs:
           role-to-assume: arn:aws:iam::12345678901:role/cdk-hnb659fds-deploy-role-12345678901-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStageB-MyStackB
-          template: https://cdk-hnb659fds-assets-12345678901-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::12345678901:role/cdk-hnb659fds-cfn-exec-role-12345678901-us-east-1
+        run: npx cdk deploy MyStageB/MyStackB
 "
 `;
 
@@ -837,40 +639,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Upload cdk.out
+      - name: Package
+        run: tar -zcf /tmp/workspace.tgz .
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: cdk.out
-          path: cdk.out
-  Assets-FileAsset1:
-    name: Publish Assets Assets-FileAsset1
-    needs:
-      - Build-Build
-    permissions:
-      contents: read
-      id-token: none
-    runs-on: ubuntu-latest
-    outputs:
-      asset-hash: \${{ steps.Publish.outputs.asset-hash }}
-    steps:
-      - name: Download cdk.out
-        uses: actions/download-artifact@v3
-        with:
-          name: cdk.out
-          path: stage.out
-      - name: Install
-        run: npm install --no-save cdk-assets
-      - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-region: us-west-2
-          role-duration-seconds: 1800
-          role-skip-session-tagging: true
-          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Publish
-        name: Publish Assets-FileAsset1
-        run: /bin/bash ./cdk.out/assembly-MyStageA/publish-Assets-FileAsset1-step.sh
+          name: source
+          path: /tmp/workspace.tgz
+          if-no-files-found: error
   MyStageA-MyStackA-Deploy:
     name: Deploy MyStageAMyStackA0F0BE321
     if: success() && contains(github.event.issue.labels.*.name, 'deployToA')
@@ -879,9 +655,14 @@ jobs:
       id-token: none
     needs:
       - Build-Build
-      - Assets-FileAsset1
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -893,13 +674,7 @@ jobs:
           role-to-assume: arn:aws:iam::111111111111:role/cdk-hnb659fds-deploy-role-111111111111-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStageA-MyStackA
-          template: https://cdk-hnb659fds-assets-111111111111-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::111111111111:role/cdk-hnb659fds-cfn-exec-role-111111111111-us-east-1
+        run: npx cdk deploy MyStageA/MyStackA
   MyStageB-MyStackB-Deploy:
     name: Deploy MyStageBMyStackBFE4B1ADE
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
@@ -908,10 +683,15 @@ jobs:
       id-token: none
     needs:
       - Build-Build
-      - Assets-FileAsset1
       - MyStageA-MyStackA-Deploy
     runs-on: ubuntu-latest
     steps:
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -923,12 +703,6 @@ jobs:
           role-to-assume: arn:aws:iam::12345678901:role/cdk-hnb659fds-deploy-role-12345678901-us-east-1
           role-external-id: Pipeline
       - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
-        with:
-          name: MyStageB-MyStackB
-          template: https://cdk-hnb659fds-assets-12345678901-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::12345678901:role/cdk-hnb659fds-cfn-exec-role-12345678901-us-east-1
+        run: npx cdk deploy MyStageB/MyStackB
 "
 `;

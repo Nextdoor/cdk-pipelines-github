@@ -1835,98 +1835,6 @@ const deploymentStatusOptions: DeploymentStatusOptions = { ... }
 ```
 
 
-### DockerHubCredentialSecrets <a name="DockerHubCredentialSecrets" id="@nextdoor/cdk-pipelines-github.DockerHubCredentialSecrets"></a>
-
-Locations of GitHub Secrets used to authenticate to DockerHub.
-
-#### Initializer <a name="Initializer" id="@nextdoor/cdk-pipelines-github.DockerHubCredentialSecrets.Initializer"></a>
-
-```typescript
-import { DockerHubCredentialSecrets } from '@nextdoor/cdk-pipelines-github'
-
-const dockerHubCredentialSecrets: DockerHubCredentialSecrets = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@nextdoor/cdk-pipelines-github.DockerHubCredentialSecrets.property.personalAccessTokenKey">personalAccessTokenKey</a></code> | <code>string</code> | The key of the GitHub Secret containing the DockerHub personal access token. |
-| <code><a href="#@nextdoor/cdk-pipelines-github.DockerHubCredentialSecrets.property.usernameKey">usernameKey</a></code> | <code>string</code> | The key of the GitHub Secret containing the DockerHub username. |
-
----
-
-##### `personalAccessTokenKey`<sup>Optional</sup> <a name="personalAccessTokenKey" id="@nextdoor/cdk-pipelines-github.DockerHubCredentialSecrets.property.personalAccessTokenKey"></a>
-
-```typescript
-public readonly personalAccessTokenKey: string;
-```
-
-- *Type:* string
-- *Default:* 'DOCKERHUB_TOKEN'
-
-The key of the GitHub Secret containing the DockerHub personal access token.
-
----
-
-##### `usernameKey`<sup>Optional</sup> <a name="usernameKey" id="@nextdoor/cdk-pipelines-github.DockerHubCredentialSecrets.property.usernameKey"></a>
-
-```typescript
-public readonly usernameKey: string;
-```
-
-- *Type:* string
-- *Default:* 'DOCKERHUB_USERNAME'
-
-The key of the GitHub Secret containing the DockerHub username.
-
----
-
-### ExternalDockerCredentialSecrets <a name="ExternalDockerCredentialSecrets" id="@nextdoor/cdk-pipelines-github.ExternalDockerCredentialSecrets"></a>
-
-Generic structure to supply the locations of GitHub Secrets used to authenticate to a docker registry.
-
-#### Initializer <a name="Initializer" id="@nextdoor/cdk-pipelines-github.ExternalDockerCredentialSecrets.Initializer"></a>
-
-```typescript
-import { ExternalDockerCredentialSecrets } from '@nextdoor/cdk-pipelines-github'
-
-const externalDockerCredentialSecrets: ExternalDockerCredentialSecrets = { ... }
-```
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@nextdoor/cdk-pipelines-github.ExternalDockerCredentialSecrets.property.passwordKey">passwordKey</a></code> | <code>string</code> | The key of the GitHub Secret containing your registry password. |
-| <code><a href="#@nextdoor/cdk-pipelines-github.ExternalDockerCredentialSecrets.property.usernameKey">usernameKey</a></code> | <code>string</code> | The key of the GitHub Secret containing your registry username. |
-
----
-
-##### `passwordKey`<sup>Required</sup> <a name="passwordKey" id="@nextdoor/cdk-pipelines-github.ExternalDockerCredentialSecrets.property.passwordKey"></a>
-
-```typescript
-public readonly passwordKey: string;
-```
-
-- *Type:* string
-
-The key of the GitHub Secret containing your registry password.
-
----
-
-##### `usernameKey`<sup>Required</sup> <a name="usernameKey" id="@nextdoor/cdk-pipelines-github.ExternalDockerCredentialSecrets.property.usernameKey"></a>
-
-```typescript
-public readonly usernameKey: string;
-```
-
-- *Type:* string
-
-The key of the GitHub Secret containing your registry username.
-
----
-
 ### ForkOptions <a name="ForkOptions" id="@nextdoor/cdk-pipelines-github.ForkOptions"></a>
 
 The Fork event accepts no options.
@@ -2407,13 +2315,11 @@ const gitHubWorkflowProps: GitHubWorkflowProps = { ... }
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for deployment. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.buildContainer">buildContainer</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.ContainerOptions">ContainerOptions</a></code> | Build container options. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version of the CDK CLI to use. |
-| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.dockerCredentials">dockerCredentials</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.DockerCredential">DockerCredential</a>[]</code> | The Docker Credentials to use to login. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.gitHubActionRoleArn">gitHubActionRoleArn</a></code> | <code>string</code> | A role that utilizes the GitHub OIDC Identity Provider in your AWS account. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.jobSettings">jobSettings</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobSettings">JobSettings</a></code> | Job level settings that will be applied to all jobs in the workflow, including synth and asset deploy jobs. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.postBuildSteps">postBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute after build. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preBuildSteps">preBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute before build. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preSynthed">preSynthed</a></code> | <code>boolean</code> | Indicates if the repository already contains a synthesized `cdk.out` directory, in which case we will simply checkout the repo in jobs that require `cdk.out`. |
-| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.publishAssetsAuthRegion">publishAssetsAuthRegion</a></code> | <code>string</code> | Will assume the GitHubActionRole in this region when publishing assets. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.runner">runner</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a></code> | The type of runner to run the job on. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.workflowName">workflowName</a></code> | <code>string</code> | Name of the workflow. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.workflowPath">workflowPath</a></code> | <code>string</code> | File path for the GitHub workflow. |
@@ -2493,21 +2399,6 @@ Version of the CDK CLI to use.
 
 ---
 
-##### `dockerCredentials`<sup>Optional</sup> <a name="dockerCredentials" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.dockerCredentials"></a>
-
-```typescript
-public readonly dockerCredentials: DockerCredential[];
-```
-
-- *Type:* <a href="#@nextdoor/cdk-pipelines-github.DockerCredential">DockerCredential</a>[]
-
-The Docker Credentials to use to login.
-
-If you set this variable,
-you will be logged in to docker when you upload Docker Assets.
-
----
-
 ##### ~~`gitHubActionRoleArn`~~<sup>Optional</sup> <a name="gitHubActionRoleArn" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.gitHubActionRoleArn"></a>
 
 - *Deprecated:* Use `awsCreds.fromOpenIdConnect()` instead.
@@ -2582,24 +2473,6 @@ public readonly preSynthed: boolean;
 - *Default:* false
 
 Indicates if the repository already contains a synthesized `cdk.out` directory, in which case we will simply checkout the repo in jobs that require `cdk.out`.
-
----
-
-##### `publishAssetsAuthRegion`<sup>Optional</sup> <a name="publishAssetsAuthRegion" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.publishAssetsAuthRegion"></a>
-
-```typescript
-public readonly publishAssetsAuthRegion: string;
-```
-
-- *Type:* string
-- *Default:* "us-west-2"
-
-Will assume the GitHubActionRole in this region when publishing assets.
-
-This is NOT the region in which the assets are published.
-
-In most cases, you do not have to worry about this property, and can safely
-ignore it.
 
 ---
 
@@ -4954,155 +4827,6 @@ public jobPermission(): JobPermission
 ```
 
 
-
-
-### DockerCredential <a name="DockerCredential" id="@nextdoor/cdk-pipelines-github.DockerCredential"></a>
-
-Represents a credential used to authenticate to a docker registry.
-
-Uses the official Docker Login GitHub Action to authenticate.
-
-> [https://github.com/marketplace/actions/docker-login](https://github.com/marketplace/actions/docker-login)
-
-
-#### Static Functions <a name="Static Functions" id="Static Functions"></a>
-
-| **Name** | **Description** |
-| --- | --- |
-| <code><a href="#@nextdoor/cdk-pipelines-github.DockerCredential.customRegistry">customRegistry</a></code> | Create a credential for a custom registry. |
-| <code><a href="#@nextdoor/cdk-pipelines-github.DockerCredential.dockerHub">dockerHub</a></code> | Reference credential secrets to authenticate to DockerHub. |
-| <code><a href="#@nextdoor/cdk-pipelines-github.DockerCredential.ecr">ecr</a></code> | Create a credential for ECR. |
-
----
-
-##### `customRegistry` <a name="customRegistry" id="@nextdoor/cdk-pipelines-github.DockerCredential.customRegistry"></a>
-
-```typescript
-import { DockerCredential } from '@nextdoor/cdk-pipelines-github'
-
-DockerCredential.customRegistry(registry: string, creds: ExternalDockerCredentialSecrets)
-```
-
-Create a credential for a custom registry.
-
-This method assumes that you will have long-lived
-GitHub Secrets stored under the usernameKey and passwordKey that will authenticate to the
-registry you provide.
-
-> [https://github.com/marketplace/actions/docker-login](https://github.com/marketplace/actions/docker-login)
-
-###### `registry`<sup>Required</sup> <a name="registry" id="@nextdoor/cdk-pipelines-github.DockerCredential.customRegistry.parameter.registry"></a>
-
-- *Type:* string
-
----
-
-###### `creds`<sup>Required</sup> <a name="creds" id="@nextdoor/cdk-pipelines-github.DockerCredential.customRegistry.parameter.creds"></a>
-
-- *Type:* <a href="#@nextdoor/cdk-pipelines-github.ExternalDockerCredentialSecrets">ExternalDockerCredentialSecrets</a>
-
----
-
-##### `dockerHub` <a name="dockerHub" id="@nextdoor/cdk-pipelines-github.DockerCredential.dockerHub"></a>
-
-```typescript
-import { DockerCredential } from '@nextdoor/cdk-pipelines-github'
-
-DockerCredential.dockerHub(creds?: DockerHubCredentialSecrets)
-```
-
-Reference credential secrets to authenticate to DockerHub.
-
-This method assumes
-that your credentials will be stored as long-lived GitHub Secrets under the
-usernameKey and personalAccessTokenKey.
-
-The default for usernameKey is `DOCKERHUB_USERNAME`. The default for personalAccessTokenKey
-is `DOCKERHUB_TOKEN`. If you do not set these values, your credentials should be
-found in your GitHub Secrets under these default keys.
-
-###### `creds`<sup>Optional</sup> <a name="creds" id="@nextdoor/cdk-pipelines-github.DockerCredential.dockerHub.parameter.creds"></a>
-
-- *Type:* <a href="#@nextdoor/cdk-pipelines-github.DockerHubCredentialSecrets">DockerHubCredentialSecrets</a>
-
----
-
-##### `ecr` <a name="ecr" id="@nextdoor/cdk-pipelines-github.DockerCredential.ecr"></a>
-
-```typescript
-import { DockerCredential } from '@nextdoor/cdk-pipelines-github'
-
-DockerCredential.ecr(registry: string)
-```
-
-Create a credential for ECR.
-
-This method will reuse your AWS credentials to log in to AWS.
-Your AWS credentials are already used to deploy your CDK stacks. It can be supplied via
-GitHub Secrets or using an IAM role that trusts the GitHub OIDC identity provider.
-
-NOTE - All ECR repositories in the same account and region share a domain name
-(e.g., 0123456789012.dkr.ecr.eu-west-1.amazonaws.com), and can only have one associated
-set of credentials (and DockerCredential). Attempting to associate one set of credentials
-with one ECR repo and another with another ECR repo in the same account and region will
-result in failures when using these credentials in the pipeline.
-
-###### `registry`<sup>Required</sup> <a name="registry" id="@nextdoor/cdk-pipelines-github.DockerCredential.ecr.parameter.registry"></a>
-
-- *Type:* string
-
----
-
-#### Properties <a name="Properties" id="Properties"></a>
-
-| **Name** | **Type** | **Description** |
-| --- | --- | --- |
-| <code><a href="#@nextdoor/cdk-pipelines-github.DockerCredential.property.name">name</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@nextdoor/cdk-pipelines-github.DockerCredential.property.passwordKey">passwordKey</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@nextdoor/cdk-pipelines-github.DockerCredential.property.registry">registry</a></code> | <code>string</code> | *No description.* |
-| <code><a href="#@nextdoor/cdk-pipelines-github.DockerCredential.property.usernameKey">usernameKey</a></code> | <code>string</code> | *No description.* |
-
----
-
-##### `name`<sup>Required</sup> <a name="name" id="@nextdoor/cdk-pipelines-github.DockerCredential.property.name"></a>
-
-```typescript
-public readonly name: string;
-```
-
-- *Type:* string
-
----
-
-##### `passwordKey`<sup>Optional</sup> <a name="passwordKey" id="@nextdoor/cdk-pipelines-github.DockerCredential.property.passwordKey"></a>
-
-```typescript
-public readonly passwordKey: string;
-```
-
-- *Type:* string
-
----
-
-##### `registry`<sup>Optional</sup> <a name="registry" id="@nextdoor/cdk-pipelines-github.DockerCredential.property.registry"></a>
-
-```typescript
-public readonly registry: string;
-```
-
-- *Type:* string
-
----
-
-##### `usernameKey`<sup>Optional</sup> <a name="usernameKey" id="@nextdoor/cdk-pipelines-github.DockerCredential.property.usernameKey"></a>
-
-```typescript
-public readonly usernameKey: string;
-```
-
-- *Type:* string
-
----
 
 
 ### GitHubActionStep <a name="GitHubActionStep" id="@nextdoor/cdk-pipelines-github.GitHubActionStep"></a>
