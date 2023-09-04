@@ -1,3 +1,5 @@
+/** @format */
+
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -7,7 +9,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { EnvironmentUtils } from 'aws-cdk-lib/cx-api';
 import { ShellStep } from 'aws-cdk-lib/pipelines';
-import { GitHubWorkflow, DockerCredential, YamlFile } from '../src';
+import { GitHubWorkflow, YamlFile } from '../src';
 
 export interface GitHubExampleAppProps {
   /**
@@ -76,26 +78,25 @@ export class GitHubExampleApp extends App {
           with: { nodeVersion: '16' },
         },
       ],
-      postBuildSteps: [
-        { run: 'echo post-build' },
-      ],
-      dockerCredentials: [
-        DockerCredential.ecr('000000000000.dkr.ecr.us-east-1.amazonaws.com'),
-      ],
+      postBuildSteps: [{ run: 'echo post-build' }],
     });
     this.workflowFile = pipeline.workflowFile;
 
     const myStage = new MyStage(this, 'StageA', { env: EnvironmentUtils.parse(props.envA) });
     pipeline.addStage(myStage, {
-      pre: [new ShellStep('Pre', {
-        commands: ['echo hello'],
-      })],
-      post: [new ShellStep('Post', {
-        envFromCfnOutputs: {
-          FN_NAME: myStage.fnName,
-        },
-        commands: ['echo FN_NAME equals: $FN_NAME'],
-      })],
+      pre: [
+        new ShellStep('Pre', {
+          commands: ['echo hello'],
+        }),
+      ],
+      post: [
+        new ShellStep('Post', {
+          envFromCfnOutputs: {
+            FN_NAME: myStage.fnName,
+          },
+          commands: ['echo FN_NAME equals: $FN_NAME'],
+        }),
+      ],
     });
 
     pipeline.addStage(new MyStage(this, 'StageB', { env: EnvironmentUtils.parse(props.envB) }));

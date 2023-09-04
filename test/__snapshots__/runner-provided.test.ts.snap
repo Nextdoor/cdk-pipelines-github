@@ -26,32 +26,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Upload cdk.out
+      - name: Package
+        run: tar -zcf /tmp/workspace.tgz .
+      - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: cdk.out
-          path: cdk.out
-  Assets-FileAsset1:
-    name: Publish Assets Assets-FileAsset1
-    needs:
-      - Build-Build
-    permissions:
-      contents: read
-      id-token: none
-    runs-on: ubuntu-latest
-    outputs:
-      asset-hash: \${{ steps.Publish.outputs.asset-hash }}
-    steps:
-      - name: Download cdk.out
-        uses: actions/download-artifact@v3
-        with:
-          name: cdk.out
-          path: runner-provided.out
-      - name: Install
-        run: npm install --no-save cdk-assets
-      - id: Publish
-        name: Publish Assets-FileAsset1
-        run: /bin/bash ./cdk.out/assembly-MyStack/publish-Assets-FileAsset1-step.sh
+          name: source
+          path: /tmp/workspace.tgz
+          if-no-files-found: error
   MyStack-MyStack-Deploy:
     name: Deploy MyStack098574E7
     permissions:
@@ -59,16 +41,15 @@ jobs:
       id-token: none
     needs:
       - Build-Build
-      - Assets-FileAsset1
     runs-on: ubuntu-latest
     steps:
-      - id: Deploy
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.2.0
+      - name: Download
+        uses: actions/download-artifact@v3
         with:
-          name: MyStack-MyStack
-          template: https://cdk-hnb659fds-assets-111111111111-us-east-1.s3.us-east-1.amazonaws.com/\${{
-            needs.Assets-FileAsset1.outputs.asset-hash }}.json
-          no-fail-on-empty-changeset: \\"1\\"
-          role-arn: arn:aws:iam::111111111111:role/cdk-hnb659fds-cfn-exec-role-111111111111-us-east-1
+          name: source
+      - name: Unpackage
+        run: tar -zxvf workspace.tgz
+      - id: Deploy
+        run: npx cdk deploy MyStack/MyStack
 "
 `;

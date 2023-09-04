@@ -1,11 +1,13 @@
+/** @format */
+
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Stack, Stage } from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { ShellStep } from 'aws-cdk-lib/pipelines';
 import { GitHubExampleApp } from './example-app';
-import { withTemporaryDirectory, TestApp } from './testutil';
-import { GitHubWorkflow, JsonPatch, Runner, AwsCredentials } from '../src';
+import { TestApp, withTemporaryDirectory } from './testutil';
+import { AwsCredentials, GitHubWorkflow, JsonPatch, Runner } from '../src';
 
 const fixtures = join(__dirname, 'fixtures');
 
@@ -63,9 +65,9 @@ test('pipeline with aws credentials', () => {
     app.synth();
 
     const file = readFileSync(github.workflowPath, 'utf-8');
-    expect(file).toContain('aws-access-key-id: \${{ secrets.MY_ACCESS_KEY_ID }}\n');
-    expect(file).toContain('aws-secret-access-key: \${{ secrets.MY_SECRET_ACCESS_KEY }}\n');
-    expect(file).toContain('aws-session-token: \${{ secrets.MY_SESSION_TOKEN }}\n');
+    expect(file).toContain('aws-access-key-id: ${{ secrets.MY_ACCESS_KEY_ID }}\n');
+    expect(file).toContain('aws-secret-access-key: ${{ secrets.MY_SECRET_ACCESS_KEY }}\n');
+    expect(file).toContain('aws-session-token: ${{ secrets.MY_SESSION_TOKEN }}\n');
   });
 });
 
@@ -91,8 +93,8 @@ test('pipeline with aws credentials using awsCreds', () => {
     app.synth();
 
     const file = readFileSync(github.workflowPath, 'utf-8');
-    expect(file).toContain('aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}\n');
-    expect(file).toContain('aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}\n');
+    expect(file).toContain('aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}\n');
+    expect(file).toContain('aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}\n');
   });
 });
 
@@ -106,8 +108,7 @@ test('pipeline with aws credentials using OIDC and role-session-name', () => {
       }),
       awsCreds: AwsCredentials.fromOpenIdConnect({
         roleSessionName: 'my-github-actions-session',
-        gitHubActionRoleArn:
-          'arn:aws:iam::111111111111:role/my-github-actions-role',
+        gitHubActionRoleArn: 'arn:aws:iam::111111111111:role/my-github-actions-role',
       }),
     });
 
@@ -153,9 +154,9 @@ test('pipeline with aws credentials in custom secrets', () => {
     app.synth();
 
     const file = readFileSync(github.workflowPath, 'utf-8');
-    expect(file).toContain('aws-access-key-id: \${{ secrets.MY_ACCESS_KEY_ID }}\n');
-    expect(file).toContain('aws-secret-access-key: \${{ secrets.MY_SECRET_ACCESS_KEY }}\n');
-    expect(file).toContain('aws-session-token: \${{ secrets.MY_SESSION_TOKEN }}\n');
+    expect(file).toContain('aws-access-key-id: ${{ secrets.MY_ACCESS_KEY_ID }}\n');
+    expect(file).toContain('aws-secret-access-key: ${{ secrets.MY_SECRET_ACCESS_KEY }}\n');
+    expect(file).toContain('aws-session-token: ${{ secrets.MY_SESSION_TOKEN }}\n');
   });
 });
 
@@ -200,7 +201,6 @@ test('pipeline with publish asset region override', () => {
       synth: new ShellStep('Build', {
         commands: [],
       }),
-      publishAssetsAuthRegion: 'ap-southeast-2',
     });
 
     const stage = new Stage(app, 'MyStack', {
@@ -223,38 +223,6 @@ test('pipeline with publish asset region override', () => {
   });
 });
 
-test('pipeline publish asset scripts are in stage assembly directory', () => {
-  withTemporaryDirectory((dir) => {
-    const pipeline = new GitHubWorkflow(app, 'Pipeline', {
-      workflowPath: `${dir}/.github/workflows/deploy.yml`,
-      synth: new ShellStep('Build', {
-        commands: [],
-      }),
-      publishAssetsAuthRegion: 'ap-southeast-2',
-    });
-
-    const stage = new Stage(app, 'MyStage', {
-      env: { account: '111111111111', region: 'us-east-1' },
-    });
-
-    const stack = new Stack(stage, 'MyStack');
-
-    new lambda.Function(stack, 'Function', {
-      code: lambda.Code.fromAsset(fixtures),
-      handler: 'index.handler',
-      runtime: lambda.Runtime.NODEJS_14_X,
-    });
-
-    pipeline.addStage(stage);
-
-    app.synth();
-
-    const file = readFileSync(pipeline.workflowPath, 'utf-8');
-    expect(file).toContain('./cdk.out/assembly-MyStage/publish-Assets');
-    expect(file).toMatchSnapshot();
-  });
-});
-
 test('pipeline with job settings', () => {
   withTemporaryDirectory((dir) => {
     const pipeline = new GitHubWorkflow(app, 'Pipeline', {
@@ -263,7 +231,7 @@ test('pipeline with job settings', () => {
         commands: [],
       }),
       jobSettings: {
-        if: 'github.repository == \'account/repo\'',
+        if: "github.repository == 'account/repo'",
       },
     });
 
@@ -387,15 +355,17 @@ describe('workflow path', () => {
 describe('diff protection when GITHUB_WORKFLOW set', () => {
   test('synth fails with diff', () => {
     // set GITHUB_WORKFLOW env variable to simulate GitHub environment
-    wrapEnv('GITHUB_WORKFLOW', 'deploy', () => withTemporaryDirectory((dir) => {
-      const repoDir = dir;
-      const githubApp = new GitHubExampleApp({
-        repoDir: repoDir,
-        envA: 'aws://111111111111/us-east-1',
-        envB: 'aws://222222222222/eu-west-2',
-      });
-      expect(() => githubApp.synth()).toThrowError(/Please commit the updated workflow file/);
-    }));
+    wrapEnv('GITHUB_WORKFLOW', 'deploy', () =>
+      withTemporaryDirectory((dir) => {
+        const repoDir = dir;
+        const githubApp = new GitHubExampleApp({
+          repoDir: repoDir,
+          envA: 'aws://111111111111/us-east-1',
+          envB: 'aws://222222222222/eu-west-2',
+        });
+        expect(() => githubApp.synth()).toThrowError(/Please commit the updated workflow file/);
+      }),
+    );
   });
 
   test('synth succeeds with no diff', () => {
@@ -436,32 +406,36 @@ describe('diff protection when GITHUB_WORKFLOW set', () => {
 
   test('turn off diff protection', () => {
     // set GITHUB_WORKFLOW env variable to simulate GitHub environment
-    wrapEnv('GITHUB_WORKFLOW', 'deploy', () => withTemporaryDirectory((dir) => {
-      app.node.setContext('cdk-pipelines-github:diffProtection', false);
-      new GitHubWorkflow(app, 'Pipeline', {
-        workflowPath: `${dir}/.github/workflows/deploy.yml`,
-        synth: new ShellStep('Build', {
-          installCommands: ['yarn'],
-          commands: ['yarn build'],
-        }),
-      });
-      expect(() => app.synth()).not.toThrowError();
-    }));
+    wrapEnv('GITHUB_WORKFLOW', 'deploy', () =>
+      withTemporaryDirectory((dir) => {
+        app.node.setContext('cdk-pipelines-github:diffProtection', false);
+        new GitHubWorkflow(app, 'Pipeline', {
+          workflowPath: `${dir}/.github/workflows/deploy.yml`,
+          synth: new ShellStep('Build', {
+            installCommands: ['yarn'],
+            commands: ['yarn build'],
+          }),
+        });
+        expect(() => app.synth()).not.toThrowError();
+      }),
+    );
   });
 
   test('turn off diff protection using string', () => {
     // set GITHUB_WORKFLOW env variable to simulate GitHub environment
-    wrapEnv('GITHUB_WORKFLOW', 'deploy', () => withTemporaryDirectory((dir) => {
-      app.node.setContext('cdk-pipelines-github:diffProtection', 'false');
-      new GitHubWorkflow(app, 'Pipeline', {
-        workflowPath: `${dir}/.github/workflows/deploy.yml`,
-        synth: new ShellStep('Build', {
-          installCommands: ['yarn'],
-          commands: ['yarn build'],
-        }),
-      });
-      expect(() => app.synth()).not.toThrowError();
-    }));
+    wrapEnv('GITHUB_WORKFLOW', 'deploy', () =>
+      withTemporaryDirectory((dir) => {
+        app.node.setContext('cdk-pipelines-github:diffProtection', 'false');
+        new GitHubWorkflow(app, 'Pipeline', {
+          workflowPath: `${dir}/.github/workflows/deploy.yml`,
+          synth: new ShellStep('Build', {
+            installCommands: ['yarn'],
+            commands: ['yarn build'],
+          }),
+        });
+        expect(() => app.synth()).not.toThrowError();
+      }),
+    );
   });
 });
 
