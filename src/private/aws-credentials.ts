@@ -1,4 +1,8 @@
+/** @format */
+
 import * as github from '../workflows-model';
+
+export const DEFAULT_SESSION_DURATION: number = 30 * 60;
 
 interface AwsCredentialsStepProps {
   /**
@@ -30,6 +34,14 @@ interface AwsCredentialsStepProps {
    * @default - no role session name passed into aws creds step
    */
   readonly roleSessionName?: string;
+
+  /**
+   * The maximum time that the session should be valid for. Default is 1800s,
+   * but can be extended for longer deployments or tests.
+   *
+   * @default DEFAULT_SESSION_DURATION
+   */
+  readonly sessionDuration?: number;
 
   /**
    * The AWS Region.
@@ -64,10 +76,10 @@ export function awsCredentialStep(stepName: string, props: AwsCredentialsStepPro
   const params: Record<string, any> = {};
 
   params['aws-region'] = props.region;
-  params['role-duration-seconds'] = 30 * 60;
+  (params['role-duration-seconds'] = props.sessionDuration || DEFAULT_SESSION_DURATION),
   // Session tagging requires the role to have `sts:TagSession` permissions,
   // which CDK bootstrapped roles do not currently have.
-  params['role-skip-session-tagging'] = props.roleSkipSessionTagging ?? true;
+  (params['role-skip-session-tagging'] = props.roleSkipSessionTagging ?? true);
 
   params['aws-access-key-id'] = props.accessKeyId;
   params['aws-secret-access-key'] = props.secretAccessKey;
