@@ -27,6 +27,7 @@ test('pipeline with only a synth step', () => {
   withTemporaryDirectory((dir) => {
     const github = new GitHubWorkflow(app, 'Pipeline', {
       workflowPath: `${dir}/.github/workflows/deploy.yml`,
+      awsCreds: AwsCredentials.runnerHasPreconfiguredCreds(),
       synth: new ShellStep('Build', {
         installCommands: ['yarn'],
         commands: ['yarn build'],
@@ -36,38 +37,6 @@ test('pipeline with only a synth step', () => {
     app.synth();
 
     expect(readFileSync(github.workflowPath, 'utf-8')).toMatchSnapshot();
-  });
-});
-
-test('pipeline with aws credentials', () => {
-  withTemporaryDirectory((dir) => {
-    const github = new GitHubWorkflow(app, 'Pipeline', {
-      workflowPath: `${dir}/.github/workflows/deploy.yml`,
-      synth: new ShellStep('Build', {
-        installCommands: ['yarn'],
-        commands: ['yarn build'],
-      }),
-      awsCredentials: {
-        accessKeyId: 'MY_ACCESS_KEY_ID',
-        secretAccessKey: 'MY_SECRET_ACCESS_KEY',
-        sessionToken: 'MY_SESSION_TOKEN',
-      },
-    });
-
-    const stage = new Stage(app, 'MyStack', {
-      env: { account: '111111111111', region: 'us-east-1' },
-    });
-
-    new Stack(stage, 'MyStack');
-
-    github.addStage(stage);
-
-    app.synth();
-
-    const file = readFileSync(github.workflowPath, 'utf-8');
-    expect(file).toContain('aws-access-key-id: ${{ secrets.MY_ACCESS_KEY_ID }}\n');
-    expect(file).toContain('aws-secret-access-key: ${{ secrets.MY_SECRET_ACCESS_KEY }}\n');
-    expect(file).toContain('aws-session-token: ${{ secrets.MY_SESSION_TOKEN }}\n');
   });
 });
 
@@ -109,6 +78,7 @@ test('pipeline with aws credentials using OIDC and role-session-name', () => {
       awsCreds: AwsCredentials.fromOpenIdConnect({
         roleSessionName: 'my-github-actions-session',
         gitHubActionRoleArn: 'arn:aws:iam::111111111111:role/my-github-actions-role',
+        sessionDuration: 900,
       }),
     });
 
@@ -121,6 +91,8 @@ test('pipeline with aws credentials using OIDC and role-session-name', () => {
     github.addStage(stage);
 
     app.synth();
+
+    expect(readFileSync(github.workflowPath, 'utf-8')).toMatchSnapshot();
 
     const file = readFileSync(github.workflowPath, 'utf-8');
     expect(file).toContain('role-session-name: my-github-actions-session\n');
@@ -152,6 +124,8 @@ test('pipeline with aws credentials in custom secrets', () => {
     github.addStage(stage);
 
     app.synth();
+
+    expect(readFileSync(github.workflowPath, 'utf-8')).toMatchSnapshot();
 
     const file = readFileSync(github.workflowPath, 'utf-8');
     expect(file).toContain('aws-access-key-id: ${{ secrets.MY_ACCESS_KEY_ID }}\n');
@@ -262,37 +236,6 @@ test('single wave/stage/stack', () => {
       synth: new ShellStep('Build', {
         commands: [],
       }),
-    });
-
-    const stage = new Stage(app, 'MyStack', {
-      env: { account: '111111111111', region: 'us-east-1' },
-    });
-
-    const stack = new Stack(stage, 'MyStack');
-
-    new lambda.Function(stack, 'Function', {
-      code: lambda.Code.fromAsset(fixtures),
-      handler: 'index.handler',
-      runtime: lambda.Runtime.NODEJS_14_X,
-    });
-
-    pipeline.addStage(stage);
-
-    app.synth();
-
-    expect(readFileSync(pipeline.workflowPath, 'utf-8')).toMatchSnapshot();
-  });
-});
-
-test('pipeline with oidc authentication', () => {
-  withTemporaryDirectory((dir) => {
-    const pipeline = new GitHubWorkflow(app, 'Pipeline', {
-      workflowPath: `${dir}/.github/workflows/deploy.yml`,
-      synth: new ShellStep('Build', {
-        installCommands: ['yarn'],
-        commands: ['yarn build'],
-      }),
-      gitHubActionRoleArn: 'arn:aws:iam::000000000000:role/GitHubActionRole',
     });
 
     const stage = new Stage(app, 'MyStack', {

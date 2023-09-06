@@ -85,30 +85,6 @@ export interface GitHubWorkflowProps extends PipelineBaseProps {
   readonly awsCreds?: AwsCredentialsProvider;
 
   /**
-   * Names of GitHub repository secrets that include AWS credentials for
-   * deployment.
-   *
-   * @default - `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
-   *
-   * @deprecated Use `awsCreds.fromGitHubSecrets()` instead.
-   */
-  readonly awsCredentials?: AwsCredentialsSecrets;
-
-  /**
-   * A role that utilizes the GitHub OIDC Identity Provider in your AWS account.
-   * If supplied, this will be used instead of `awsCredentials`.
-   *
-   * You can create your own role in the console with the necessary trust policy
-   * to allow gitHub actions from your gitHub repository to assume the role, or
-   * you can utilize the `GitHubActionRole` construct to create a role for you.
-   *
-   * @default - GitHub repository secrets are used instead of OpenId Connect role.
-   *
-   * @deprecated Use `awsCreds.fromOpenIdConnect()` instead.
-   */
-  readonly gitHubActionRoleArn?: string;
-
-  /**
    * Build container options.
    *
    * @default - GitHub defaults
@@ -155,8 +131,8 @@ export class GitHubWorkflow extends PipelineBase {
   public readonly workflowName: string;
   public readonly workflowFile: YamlFile;
 
-  private readonly workflowTriggers: github.WorkflowTriggers;
   private readonly awsCredentials: AwsCredentialsProvider;
+  private readonly workflowTriggers: github.WorkflowTriggers;
   private readonly buildContainer?: github.ContainerOptions;
   private readonly preBuildSteps: github.JobStep[];
   private readonly postBuildSteps: github.JobStep[];
@@ -178,12 +154,11 @@ export class GitHubWorkflow extends PipelineBase {
   constructor(scope: Construct, id: string, props: GitHubWorkflowProps) {
     super(scope, id, props);
 
+    this.awsCredentials = props.awsCreds || AwsCredentials.fromGitHubSecrets();
     this.buildContainer = props.buildContainer;
     this.preBuildSteps = props.preBuildSteps ?? [];
     this.postBuildSteps = props.postBuildSteps ?? [];
     this.jobSettings = props.jobSettings;
-
-    this.awsCredentials = this.getAwsCredentials(props);
 
     this.workflowPath = props.workflowPath ?? '.github/workflows/deploy.yml';
     if (!this.workflowPath.endsWith('.yml') && !this.workflowPath.endsWith('.yaml')) {
@@ -201,33 +176,6 @@ export class GitHubWorkflow extends PipelineBase {
     };
 
     this.runner = props.runner ?? github.Runner.UBUNTU_LATEST;
-  }
-
-  /**
-   * Parse AWS credential configuration from deprecated properties For backwards compatibility.
-   */
-  private getAwsCredentials(props: GitHubWorkflowProps) {
-    if (props.gitHubActionRoleArn) {
-      if (props.awsCreds) {
-        throw new Error('Please provide only one method of authentication (remove githubActionRoleArn)');
-      }
-      return AwsCredentials.fromOpenIdConnect({
-        gitHubActionRoleArn: props.gitHubActionRoleArn,
-      });
-    }
-
-    if (props.awsCredentials) {
-      if (props.awsCreds) {
-        throw new Error('Please provide only one method of authentication (remove awsCredentials)');
-      }
-      return AwsCredentials.fromGitHubSecrets({
-        accessKeyId: 'AWS_ACCESS_KEY_ID',
-        secretAccessKey: 'AWS_SECRET_ACCESS_KEY',
-        ...props.awsCredentials,
-      });
-    }
-
-    return props.awsCreds ?? AwsCredentials.fromGitHubSecrets();
   }
 
   /**

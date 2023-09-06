@@ -1,4 +1,6 @@
-import { awsCredentialStep } from './private/aws-credentials';
+/** @format */
+
+import { DEFAULT_SESSION_DURATION, awsCredentialStep } from './private/aws-credentials';
 import * as github from './workflows-model';
 
 /**
@@ -54,13 +56,17 @@ class GitHubSecretsProvider extends AwsCredentialsProvider {
         region,
         accessKeyId: `\${{ secrets.${this.accessKeyId} }}`,
         secretAccessKey: `\${{ secrets.${this.secretAccessKey} }}`,
-        ...(this.sessionToken ? {
-          sessionToken: `\${{ secrets.${this.sessionToken} }}`,
-        } : undefined),
-        ...(assumeRoleArn ? {
-          roleToAssume: assumeRoleArn,
-          roleExternalId: 'Pipeline',
-        } : undefined),
+        ...(this.sessionToken
+          ? {
+            sessionToken: `\${{ secrets.${this.sessionToken} }}`,
+          }
+          : undefined),
+        ...(assumeRoleArn
+          ? {
+            roleToAssume: assumeRoleArn,
+            roleExternalId: 'Pipeline',
+          }
+          : undefined),
       }),
     ];
   }
@@ -85,6 +91,14 @@ export interface OpenIdConnectProviderProps {
    * @default - no role session name
    */
   readonly roleSessionName?: string;
+
+  /**
+   * The maximum time that the session should be valid for. Default is 1800,
+   * but can be extended for longer deployments or tests. Value is in seconds.
+   *
+   * @default DEFAULT_SESSION_DURATION
+   */
+  readonly sessionDuration?: number;
 }
 
 /**
@@ -93,11 +107,13 @@ export interface OpenIdConnectProviderProps {
 class OpenIdConnectProvider extends AwsCredentialsProvider {
   private readonly gitHubActionRoleArn: string;
   private readonly roleSessionName: string | undefined;
+  private readonly sessionDuration: number;
 
   constructor(props: OpenIdConnectProviderProps) {
     super();
     this.gitHubActionRoleArn = props.gitHubActionRoleArn;
     this.roleSessionName = props.roleSessionName;
+    this.sessionDuration = props.sessionDuration || DEFAULT_SESSION_DURATION;
   }
 
   public jobPermission(): github.JobPermission {
@@ -116,6 +132,7 @@ class OpenIdConnectProvider extends AwsCredentialsProvider {
         region,
         roleToAssume: this.gitHubActionRoleArn,
         roleSessionName: this.roleSessionName,
+        sessionDuration: this.sessionDuration,
       }),
     );
 
