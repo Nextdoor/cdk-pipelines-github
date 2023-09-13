@@ -51,7 +51,7 @@ jobs:
           app-id: 1234
           secrets: my-secrets
   MyPrePostStack-MyStack-Deploy:
-    name: Deploy MyPrePostStackMyStack8AD5AF9E
+    name: Deploy MyPrePostStack/MyStack
     if: success() && contains(github.event.issue.labels.*.name, 'deploy')
     permissions:
       contents: read
@@ -133,7 +133,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStack-MyStack-Deploy:
-    name: Deploy MyStack098574E7
+    name: Deploy MyStack/MyStack
     permissions:
       contents: read
       id-token: none
@@ -195,7 +195,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStack-MyStack-Deploy:
-    name: Deploy MyStack098574E7
+    name: Deploy MyStack/MyStack
     permissions:
       contents: read
       id-token: none
@@ -257,7 +257,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStage1-MyStack-Deploy:
-    name: Deploy MyStage1MyStack61AF4CC5
+    name: Deploy MyStage1/MyStack
     permissions:
       contents: read
       id-token: none
@@ -283,7 +283,7 @@ jobs:
       - id: Deploy
         run: npx cdk deploy MyStage1/MyStack
   MyStage2-MyStack-Deploy:
-    name: Deploy MyStage2MyStack9B82AF96
+    name: Deploy MyStage2/MyStack
     permissions:
       contents: read
       id-token: none
@@ -365,7 +365,7 @@ jobs:
           app-id: 1234
           secrets: my-secrets
   MyWave-MyStageA-MyStackA-Deploy:
-    name: Deploy MyStageAMyStackA0F0BE321
+    name: Deploy MyStageA/MyStackA
     if: success() && contains(github.event.issue.labels.*.name, 'deployToA')
     permissions:
       contents: read
@@ -392,7 +392,7 @@ jobs:
       - id: Deploy
         run: npx cdk deploy MyStageA/MyStackA
   MyWave-MyStageB-MyStackB-Deploy:
-    name: Deploy MyStageBMyStackBFE4B1ADE
+    name: Deploy MyStageB/MyStackB
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
     permissions:
       contents: read
@@ -476,7 +476,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStack-MyStack-Deploy:
-    name: Deploy MyStack098574E7
+    name: Deploy MyStack/MyStack
     if: github.repository == 'github/repo'
     permissions:
       contents: read
@@ -539,7 +539,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyWave-MyStageA-MyStackA-Deploy:
-    name: Deploy MyStageAMyStackA0F0BE321
+    name: Deploy MyStageA/MyStackA
     if: success() && contains(github.event.issue.labels.*.name, 'deployToA')
     permissions:
       contents: read
@@ -565,7 +565,7 @@ jobs:
       - id: Deploy
         run: npx cdk deploy MyStageA/MyStackA
   MyWave-MyStageB-MyStackB-Deploy:
-    name: Deploy MyStageBMyStackBFE4B1ADE
+    name: Deploy MyStageB/MyStackB
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
     permissions:
       contents: read
@@ -628,7 +628,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStageA-MyStackA-Deploy:
-    name: Deploy MyStageAMyStackA0F0BE321
+    name: Deploy MyStageA/MyStackA
     if: success() && contains(github.event.issue.labels.*.name, 'deployToA')
     permissions:
       contents: read
@@ -654,7 +654,7 @@ jobs:
       - id: Deploy
         run: npx cdk deploy MyStageA/MyStackA
   MyStageB-MyStackB-Deploy:
-    name: Deploy MyStageBMyStackBFE4B1ADE
+    name: Deploy MyStageB/MyStackB
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
     permissions:
       contents: read

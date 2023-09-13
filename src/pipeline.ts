@@ -411,7 +411,7 @@ export class GitHubWorkflow extends PipelineBase {
     return {
       id: node.uniqueId,
       definition: {
-        name: `Deploy ${stack.stackArtifactId}`,
+        name: `Deploy ${stack.constructPath}`,
         ...this.renderJobSettingParameters(),
         ...this.stackProperties[stack.stackArtifactId]?.settings,
         permissions: {
