@@ -35,7 +35,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStack-MyStack-Deploy:
-    name: Deploy MyStack098574E7
+    name: Deploy MyStack/MyStack
     permissions:
       contents: read
       id-token: none

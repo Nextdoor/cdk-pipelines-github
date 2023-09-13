@@ -49,7 +49,7 @@ jobs:
     steps:
       - run: echo hello
   StageA-BucketStack-Deploy:
-    name: Deploy StageABucketStackEAC67DBE
+    name: Deploy StageA/BucketStack
     permissions:
       contents: read
       id-token: none
@@ -75,7 +75,7 @@ jobs:
       - id: Deploy
         run: npx cdk deploy StageA/BucketStack
   StageA-FunctionStack-Deploy:
-    name: Deploy StageAFunctionStackD42C27B8
+    name: Deploy StageA/FunctionStack
     permissions:
       contents: read
       id-token: none
@@ -118,7 +118,7 @@ jobs:
     steps:
       - run: \\"echo FN_NAME equals: $FN_NAME\\"
   StageB-BucketStack-Deploy:
-    name: Deploy StageBBucketStackDF3FFF07
+    name: Deploy StageB/BucketStack
     permissions:
       contents: read
       id-token: none
@@ -147,7 +147,7 @@ jobs:
       - id: Deploy
         run: npx cdk deploy StageB/BucketStack
   StageB-FunctionStack-Deploy:
-    name: Deploy StageBFunctionStack18098DCD
+    name: Deploy StageB/FunctionStack
     permissions:
       contents: read
       id-token: none
@@ -251,7 +251,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStack-MyStack-Deploy:
-    name: Deploy MyStack098574E7
+    name: Deploy MyStack/MyStack
     permissions:
       contents: read
       id-token: none
@@ -314,7 +314,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStack-MyStack-Deploy:
-    name: Deploy MyStack098574E7
+    name: Deploy MyStack/MyStack
     permissions:
       contents: read
       id-token: write
@@ -375,7 +375,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStack-MyStack-Deploy:
-    name: Deploy MyStack098574E7
+    name: Deploy MyStack/MyStack
     if: github.repository == 'account/repo'
     permissions:
       contents: read
@@ -473,7 +473,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStack-MyStack-Deploy:
-    name: Deploy MyStack098574E7
+    name: Deploy MyStack/MyStack
     permissions:
       contents: read
       id-token: none
@@ -573,7 +573,7 @@ jobs:
           path: /tmp/workspace.tgz
           if-no-files-found: error
   MyStack-MyStack-Deploy:
-    name: Deploy MyStack098574E7
+    name: Deploy MyStack/MyStack
     permissions:
       contents: read
       id-token: none
