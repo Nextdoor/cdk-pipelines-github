@@ -106,6 +106,12 @@ export interface GitHubWorkflowProps extends PipelineBaseProps {
   readonly postBuildSteps?: github.JobStep[];
 
   /**
+   * Whether or not to run a "diff" job first. Adds some time to the deploy
+   * process, but useful for understanding what changes are being applied.
+   */
+  readonly diffFirst?: boolean;
+
+  /**
    * The type of runner to run the job on. The runner can be either a
    * GitHub-hosted runner or a self-hosted runner.
    *
@@ -136,6 +142,7 @@ export class GitHubWorkflow extends PipelineBase {
   private readonly buildContainer?: github.ContainerOptions;
   private readonly preBuildSteps: github.JobStep[];
   private readonly postBuildSteps: github.JobStep[];
+  private readonly diffFirst: boolean;
   private readonly jobOutputs: Record<string, github.JobStepOutput[]> = {};
   private readonly runner: github.Runner;
   private readonly stackProperties: Record<
@@ -159,6 +166,7 @@ export class GitHubWorkflow extends PipelineBase {
     this.preBuildSteps = props.preBuildSteps ?? [];
     this.postBuildSteps = props.postBuildSteps ?? [];
     this.jobSettings = props.jobSettings;
+    this.diffFirst = props.diffFirst ?? false;
 
     this.workflowPath = props.workflowPath ?? '.github/workflows/deploy.yml';
     if (!this.workflowPath.endsWith('.yml') && !this.workflowPath.endsWith('.yaml')) {
@@ -434,6 +442,10 @@ export class GitHubWorkflow extends PipelineBase {
             run: 'tar -zxvf workspace.tgz',
           },
           ...this.stepsToConfigureAws(region),
+          {
+            id: 'Diff',
+            run: this.diffFirst ? `npx cdk diff ${stack.constructPath}` : 'exit 0',
+          },
           {
             id: 'Deploy',
             run: `npx cdk deploy ${stack.constructPath}`,
