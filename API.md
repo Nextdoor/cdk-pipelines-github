@@ -2314,6 +2314,7 @@ const gitHubWorkflowProps: GitHubWorkflowProps = { ... }
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for deployment. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.buildContainer">buildContainer</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.ContainerOptions">ContainerOptions</a></code> | Build container options. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version of the CDK CLI to use. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.diffFirst">diffFirst</a></code> | <code>boolean</code> | Whether or not to run a "diff" job first. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.jobSettings">jobSettings</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobSettings">JobSettings</a></code> | Job level settings that will be applied to all jobs in the workflow, including synth and asset deploy jobs. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.postBuildSteps">postBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute after build. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preBuildSteps">preBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute before build. |
@@ -2379,6 +2380,21 @@ public readonly cdkCliVersion: string;
 - *Default:* automatic
 
 Version of the CDK CLI to use.
+
+---
+
+##### `diffFirst`<sup>Optional</sup> <a name="diffFirst" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.diffFirst"></a>
+
+```typescript
+public readonly diffFirst: boolean;
+```
+
+- *Type:* boolean
+
+Whether or not to run a "diff" job first.
+
+Adds some time to the deploy
+process, but useful for understanding what changes are being applied.
 
 ---
 

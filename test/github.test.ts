@@ -257,6 +257,35 @@ test('single wave/stage/stack', () => {
     expect(readFileSync(pipeline.workflowPath, 'utf-8')).toMatchSnapshot();
   });
 });
+test('single wave/stage/stack - with diff enabled', () => {
+  withTemporaryDirectory((dir) => {
+    const pipeline = new GitHubWorkflow(app, 'Pipeline', {
+      workflowPath: `${dir}/.github/workflows/deploy.yml`,
+      diffFirst: true,
+      synth: new ShellStep('Build', {
+        commands: [],
+      }),
+    });
+
+    const stage = new Stage(app, 'MyStack', {
+      env: { account: '111111111111', region: 'us-east-1' },
+    });
+
+    const stack = new Stack(stage, 'MyStack');
+
+    new lambda.Function(stack, 'Function', {
+      code: lambda.Code.fromAsset(fixtures),
+      handler: 'index.handler',
+      runtime: lambda.Runtime.NODEJS_14_X,
+    });
+
+    pipeline.addStage(stage);
+
+    app.synth();
+
+    expect(readFileSync(pipeline.workflowPath, 'utf-8')).toMatchSnapshot();
+  });
+});
 
 test('example app', () => {
   withTemporaryDirectory((dir) => {
