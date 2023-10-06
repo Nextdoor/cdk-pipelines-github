@@ -37,6 +37,10 @@ const project = new AwsCdkConstructLibrary({
   /**
    * Style
    */
+  eslintOptions: {
+    dirs: ['src'],
+    yaml: true,
+  },
   prettier: true,
   prettierOptions: {
     yaml: true,
@@ -44,6 +48,18 @@ const project = new AwsCdkConstructLibrary({
       insertPragma: true,
       printWidth: 120,
       singleQuote: true,
+    },
+  },
+
+  /**
+   * Pull Request Formatting
+   */
+  githubOptions: {
+    // https://projen.io/api/API.html#projen-github-pullrequestlint
+    pullRequestLintOptions: {
+      semanticTitleOptions: {
+        types: ['build', 'chore', 'feat', 'ci', 'docs', 'style', 'refactor', 'perf', 'test', 'fix'],
+      },
     },
   },
 });

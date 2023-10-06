@@ -49,7 +49,7 @@ junit.xml
 !/src/
 /lib
 /dist/
-!/.eslintrc.json
+!/.eslintrc.yml
 .jsii
 tsconfig.json
 !/API.md
