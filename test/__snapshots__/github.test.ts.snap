@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: \\"16\\"
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -73,7 +73,7 @@ jobs:
       - name: Unpackage
         run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -102,7 +102,7 @@ jobs:
       - name: Unpackage
         run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -149,7 +149,7 @@ jobs:
       - name: Unpackage
         run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: eu-west-2
           role-duration-seconds: 1800
@@ -181,7 +181,7 @@ jobs:
       - name: Unpackage
         run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: eu-west-2
           role-duration-seconds: 1800
@@ -220,7 +220,7 @@ jobs:
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -265,7 +265,7 @@ jobs:
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -299,7 +299,7 @@ jobs:
       - name: Unpackage
         run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -339,7 +339,7 @@ jobs:
       - name: Install
         run: yarn
       - name: Authenticate Via OIDC Role
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 900
@@ -372,7 +372,7 @@ jobs:
       - name: Unpackage
         run: tar -zxvf workspace.tgz
       - name: Authenticate Via OIDC Role
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 900
@@ -410,7 +410,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -444,7 +444,7 @@ jobs:
       - name: Unpackage
         run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -518,7 +518,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -551,7 +551,7 @@ jobs:
       - name: Unpackage
         run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -593,7 +593,7 @@ jobs:
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -636,7 +636,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -669,7 +669,7 @@ jobs:
       - name: Unpackage
         run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -706,7 +706,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
@@ -739,7 +739,7 @@ jobs:
       - name: Unpackage
         run: tar -zxvf workspace.tgz
       - name: Authenticate Via GitHub Secrets
-        uses: aws-actions/configure-aws-credentials@v1-node16
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           role-duration-seconds: 1800
