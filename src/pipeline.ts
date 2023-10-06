@@ -492,6 +492,7 @@ export class GitHubWorkflow extends PipelineBase {
           ...this.stepsToCheckout(),
           ...this.preBuildSteps,
           ...installSteps,
+          ...this.stepsToConfigureAws(),
           {
             name: 'Build',
             run: step.commands.join('\n'),
@@ -620,7 +621,7 @@ export class GitHubWorkflow extends PipelineBase {
     };
   }
 
-  private stepsToConfigureAws(region: string, assumeRoleArn?: string): github.JobStep[] {
+  private stepsToConfigureAws(region?: string, assumeRoleArn?: string): github.JobStep[] {
     return this.awsCredentials.credentialSteps(region, assumeRoleArn);
   }
 
