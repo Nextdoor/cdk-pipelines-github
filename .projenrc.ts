@@ -13,7 +13,7 @@ const project = new AwsCdkConstructLibrary({
   cdkVersion: '2.9.0',
   constructsVersion: '10.0.46',
   defaultReleaseBranch: 'nextdoor',
-  repositoryUrl: 'https://github.com/cdklabs/cdk-pipelines-github.git',
+  repositoryUrl: 'https://github.com/Nextdoor/cdk-pipelines-github.git',
   bundledDeps: ['decamelize', 'yaml', 'fast-json-patch'],
   devDeps: [
     'cdklabs-projen-project-types',
@@ -33,6 +33,35 @@ const project = new AwsCdkConstructLibrary({
   npmDistTag: 'latest',
   npmRegistryUrl: 'https://npm.pkg.github.com',
   npmTokenSecret: 'GITHUB_TOKEN',
+
+  /**
+   * Style
+   */
+  eslintOptions: {
+    dirs: ['src'],
+    yaml: true,
+  },
+  prettier: true,
+  prettierOptions: {
+    yaml: true,
+    settings: {
+      insertPragma: true,
+      printWidth: 120,
+      singleQuote: true,
+    },
+  },
+
+  /**
+   * Pull Request Formatting
+   */
+  githubOptions: {
+    // https://projen.io/api/API.html#projen-github-pullrequestlint
+    pullRequestLintOptions: {
+      semanticTitleOptions: {
+        types: ['build', 'chore', 'feat', 'ci', 'docs', 'style', 'refactor', 'perf', 'test', 'fix'],
+      },
+    },
+  },
 });
 
 // JSII sets this to `false` so we need to be compatible

@@ -1,3 +1,5 @@
+/** @format */
+
 import { Stage, StageProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { GitHubCommonProps } from './github-common';

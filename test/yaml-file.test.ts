@@ -1,3 +1,5 @@
+/** @format */
+
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import * as YAML from 'yaml';
@@ -76,7 +78,6 @@ describe('patch', () => {
   });
 });
 
-
 describe('yaml file comments', () => {
   function commentTest(commentAtTop: string | undefined, initialObj: any, assetDoc: string) {
     withTemporaryDirectory((dir) => {
@@ -94,11 +95,7 @@ describe('yaml file comments', () => {
 
   test('comment at top works', () => {
     const commentBeforeYaml = 'commentAtTopTest.yml';
-    commentTest(
-      'Comment before',
-      { first: { second: { array: ['0'] } } },
-      commentBeforeYaml,
-    );
+    commentTest('Comment before', { first: { second: { array: ['0'] } } }, commentBeforeYaml);
   });
 
   test('multi-line comments work', () => {

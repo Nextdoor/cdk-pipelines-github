@@ -1,4 +1,9 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/**
+ * eslint-disable import/no-extraneous-dependencies
+ *
+ * @format
+ */
+
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
@@ -27,7 +32,9 @@ export class TestApp extends App {
  */
 export function stackTemplate(stack: Stack) {
   const stage = Stage.of(stack);
-  if (!stage) { throw new Error('stack not in a Stage'); }
+  if (!stage) {
+    throw new Error('stack not in a Stage');
+  }
   return stage.synth().getStackArtifact(stack.artifactId);
 }
 

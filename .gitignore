@@ -41,13 +41,15 @@ junit.xml
 !/.mergify.yml
 !/.github/workflows/upgrade-nextdoor.yml
 !/.github/pull_request_template.md
+!/.prettierignore
+!/.prettierrc.yml
 !/.npmrc
 !/test/
 !/tsconfig.dev.json
 !/src/
 /lib
 /dist/
-!/.eslintrc.json
+!/.eslintrc.yml
 .jsii
 tsconfig.json
 !/API.md

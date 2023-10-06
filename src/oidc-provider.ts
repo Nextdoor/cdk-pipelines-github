@@ -1,3 +1,5 @@
+/** @format */
+
 import { Aws, CfnOutput } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
@@ -99,11 +101,13 @@ export class GitHubActionRole extends Construct {
     const providerUrl = `https://${rawEndpoint}`;
 
     // uses the given provider or creates a new one.
-    const provider = props.provider ?? new iam.OpenIdConnectProvider(this, 'github-provider', {
-      url: providerUrl,
-      clientIds: ['sts.amazonaws.com'],
-      thumbprints: props.thumbprints ?? GITHUB_OIDC_THUMBPRINTS,
-    });
+    const provider =
+      props.provider ??
+      new iam.OpenIdConnectProvider(this, 'github-provider', {
+        url: providerUrl,
+        clientIds: ['sts.amazonaws.com'],
+        thumbprints: props.thumbprints ?? GITHUB_OIDC_THUMBPRINTS,
+      });
 
     // create a role that references the provider as a trusted entity
     const principal = new iam.FederatedPrincipal(
@@ -123,12 +127,7 @@ export class GitHubActionRole extends Construct {
       resources: ['*'],
       conditions: {
         'ForAnyValue:StringEquals': {
-          'iam:ResourceTag/aws-cdk:bootstrap-role': [
-            'deploy',
-            'lookup',
-            'file-publishing',
-            'image-publishing',
-          ],
+          'iam:ResourceTag/aws-cdk:bootstrap-role': ['deploy', 'lookup', 'file-publishing', 'image-publishing'],
         },
       },
     });
