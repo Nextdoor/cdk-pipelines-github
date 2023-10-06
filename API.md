@@ -4786,16 +4786,10 @@ new AwsCredentialsProvider()
 ##### `credentialSteps` <a name="credentialSteps" id="@nextdoor/cdk-pipelines-github.AwsCredentialsProvider.credentialSteps"></a>
 
 ```typescript
-public credentialSteps(region: string, assumeRoleArn?: string): JobStep[]
+public credentialSteps(region?: string): JobStep[]
 ```
 
-###### `region`<sup>Required</sup> <a name="region" id="@nextdoor/cdk-pipelines-github.AwsCredentialsProvider.credentialSteps.parameter.region"></a>
-
-- *Type:* string
-
----
-
-###### `assumeRoleArn`<sup>Optional</sup> <a name="assumeRoleArn" id="@nextdoor/cdk-pipelines-github.AwsCredentialsProvider.credentialSteps.parameter.assumeRoleArn"></a>
+###### `region`<sup>Optional</sup> <a name="region" id="@nextdoor/cdk-pipelines-github.AwsCredentialsProvider.credentialSteps.parameter.region"></a>
 
 - *Type:* string
 

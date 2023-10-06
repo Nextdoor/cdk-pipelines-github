@@ -25,6 +25,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Install
         run: yarn
+      - name: Authenticate Via GitHub Secrets
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: us-east-1
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: yarn build
       - name: Package
@@ -124,6 +132,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Install
         run: yarn
+      - name: Authenticate Via GitHub Secrets
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: us-east-1
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: yarn build
       - name: Package
@@ -188,6 +204,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Install
         run: yarn
+      - name: Authenticate Via GitHub Secrets
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: us-east-1
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: yarn build
       - name: Package
@@ -252,6 +276,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Install
         run: yarn
+      - name: Authenticate Via GitHub Secrets
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: us-east-1
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: yarn build
       - name: Package
@@ -348,6 +380,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Install
         run: yarn
+      - name: Authenticate Via GitHub Secrets
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: us-east-1
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: yarn build
       - name: Package
@@ -479,6 +519,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Install
         run: yarn
+      - name: Authenticate Via GitHub Secrets
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: us-east-1
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: yarn build
       - name: Package
@@ -544,6 +592,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Install
         run: yarn
+      - name: Authenticate Via GitHub Secrets
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: us-east-1
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: yarn build
       - name: Package
@@ -637,6 +693,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Install
         run: yarn
+      - name: Authenticate Via GitHub Secrets
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: us-east-1
+          role-duration-seconds: 1800
+          role-skip-session-tagging: true
+          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: yarn build
       - name: Package

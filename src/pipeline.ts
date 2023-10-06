@@ -432,7 +432,7 @@ export class GitHubWorkflow extends PipelineBase {
             name: 'Unpackage',
             run: 'tar -zxvf workspace.tgz',
           },
-          ...this.stepsToConfigureAws(region),
+          ...this.awsCredentials.credentialSteps(region),
           {
             id: 'Diff',
             run: this.diffFirst ? `npx cdk diff ${stack.constructPath}` : 'exit 0',
@@ -492,6 +492,7 @@ export class GitHubWorkflow extends PipelineBase {
           ...this.stepsToCheckout(),
           ...this.preBuildSteps,
           ...installSteps,
+          ...this.awsCredentials.credentialSteps(),
           {
             name: 'Build',
             run: step.commands.join('\n'),
@@ -618,10 +619,6 @@ export class GitHubWorkflow extends PipelineBase {
         steps: step.jobSteps,
       },
     };
-  }
-
-  private stepsToConfigureAws(region: string, assumeRoleArn?: string): github.JobStep[] {
-    return this.awsCredentials.credentialSteps(region, assumeRoleArn);
   }
 
   private stepsToCheckout(): github.JobStep[] {
