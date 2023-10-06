@@ -8,7 +8,7 @@ import * as github from './workflows-model';
  */
 export abstract class AwsCredentialsProvider {
   public abstract jobPermission(): github.JobPermission;
-  public abstract credentialSteps(region?: string, assumeRoleArn?: string): github.JobStep[];
+  public abstract credentialSteps(region?: string): github.JobStep[];
 }
 
 /**
@@ -50,7 +50,7 @@ class GitHubSecretsProvider extends AwsCredentialsProvider {
     return github.JobPermission.NONE;
   }
 
-  public credentialSteps(region?: string, assumeRoleArn?: string): github.JobStep[] {
+  public credentialSteps(region?: string): github.JobStep[] {
     return [
       awsCredentialStep('Authenticate Via GitHub Secrets', {
         region: region,
@@ -59,12 +59,6 @@ class GitHubSecretsProvider extends AwsCredentialsProvider {
         ...(this.sessionToken
           ? {
               sessionToken: `\${{ secrets.${this.sessionToken} }}`,
-            }
-          : undefined),
-        ...(assumeRoleArn
-          ? {
-              roleToAssume: assumeRoleArn,
-              roleExternalId: 'Pipeline',
             }
           : undefined),
       }),
@@ -120,11 +114,7 @@ class OpenIdConnectProvider extends AwsCredentialsProvider {
     return github.JobPermission.WRITE;
   }
 
-  public credentialSteps(region?: string, assumeRoleArn?: string): github.JobStep[] {
-    function getDeployRole(arn: string) {
-      return arn.replace('cfn-exec', 'deploy');
-    }
-
+  public credentialSteps(region?: string): github.JobStep[] {
     let steps: github.JobStep[] = [];
 
     steps.push(
@@ -135,20 +125,6 @@ class OpenIdConnectProvider extends AwsCredentialsProvider {
         sessionDuration: this.sessionDuration,
       }),
     );
-
-    if (assumeRoleArn) {
-      // Result of initial credentials with GitHub Action role are these environment variables
-      steps.push(
-        awsCredentialStep('Assume CDK Deploy Role', {
-          region: region,
-          accessKeyId: '${{ env.AWS_ACCESS_KEY_ID }}',
-          secretAccessKey: '${{ env.AWS_SECRET_ACCESS_KEY }}',
-          sessionToken: '${{ env.AWS_SESSION_TOKEN }}',
-          roleToAssume: getDeployRole(assumeRoleArn),
-          roleExternalId: 'Pipeline',
-        }),
-      );
-    }
 
     return steps;
   }
@@ -161,7 +137,7 @@ class NoCredentialsProvider extends AwsCredentialsProvider {
   public jobPermission(): github.JobPermission {
     return github.JobPermission.NONE;
   }
-  public credentialSteps(_region?: string, _assumeRoleArn?: string): github.JobStep[] {
+  public credentialSteps(_region?: string): github.JobStep[] {
     return [];
   }
 }
