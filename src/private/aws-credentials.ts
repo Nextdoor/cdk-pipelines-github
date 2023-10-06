@@ -3,6 +3,7 @@
 import * as github from '../workflows-model';
 
 export const DEFAULT_SESSION_DURATION: number = 30 * 60;
+export const DEFAULT_REGION: string = 'us-east-1';
 
 interface AwsCredentialsStepProps {
   /**
@@ -38,7 +39,7 @@ interface AwsCredentialsStepProps {
   /**
    * The AWS Region.
    */
-  readonly region: string;
+  readonly region?: string;
 
   /**
    * To authenticate via GitHub secrets, at least this and `secretAccessKey` must
@@ -67,7 +68,7 @@ interface AwsCredentialsStepProps {
 export function awsCredentialStep(stepName: string, props: AwsCredentialsStepProps): github.JobStep {
   const params: Record<string, any> = {};
 
-  params['aws-region'] = props.region;
+  params['aws-region'] = props.region || DEFAULT_REGION;
   params['role-duration-seconds'] = props.sessionDuration || DEFAULT_SESSION_DURATION;
 
   // Session tagging requires the role to have `sts:TagSession` permissions,

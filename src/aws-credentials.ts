@@ -8,7 +8,7 @@ import * as github from './workflows-model';
  */
 export abstract class AwsCredentialsProvider {
   public abstract jobPermission(): github.JobPermission;
-  public abstract credentialSteps(region: string, assumeRoleArn?: string): github.JobStep[];
+  public abstract credentialSteps(region?: string, assumeRoleArn?: string): github.JobStep[];
 }
 
 /**
@@ -50,10 +50,10 @@ class GitHubSecretsProvider extends AwsCredentialsProvider {
     return github.JobPermission.NONE;
   }
 
-  public credentialSteps(region: string, assumeRoleArn?: string): github.JobStep[] {
+  public credentialSteps(region?: string, assumeRoleArn?: string): github.JobStep[] {
     return [
       awsCredentialStep('Authenticate Via GitHub Secrets', {
-        region,
+        region: region,
         accessKeyId: `\${{ secrets.${this.accessKeyId} }}`,
         secretAccessKey: `\${{ secrets.${this.secretAccessKey} }}`,
         ...(this.sessionToken
@@ -120,7 +120,7 @@ class OpenIdConnectProvider extends AwsCredentialsProvider {
     return github.JobPermission.WRITE;
   }
 
-  public credentialSteps(region: string, assumeRoleArn?: string): github.JobStep[] {
+  public credentialSteps(region?: string, assumeRoleArn?: string): github.JobStep[] {
     function getDeployRole(arn: string) {
       return arn.replace('cfn-exec', 'deploy');
     }
@@ -129,7 +129,7 @@ class OpenIdConnectProvider extends AwsCredentialsProvider {
 
     steps.push(
       awsCredentialStep('Authenticate Via OIDC Role', {
-        region,
+        region: region,
         roleToAssume: this.gitHubActionRoleArn,
         roleSessionName: this.roleSessionName,
         sessionDuration: this.sessionDuration,
@@ -140,7 +140,7 @@ class OpenIdConnectProvider extends AwsCredentialsProvider {
       // Result of initial credentials with GitHub Action role are these environment variables
       steps.push(
         awsCredentialStep('Assume CDK Deploy Role', {
-          region,
+          region: region,
           accessKeyId: '${{ env.AWS_ACCESS_KEY_ID }}',
           secretAccessKey: '${{ env.AWS_SECRET_ACCESS_KEY }}',
           sessionToken: '${{ env.AWS_SESSION_TOKEN }}',
@@ -161,7 +161,7 @@ class NoCredentialsProvider extends AwsCredentialsProvider {
   public jobPermission(): github.JobPermission {
     return github.JobPermission.NONE;
   }
-  public credentialSteps(_region: string, _assumeRoleArn?: string): github.JobStep[] {
+  public credentialSteps(_region?: string, _assumeRoleArn?: string): github.JobStep[] {
     return [];
   }
 }
