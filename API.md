@@ -2318,7 +2318,6 @@ const gitHubWorkflowProps: GitHubWorkflowProps = { ... }
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.jobSettings">jobSettings</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobSettings">JobSettings</a></code> | Job level settings that will be applied to all jobs in the workflow, including synth and asset deploy jobs. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.postBuildSteps">postBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute after build. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preBuildSteps">preBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute before build. |
-| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preSynthed">preSynthed</a></code> | <code>boolean</code> | Indicates if the repository already contains a synthesized `cdk.out` directory, in which case we will simply checkout the repo in jobs that require `cdk.out`. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.runner">runner</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a></code> | The type of runner to run the job on. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.workflowName">workflowName</a></code> | <code>string</code> | Name of the workflow. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.workflowPath">workflowPath</a></code> | <code>string</code> | File path for the GitHub workflow. |
@@ -2438,19 +2437,6 @@ public readonly preBuildSteps: JobStep[];
 - *Default:* []
 
 GitHub workflow steps to execute before build.
-
----
-
-##### `preSynthed`<sup>Optional</sup> <a name="preSynthed" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preSynthed"></a>
-
-```typescript
-public readonly preSynthed: boolean;
-```
-
-- *Type:* boolean
-- *Default:* false
-
-Indicates if the repository already contains a synthesized `cdk.out` directory, in which case we will simply checkout the repo in jobs that require `cdk.out`.
 
 ---
 

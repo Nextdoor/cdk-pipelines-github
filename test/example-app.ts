@@ -70,7 +70,6 @@ export class GitHubExampleApp extends App {
         commands: ['echo "nothing to do (cdk.out is committed)"'],
       }),
       workflowPath: path.join(workflowsDir, 'deploy.yml'),
-      preSynthed: true,
       buildContainer: { image: 'alpine' },
       preBuildSteps: [
         {

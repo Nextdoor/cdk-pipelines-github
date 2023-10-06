@@ -70,14 +70,6 @@ export interface GitHubWorkflowProps extends PipelineBaseProps {
   readonly cdkCliVersion?: string;
 
   /**
-   * Indicates if the repository already contains a synthesized `cdk.out` directory, in which
-   * case we will simply checkout the repo in jobs that require `cdk.out`.
-   *
-   * @default false
-   */
-  readonly preSynthed?: boolean;
-
-  /**
    * Configure provider for AWS credentials used for deployment.
    *
    * @default - Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
