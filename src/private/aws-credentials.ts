@@ -68,10 +68,11 @@ export function awsCredentialStep(stepName: string, props: AwsCredentialsStepPro
   const params: Record<string, any> = {};
 
   params['aws-region'] = props.region;
-  (params['role-duration-seconds'] = props.sessionDuration || DEFAULT_SESSION_DURATION),
-    // Session tagging requires the role to have `sts:TagSession` permissions,
-    // which CDK bootstrapped roles do not currently have.
-    (params['role-skip-session-tagging'] = props.roleSkipSessionTagging ?? true);
+  params['role-duration-seconds'] = props.sessionDuration || DEFAULT_SESSION_DURATION;
+
+  // Session tagging requires the role to have `sts:TagSession` permissions,
+  // which CDK bootstrapped roles do not currently have.
+  params['role-skip-session-tagging'] = props.roleSkipSessionTagging ?? true;
 
   params['aws-access-key-id'] = props.accessKeyId;
   params['aws-secret-access-key'] = props.secretAccessKey;
