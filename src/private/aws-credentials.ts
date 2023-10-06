@@ -21,14 +21,6 @@ interface AwsCredentialsStepProps {
   readonly roleSkipSessionTagging?: boolean;
 
   /**
-   * The GitHub Action role arn, if we are using OIDC to authenticate. The other option
-   * to authenticate is with `accessKeyId` and `secretAccessKey`.
-   *
-   * @default - OIDC not used and `accessKeyId` and `secretAccessKey` are expected.
-   */
-  readonly gitHubActionRoleArn?: string;
-
-  /**
    * The GitHub Action role session name.
    *
    * @default - no role session name passed into aws creds step
