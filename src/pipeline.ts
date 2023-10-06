@@ -138,12 +138,12 @@ export class GitHubWorkflow extends PipelineBase {
   private readonly jobOutputs: Record<string, github.JobStepOutput[]> = {};
   private readonly runner: github.Runner;
   private readonly stackProperties: Record<
-  string,
-  {
-    environment: AddGitHubStageOptions['gitHubEnvironment'];
-    capabilities: AddGitHubStageOptions['stackCapabilities'];
-    settings: AddGitHubStageOptions['jobSettings'];
-  }
+    string,
+    {
+      environment: AddGitHubStageOptions['gitHubEnvironment'];
+      capabilities: AddGitHubStageOptions['stackCapabilities'];
+      settings: AddGitHubStageOptions['jobSettings'];
+    }
   > = {};
   private readonly jobSettings?: JobSettings;
   // in order to keep track of if this pipeline has been built so we can
@@ -393,9 +393,8 @@ export class GitHubWorkflow extends PipelineBase {
       default:
         // The 'as any' is temporary, until the change upstream rolls out
         throw new Error(
-          `GitHubWorfklow does not support graph nodes of type '${
-            (node.data as any)?.type
-          }'. You are probably using a feature this CDK Pipelines implementation does not support.`,
+          `GitHubWorfklow does not support graph nodes of type '${(node.data as any)
+            ?.type}'. You are probably using a feature this CDK Pipelines implementation does not support.`,
         );
     }
   }
@@ -467,11 +466,11 @@ export class GitHubWorkflow extends PipelineBase {
     const installSteps =
       step.installCommands.length > 0
         ? [
-          {
-            name: 'Install',
-            run: step.installCommands.join('\n'),
-          },
-        ]
+            {
+              name: 'Install',
+              run: step.installCommands.join('\n'),
+            },
+          ]
         : [];
 
     return {
@@ -506,8 +505,8 @@ export class GitHubWorkflow extends PipelineBase {
             name: 'Upload',
             uses: 'actions/upload-artifact@v3',
             with: {
-              'name': 'source',
-              'path': '/tmp/workspace.tgz',
+              name: 'source',
+              path: '/tmp/workspace.tgz',
               'if-no-files-found': 'error',
             },
           },
@@ -578,11 +577,11 @@ export class GitHubWorkflow extends PipelineBase {
     const installSteps =
       step.installCommands.length > 0
         ? [
-          {
-            name: 'Install',
-            run: step.installCommands.join('\n'),
-          },
-        ]
+            {
+              name: 'Install',
+              run: step.installCommands.join('\n'),
+            },
+          ]
         : [];
 
     return {

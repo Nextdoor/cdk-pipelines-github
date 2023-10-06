@@ -1,3 +1,5 @@
+/** @format */
+
 // @see https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
 
 /**
@@ -131,7 +133,6 @@ export interface Job {
    * cycle of the service containers.
    */
   readonly services?: Record<string, ContainerOptions>;
-
 }
 
 /**
@@ -435,7 +436,6 @@ export interface ContainerCredentials {
   readonly password: string;
 }
 
-
 /**
  * The set of available triggers for GitHub Workflows.
  *
@@ -708,7 +708,24 @@ export interface IssuesOptions {
    *
    * @defaults - all activity types
    */
-  readonly types?: Array<'opened' | 'edited' | 'deleted' | 'transferred' | 'pinned' | 'unpinned' | 'closed' | 'reopened' | 'assigned' | 'unassigned' | 'labeled' | 'unlabeled' | 'locked' | 'unlocked' | 'milestoned' | 'demilestoned'>;
+  readonly types?: Array<
+    | 'opened'
+    | 'edited'
+    | 'deleted'
+    | 'transferred'
+    | 'pinned'
+    | 'unpinned'
+    | 'closed'
+    | 'reopened'
+    | 'assigned'
+    | 'unassigned'
+    | 'labeled'
+    | 'unlabeled'
+    | 'locked'
+    | 'unlocked'
+    | 'milestoned'
+    | 'demilestoned'
+  >;
 }
 
 /**
@@ -780,7 +797,22 @@ export interface PullRequestOptions {
    *
    * @defaults - all activity types
    */
-  readonly types?: Array<'assigned' | 'unassigned' | 'labeled' | 'unlabeled' | 'opened' | 'edited' | 'closed' | 'reopened' | 'synchronize' | 'ready_for_review' | 'locked' | 'unlocked' | 'review_requested' | 'review_request_removed'>;
+  readonly types?: Array<
+    | 'assigned'
+    | 'unassigned'
+    | 'labeled'
+    | 'unlabeled'
+    | 'opened'
+    | 'edited'
+    | 'closed'
+    | 'reopened'
+    | 'synchronize'
+    | 'ready_for_review'
+    | 'locked'
+    | 'unlocked'
+    | 'review_requested'
+    | 'review_request_removed'
+  >;
 }
 
 /**
@@ -816,7 +848,22 @@ export interface PullRequestTargetOptions extends PushOptions {
    *
    * @defaults - all activity types
    */
-  readonly types?: Array<'assigned' | 'unassigned' | 'labeled' | 'unlabeled' | 'opened' | 'edited' | 'closed' | 'reopened' | 'synchronize' | 'ready_for_review' | 'locked' | 'unlocked' | 'review_requested' | 'review_request_removed'>;
+  readonly types?: Array<
+    | 'assigned'
+    | 'unassigned'
+    | 'labeled'
+    | 'unlabeled'
+    | 'opened'
+    | 'edited'
+    | 'closed'
+    | 'reopened'
+    | 'synchronize'
+    | 'ready_for_review'
+    | 'locked'
+    | 'unlocked'
+    | 'review_requested'
+    | 'review_request_removed'
+  >;
 }
 
 /**
@@ -833,7 +880,6 @@ export interface PushOptions {
    * @see https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
    */
   readonly branches?: string[];
-
 
   /**
    * When using the push and pull_request events, you can configure a workflow
@@ -909,50 +955,50 @@ export interface WorkflowRunOptions {
 /**
  * The Workflow dispatch event accepts no options.
  */
-export interface WorkflowDispatchOptions { }
+export interface WorkflowDispatchOptions {}
 
 /**
  * The Create event accepts no options.
  */
-export interface CreateOptions { }
+export interface CreateOptions {}
 
 /**
  * The Delete event accepts no options.
  */
-export interface DeleteOptions { }
+export interface DeleteOptions {}
 
 /**
  * The Deployment event accepts no options.
  */
-export interface DeploymentOptions { }
+export interface DeploymentOptions {}
 
 /**
  * The Deployment status event accepts no options.
  */
-export interface DeploymentStatusOptions { }
+export interface DeploymentStatusOptions {}
 
 /**
  * The Fork event accepts no options.
  */
-export interface ForkOptions { }
+export interface ForkOptions {}
 
 /**
  * The Gollum event accepts no options.
  */
-export interface GollumOptions { }
+export interface GollumOptions {}
 
 /**
  * The Page build event accepts no options.
  */
-export interface PageBuildOptions { }
+export interface PageBuildOptions {}
 
 /**
  * The Public event accepts no options.
  */
-export interface PublicOptions { }
+export interface PublicOptions {}
 
 /**
  * The Status event accepts no options.
  */
-export interface StatusOptions { }
+export interface StatusOptions {}
 //#endregion

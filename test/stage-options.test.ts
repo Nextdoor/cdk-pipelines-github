@@ -1,3 +1,5 @@
+/** @format */
+
 import { readFileSync } from 'fs';
 import { Stack, Stage } from 'aws-cdk-lib';
 import { ShellStep } from 'aws-cdk-lib/pipelines';
@@ -47,9 +49,7 @@ describe('github environment', () => {
 
       app.synth();
 
-      expect(readFileSync(pipeline.workflowPath, 'utf-8')).toContain(
-        'environment: test\n',
-      );
+      expect(readFileSync(pipeline.workflowPath, 'utf-8')).toContain('environment: test\n');
     });
   });
 
@@ -158,11 +158,7 @@ describe('cloudformation stack capabilities', () => {
       new Stack(stage, 'MyStack');
 
       pipeline.addStageWithGitHubOptions(stage, {
-        stackCapabilities: [
-          StackCapabilities.NAMED_IAM,
-          StackCapabilities.IAM,
-          StackCapabilities.AUTO_EXPAND,
-        ],
+        stackCapabilities: [StackCapabilities.NAMED_IAM, StackCapabilities.IAM, StackCapabilities.AUTO_EXPAND],
       });
 
       app.synth();
@@ -229,12 +225,8 @@ describe('job settings', () => {
       app.synth();
 
       const workflowFileContents = readFileSync(pipeline.workflowPath, 'utf-8');
-      expect(workflowFileContents).toContain(
-        "if: github.repository == 'another/repoA'\n",
-      );
-      expect(workflowFileContents).toContain(
-        "if: github.repository == 'github/repoB'\n",
-      );
+      expect(workflowFileContents).toContain("if: github.repository == 'another/repoA'\n");
+      expect(workflowFileContents).toContain("if: github.repository == 'github/repoB'\n");
     });
   });
 });
@@ -270,7 +262,7 @@ test('can set pre/post github action job step', () => {
               uses: 'my-pre-deploy-action@1.0.0',
               with: {
                 'app-id': 1234,
-                'secrets': 'my-secrets',
+                secrets: 'my-secrets',
               },
             },
           ],
@@ -289,7 +281,7 @@ test('can set pre/post github action job step', () => {
               uses: 'my-post-deploy-action@1.0.0',
               with: {
                 'app-id': 4321,
-                'secrets': 'secrets',
+                secrets: 'secrets',
               },
             },
           ],
@@ -304,12 +296,8 @@ test('can set pre/post github action job step', () => {
     expect(workflowFileContents).toContain('my-pre-deploy-action@1.0.0');
     expect(workflowFileContents).toContain('my-post-deploy-action@1.0.0');
     expect(workflowFileContents).toContain('actions/checkout@v3');
-    expect(workflowFileContents).toContain(
-      'contains(fromJson(\'["push", "pull_request"]\'), github.event_name)',
-    );
-    expect(workflowFileContents).toContain(
-      "success() && contains(github.event.issue.labels.*.name, 'deploy')",
-    );
+    expect(workflowFileContents).toContain('contains(fromJson(\'["push", "pull_request"]\'), github.event_name)');
+    expect(workflowFileContents).toContain("success() && contains(github.event.issue.labels.*.name, 'deploy')");
   });
 });
 
@@ -416,7 +404,7 @@ test('github stages in waves works', () => {
               uses: 'my-pre-wave-action@1.0.0',
               with: {
                 'app-id': 1234,
-                'secrets': 'my-secrets',
+                secrets: 'my-secrets',
               },
             },
           ],
@@ -435,7 +423,7 @@ test('github stages in waves works', () => {
               uses: 'my-post-wave-action@1.0.0',
               with: {
                 'app-id': 4321,
-                'secrets': 'secrets',
+                secrets: 'secrets',
               },
             },
           ],
@@ -543,7 +531,9 @@ test('stages added to a pipeline after build will fail', () => {
 
     app.synth();
 
-    expect(() => pipeline.addStage(stageB)).toThrowErrorMatchingInlineSnapshot('"addStage: can\'t add Stages anymore after buildPipeline() has been called"');
+    expect(() => pipeline.addStage(stageB)).toThrowErrorMatchingInlineSnapshot(
+      '"addStage: can\'t add Stages anymore after buildPipeline() has been called"',
+    );
   });
 });
 
@@ -572,6 +562,8 @@ test('waves added to a pipeline after build will fail', () => {
 
     app.synth();
 
-    expect(() => pipeline.addGitHubWave('wave2')).toThrowErrorMatchingInlineSnapshot('"addWave: can\'t add Waves anymore after buildPipeline() has been called"');
+    expect(() => pipeline.addGitHubWave('wave2')).toThrowErrorMatchingInlineSnapshot(
+      '"addWave: can\'t add Waves anymore after buildPipeline() has been called"',
+    );
   });
 });

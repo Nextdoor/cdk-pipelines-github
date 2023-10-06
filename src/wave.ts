@@ -1,3 +1,5 @@
+/** @format */
+
 import { Stage } from 'aws-cdk-lib';
 import { AddStageOpts, StageDeployment, Wave, WaveProps } from 'aws-cdk-lib/pipelines';
 import { AddGitHubStageOptions } from './github-common';
@@ -13,7 +15,6 @@ import { GitHubWorkflow } from './pipeline';
  */
 
 export class GitHubWave extends Wave {
-
   /**
    * Create with `GitHubWorkflow.addWave()` or `GitHubWorkflow.addGitHubWave()`.
    * You should not have to instantiate a GitHubWave yourself.
@@ -44,10 +45,7 @@ export class GitHubWave extends Wave {
    * It will be deployed in parallel with all other stages in this
    * wave.
    */
-  public addStageWithGitHubOptions(
-    stage: Stage,
-    options?: AddGitHubStageOptions,
-  ): StageDeployment {
+  public addStageWithGitHubOptions(stage: Stage, options?: AddGitHubStageOptions): StageDeployment {
     const stageDeployment = super.addStage(stage, options);
     this.pipeline._addStageFromWave(stage, stageDeployment, options);
     return stageDeployment;

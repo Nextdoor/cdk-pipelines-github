@@ -1,3 +1,5 @@
+/** @format */
+
 import { Stack } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { GitHubActionRole } from '../src';
@@ -15,7 +17,6 @@ describe('GithubActionRole construct', () => {
     // THEN
     // has custom resource that creates provider
     Template.fromStack(stack).resourceCountIs('Custom::AWSCDKOpenIdConnectProvider', 1);
-
 
     // has iam role
     Template.fromStack(stack).hasResourceProperties('AWS::IAM::Role', {
@@ -45,17 +46,12 @@ describe('GithubActionRole construct', () => {
 
     // WHEN
     new GitHubActionRole(stack, 'MyProvider', {
-      repos: [
-        'myuser/myrepo',
-        'myuser/myrepo2',
-        'myuser/myrepo3',
-      ],
+      repos: ['myuser/myrepo', 'myuser/myrepo2', 'myuser/myrepo3'],
     });
 
     // THEN
     // has custom resource that creates provider
     Template.fromStack(stack).resourceCountIs('Custom::AWSCDKOpenIdConnectProvider', 1);
-
 
     // has iam role
     Template.fromStack(stack).hasResourceProperties('AWS::IAM::Role', {
@@ -139,29 +135,34 @@ describe('GithubActionRole construct', () => {
 
     // THEN
     Template.fromStack(stack).hasResourceProperties('AWS::IAM::Role', {
-      Policies: [{
-        PolicyDocument: {
-          Statement: [{
-            Action: 'sts:AssumeRole',
-            Resource: '*',
-            Effect: 'Allow',
-            Condition: {
-              'ForAnyValue:StringEquals': {
-                'iam:ResourceTag/aws-cdk:bootstrap-role': [
-                  'deploy',
-                  'lookup',
-                  'file-publishing',
-                  'image-publishing',
-                ],
+      Policies: [
+        {
+          PolicyDocument: {
+            Statement: [
+              {
+                Action: 'sts:AssumeRole',
+                Resource: '*',
+                Effect: 'Allow',
+                Condition: {
+                  'ForAnyValue:StringEquals': {
+                    'iam:ResourceTag/aws-cdk:bootstrap-role': [
+                      'deploy',
+                      'lookup',
+                      'file-publishing',
+                      'image-publishing',
+                    ],
+                  },
+                },
               },
-            },
-          }, {
-            Action: 'ecr:GetAuthorizationToken',
-            Resource: '*',
-            Effect: 'Allow',
-          }],
+              {
+                Action: 'ecr:GetAuthorizationToken',
+                Resource: '*',
+                Effect: 'Allow',
+              },
+            ],
+          },
         },
-      }],
+      ],
     });
   });
 });

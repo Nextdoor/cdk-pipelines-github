@@ -1,8 +1,10 @@
 /**
  * Acknowledge IAM resources in AWS CloudFormation templates.
  *
+ * @format
  * @see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-iam-template.html#capabilities
  */
+
 export enum StackCapabilities {
   /** Acknowledge your stack includes IAM resources */
   IAM = 'CAPABILITY_IAM',

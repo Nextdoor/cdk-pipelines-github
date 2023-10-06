@@ -1,3 +1,5 @@
+/** @format */
+
 // copied from https://github.com/cdk8s-team/cdk8s-core/blob/6b317a7a6a2504e228bc56bf96fc98829f88c2be/src/json-patch.ts
 // under Apache 2.0 license
 import { applyPatch, Operation } from 'fast-json-patch';

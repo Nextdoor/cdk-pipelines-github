@@ -1,3 +1,5 @@
+/** @format */
+
 // This is a CDK app that uses CDK Pipelines with a GitHub workflows backend. It
 // is intended to be executed from the root directory of a GitHub repository and
 // it will synthesize a `cdk.out` and `.github/workflows` directory, both of which

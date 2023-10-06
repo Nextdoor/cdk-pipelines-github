@@ -1,3 +1,5 @@
+/** @format */
+
 import { readFileSync } from 'fs';
 import { Stack, Stage } from 'aws-cdk-lib';
 import { ShellStep } from 'aws-cdk-lib/pipelines';

@@ -1,3 +1,5 @@
+/** @format */
+
 import { Step } from 'aws-cdk-lib/pipelines';
 import { JobStep } from '../workflows-model';
 

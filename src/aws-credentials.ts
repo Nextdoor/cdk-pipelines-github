@@ -58,14 +58,14 @@ class GitHubSecretsProvider extends AwsCredentialsProvider {
         secretAccessKey: `\${{ secrets.${this.secretAccessKey} }}`,
         ...(this.sessionToken
           ? {
-            sessionToken: `\${{ secrets.${this.sessionToken} }}`,
-          }
+              sessionToken: `\${{ secrets.${this.sessionToken} }}`,
+            }
           : undefined),
         ...(assumeRoleArn
           ? {
-            roleToAssume: assumeRoleArn,
-            roleExternalId: 'Pipeline',
-          }
+              roleToAssume: assumeRoleArn,
+              roleExternalId: 'Pipeline',
+            }
           : undefined),
       }),
     ];

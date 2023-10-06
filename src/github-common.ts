@@ -1,3 +1,5 @@
+/** @format */
+
 import { AddStageOpts } from 'aws-cdk-lib/pipelines';
 import { JobSettings } from './pipeline';
 import { StackCapabilities } from './stage-options';
