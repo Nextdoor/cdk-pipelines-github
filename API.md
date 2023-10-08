@@ -2313,12 +2313,13 @@ const gitHubWorkflowProps: GitHubWorkflowProps = { ... }
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.synth">synth</a></code> | <code>aws-cdk-lib.pipelines.IFileSetProducer</code> | The build step that produces the CDK Cloud Assembly. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for deployment. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.buildContainer">buildContainer</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.ContainerOptions">ContainerOptions</a></code> | Build container options. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.buildRunner">buildRunner</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a></code> | The type of Github Runner that the build workflow runs on. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version of the CDK CLI to use. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.diffFirst">diffFirst</a></code> | <code>boolean</code> | Whether or not to run a "diff" job first. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.jobSettings">jobSettings</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobSettings">JobSettings</a></code> | Job level settings that will be applied to all jobs in the workflow, including synth and asset deploy jobs. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.postBuildSteps">postBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute after build. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preBuildSteps">preBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute before build. |
-| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.runner">runner</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a></code> | The type of runner to run the job on. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.runner">runner</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a></code> | The type of runner that the entire workflow runs on. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.workflowName">workflowName</a></code> | <code>string</code> | Name of the workflow. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.workflowPath">workflowPath</a></code> | <code>string</code> | File path for the GitHub workflow. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.workflowTriggers">workflowTriggers</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.WorkflowTriggers">WorkflowTriggers</a></code> | GitHub workflow triggers. |
@@ -2366,6 +2367,19 @@ public readonly buildContainer: ContainerOptions;
 - *Default:* GitHub defaults
 
 Build container options.
+
+---
+
+##### `buildRunner`<sup>Optional</sup> <a name="buildRunner" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.buildRunner"></a>
+
+```typescript
+public readonly buildRunner: Runner;
+```
+
+- *Type:* <a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a>
+- *Default:* Runner.UBUNTU_LATEST
+
+The type of Github Runner that the build workflow runs on.
 
 ---
 
@@ -2449,10 +2463,10 @@ public readonly runner: Runner;
 - *Type:* <a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a>
 - *Default:* Runner.UBUNTU_LATEST
 
-The type of runner to run the job on.
+The type of runner that the entire workflow runs on.
 
-The runner can be either a
-GitHub-hosted runner or a self-hosted runner.
+You can also set the
+runner specifically for the `build` (synth) step separately.
 
 ---
 
@@ -2589,7 +2603,7 @@ const job: Job = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@nextdoor/cdk-pipelines-github.Job.property.permissions">permissions</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobPermissions">JobPermissions</a></code> | You can modify the default permissions granted to the GITHUB_TOKEN, adding or removing access as required, so that you only allow the minimum required access. |
-| <code><a href="#@nextdoor/cdk-pipelines-github.Job.property.runsOn">runsOn</a></code> | <code>string \| string[]</code> | The type of machine to run the job on. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.Job.property.runsOn">runsOn</a></code> | <code>string \| string[] \| {[ key: string ]: string \| string[]}</code> | The type of machine to run the job on. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.Job.property.steps">steps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | A job contains a sequence of tasks called steps. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.Job.property.concurrency">concurrency</a></code> | <code>any</code> | Concurrency ensures that only a single job or workflow using the same concurrency group will run at a time. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.Job.property.container">container</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.ContainerOptions">ContainerOptions</a></code> | A container to run any steps in a job that don't already specify a container. |
@@ -2630,10 +2644,10 @@ access.
 ##### `runsOn`<sup>Required</sup> <a name="runsOn" id="@nextdoor/cdk-pipelines-github.Job.property.runsOn"></a>
 
 ```typescript
-public readonly runsOn: string | string[];
+public readonly runsOn: string | string[] | {[ key: string ]: string | string[]};
 ```
 
-- *Type:* string | string[]
+- *Type:* string | string[] | {[ key: string ]: string | string[]}
 
 The type of machine to run the job on.
 
@@ -5436,7 +5450,30 @@ In case of self-hosted, a list of labels can be supplied.
 
 | **Name** | **Description** |
 | --- | --- |
+| <code><a href="#@nextdoor/cdk-pipelines-github.Runner.onGroup">onGroup</a></code> | Creates a runner that sets runsOn to a Github-hosted runner Group. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.Runner.selfHosted">selfHosted</a></code> | Creates a runner instance that sets runsOn to `self-hosted`. |
+
+---
+
+##### `onGroup` <a name="onGroup" id="@nextdoor/cdk-pipelines-github.Runner.onGroup"></a>
+
+```typescript
+import { Runner } from '@nextdoor/cdk-pipelines-github'
+
+Runner.onGroup(name: string, labels?: string[])
+```
+
+Creates a runner that sets runsOn to a Github-hosted runner Group.
+
+###### `name`<sup>Required</sup> <a name="name" id="@nextdoor/cdk-pipelines-github.Runner.onGroup.parameter.name"></a>
+
+- *Type:* string
+
+---
+
+###### `labels`<sup>Optional</sup> <a name="labels" id="@nextdoor/cdk-pipelines-github.Runner.onGroup.parameter.labels"></a>
+
+- *Type:* string[]
 
 ---
 
@@ -5462,17 +5499,17 @@ Additional labels can be supplied. There is no need to supply `self-hosted` as a
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#@nextdoor/cdk-pipelines-github.Runner.property.runsOn">runsOn</a></code> | <code>string \| string[]</code> | *No description.* |
+| <code><a href="#@nextdoor/cdk-pipelines-github.Runner.property.runsOn">runsOn</a></code> | <code>string \| string[] \| {[ key: string ]: string \| string[]}</code> | *No description.* |
 
 ---
 
 ##### `runsOn`<sup>Required</sup> <a name="runsOn" id="@nextdoor/cdk-pipelines-github.Runner.property.runsOn"></a>
 
 ```typescript
-public readonly runsOn: string | string[];
+public readonly runsOn: string | string[] | {[ key: string ]: string | string[]};
 ```
 
-- *Type:* string | string[]
+- *Type:* string | string[] | {[ key: string ]: string | string[]}
 
 ---
 

@@ -12,7 +12,7 @@ export interface Job {
    *
    * @example ["ubuntu-latest"]
    */
-  readonly runsOn: string[] | string;
+  readonly runsOn: string[] | string | Record<string, string | string[]>;
 
   /**
    * A job contains a sequence of tasks called steps. Steps can run commands,
@@ -225,15 +225,39 @@ export class Runner {
     }
   }
 
-  public get runsOn(): string[] | string {
+  /**
+   * Creates a runner that sets runsOn to a Github-hosted runner Group.
+   */
+  public static onGroup(name: string, labels?: string[]) {
+    return new Runner(labels ?? [], name);
+  }
+
+  public get runsOn(): string[] | string | Record<string, string | string[]> {
+    /**
+     * If the group was set - then we return in this format:
+     *
+     * https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-combining-groups-and-labels
+     */
+    if (this.group) {
+      return {
+        group: this.group,
+        labels: this.labels,
+      };
+    }
+
+    /** Otherwise, return in string format... */
     if (this.labels[0] === 'self-hosted') {
+      /** https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#choosing-self-hosted-runners */
       return this.labels;
     } else {
       return this.labels[0];
     }
   }
 
-  private constructor(private readonly labels: string[]) {}
+  private constructor(
+    private readonly labels: string[],
+    private readonly group?: string,
+  ) {}
 }
 
 /**
