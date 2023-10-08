@@ -28,11 +28,12 @@ jobs:
         run: yarn build
       - name: Package
         run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Upload /tmp/workspace.tgz
         uses: actions/upload-artifact@v3
         with:
-          name: source
+          name: /tmp/workspace.tgz
           path: /tmp/workspace.tgz
+          retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
     name: Deploy MyStack/MyStack
@@ -43,7 +44,7 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
