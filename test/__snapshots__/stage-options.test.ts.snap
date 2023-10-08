@@ -37,11 +37,12 @@ jobs:
         run: yarn build
       - name: Package
         run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Upload /tmp/workspace.tgz
         uses: actions/upload-artifact@v3
         with:
-          name: source
+          name: /tmp/workspace.tgz
           path: /tmp/workspace.tgz
+          retention-days: 1
           if-no-files-found: error
   MyPrePostStack-PreDeployAction:
     name: PreDeployAction
@@ -69,7 +70,7 @@ jobs:
       - MyPrePostStack-PreDeployAction
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -144,11 +145,12 @@ jobs:
         run: yarn build
       - name: Package
         run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Upload /tmp/workspace.tgz
         uses: actions/upload-artifact@v3
         with:
-          name: source
+          name: /tmp/workspace.tgz
           path: /tmp/workspace.tgz
+          retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
     name: Deploy MyStack/MyStack
@@ -159,7 +161,7 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -216,11 +218,12 @@ jobs:
         run: yarn build
       - name: Package
         run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Upload /tmp/workspace.tgz
         uses: actions/upload-artifact@v3
         with:
-          name: source
+          name: /tmp/workspace.tgz
           path: /tmp/workspace.tgz
+          retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
     name: Deploy MyStack/MyStack
@@ -231,7 +234,7 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -288,11 +291,12 @@ jobs:
         run: yarn build
       - name: Package
         run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Upload /tmp/workspace.tgz
         uses: actions/upload-artifact@v3
         with:
-          name: source
+          name: /tmp/workspace.tgz
           path: /tmp/workspace.tgz
+          retention-days: 1
           if-no-files-found: error
   MyStage1-MyStack-Deploy:
     name: Deploy MyStage1/MyStack
@@ -304,7 +308,7 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -333,7 +337,7 @@ jobs:
       - MyStage1-MyStack-Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -392,11 +396,12 @@ jobs:
         run: yarn build
       - name: Package
         run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Upload /tmp/workspace.tgz
         uses: actions/upload-artifact@v3
         with:
-          name: source
+          name: /tmp/workspace.tgz
           path: /tmp/workspace.tgz
+          retention-days: 1
           if-no-files-found: error
   MyWave-PreWaveAction:
     name: PreWaveAction
@@ -425,7 +430,7 @@ jobs:
       - MyWave-PreWaveAction
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -454,7 +459,7 @@ jobs:
       - MyWave-PreWaveAction
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -531,11 +536,12 @@ jobs:
         run: yarn build
       - name: Package
         run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Upload /tmp/workspace.tgz
         uses: actions/upload-artifact@v3
         with:
-          name: source
+          name: /tmp/workspace.tgz
           path: /tmp/workspace.tgz
+          retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
     name: Deploy MyStack/MyStack
@@ -547,7 +553,7 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -604,11 +610,12 @@ jobs:
         run: yarn build
       - name: Package
         run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Upload /tmp/workspace.tgz
         uses: actions/upload-artifact@v3
         with:
-          name: source
+          name: /tmp/workspace.tgz
           path: /tmp/workspace.tgz
+          retention-days: 1
           if-no-files-found: error
   MyWave-MyStageA-MyStackA-Deploy:
     name: Deploy MyStageA/MyStackA
@@ -620,7 +627,7 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -648,7 +655,7 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -705,11 +712,12 @@ jobs:
         run: yarn build
       - name: Package
         run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Upload /tmp/workspace.tgz
         uses: actions/upload-artifact@v3
         with:
-          name: source
+          name: /tmp/workspace.tgz
           path: /tmp/workspace.tgz
+          retention-days: 1
           if-no-files-found: error
   MyStageA-MyStackA-Deploy:
     name: Deploy MyStageA/MyStackA
@@ -721,7 +729,7 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source
@@ -750,7 +758,7 @@ jobs:
       - MyStageA-MyStackA-Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Download
+      - name: Download source
         uses: actions/download-artifact@v3
         with:
           name: source

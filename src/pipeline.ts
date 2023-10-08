@@ -25,6 +25,8 @@ import { GitHubWave } from './wave';
 import * as github from './workflows-model';
 import { YamlFile } from './yaml-file';
 
+const RETENTION_DAYS = 1;
+
 /**
  * Job level settings applied to all jobs in the workflow.
  */
@@ -154,6 +156,7 @@ export class GitHubWorkflow extends PipelineBase {
     }
   > = {};
   private readonly jobSettings?: JobSettings;
+
   // in order to keep track of if this pipeline has been built so we can
   // catch later calls to addWave() or addStage()
   private builtGH = false;
@@ -430,13 +433,7 @@ export class GitHubWorkflow extends PipelineBase {
         needs: this.renderDependencies(node),
         runsOn: this.runner.runsOn,
         steps: [
-          {
-            name: 'Download',
-            uses: 'actions/download-artifact@v3',
-            with: {
-              name: 'source',
-            },
-          },
+          ...this.stepsToDownloadAssembly('source'),
           {
             name: 'Unpackage',
             run: 'tar -zxvf workspace.tgz',
@@ -511,15 +508,7 @@ export class GitHubWorkflow extends PipelineBase {
             name: 'Package',
             run: 'tar -zcf /tmp/workspace.tgz .',
           },
-          {
-            name: 'Upload',
-            uses: 'actions/upload-artifact@v3',
-            with: {
-              name: 'source',
-              path: '/tmp/workspace.tgz',
-              'if-no-files-found': 'error',
-            },
-          },
+          ...this.stepsToUplodArtifact('/tmp/workspace.tgz', true),
         ],
       },
     };
@@ -565,23 +554,11 @@ export class GitHubWorkflow extends PipelineBase {
     const uploadOutputs = new Array<github.JobStep>();
 
     for (const input of step.inputs) {
-      downloadInputs.push({
-        uses: 'actions/download-artifact@v3',
-        with: {
-          name: input.fileSet.id,
-          path: input.directory,
-        },
-      });
+      downloadInputs.push(...this.stepsToDownloadAssembly(input.directory));
     }
 
     for (const output of step.outputs) {
-      uploadOutputs.push({
-        uses: 'actions/upload-artifact@v3',
-        with: {
-          name: output.fileSet.id,
-          path: output.directory,
-        },
-      });
+      uploadOutputs.push(...this.stepsToUplodArtifact(output.directory));
     }
 
     const installSteps =
@@ -635,6 +612,37 @@ export class GitHubWorkflow extends PipelineBase {
       {
         name: 'Checkout',
         uses: 'actions/checkout@v3',
+      },
+    ];
+  }
+
+  private stepsToUplodArtifact(targetDir: string, errIfNoFilesFound: boolean = false): github.JobStep[] {
+    return [
+      {
+        name: `Upload ${targetDir}`,
+        uses: 'actions/upload-artifact@v3',
+        with: {
+          name: targetDir,
+          path: targetDir,
+          'retention-days': RETENTION_DAYS,
+          'if-no-files-found': errIfNoFilesFound == true ? 'error' : undefined,
+        },
+      },
+    ];
+  }
+
+  private stepsToDownloadAssembly(artifactName: string, targetDir?: string): github.JobStep[] {
+    //if (this.preSynthed) {
+    //  return this.stepsToCheckout();
+    //}
+    return [
+      {
+        name: `Download ${artifactName}`,
+        uses: 'actions/download-artifact@v3',
+        with: {
+          name: artifactName,
+          path: targetDir,
+        },
       },
     ];
   }
