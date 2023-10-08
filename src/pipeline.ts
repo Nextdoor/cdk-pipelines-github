@@ -84,6 +84,13 @@ export interface GitHubWorkflowProps extends PipelineBaseProps {
   readonly buildContainer?: github.ContainerOptions;
 
   /**
+   * The type of Github Runner that the build workflow runs on.
+   *
+   * @default Runner.UBUNTU_LATEST
+   */
+  readonly buildRunner?: github.Runner;
+
+  /**
    * GitHub workflow steps to execute before build.
    *
    * @default []
@@ -104,8 +111,8 @@ export interface GitHubWorkflowProps extends PipelineBaseProps {
   readonly diffFirst?: boolean;
 
   /**
-   * The type of runner to run the job on. The runner can be either a
-   * GitHub-hosted runner or a self-hosted runner.
+   * The type of runner that the entire workflow runs on. You can also set the
+   * runner specifically for the `build` (synth) step separately.
    *
    * @default Runner.UBUNTU_LATEST
    */
@@ -132,6 +139,7 @@ export class GitHubWorkflow extends PipelineBase {
   private readonly awsCredentials: AwsCredentialsProvider;
   private readonly workflowTriggers: github.WorkflowTriggers;
   private readonly buildContainer?: github.ContainerOptions;
+  private readonly buildRunner: github.Runner;
   private readonly preBuildSteps: github.JobStep[];
   private readonly postBuildSteps: github.JobStep[];
   private readonly diffFirst: boolean;
@@ -176,6 +184,7 @@ export class GitHubWorkflow extends PipelineBase {
     };
 
     this.runner = props.runner ?? github.Runner.UBUNTU_LATEST;
+    this.buildRunner = props.buildRunner ?? this.runner;
   }
 
   /**
@@ -484,7 +493,7 @@ export class GitHubWorkflow extends PipelineBase {
           // that it is being used in the preBuildSteps.
           idToken: this.awsCredentials.jobPermission(),
         },
-        runsOn: this.runner.runsOn,
+        runsOn: this.buildRunner.runsOn,
         needs: this.renderDependencies(node),
         env: step.env,
         container: this.buildContainer,

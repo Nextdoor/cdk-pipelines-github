@@ -40,6 +40,42 @@ test('pipeline with only a synth step', () => {
   });
 });
 
+test('pipeline with a dedicated buildRunner setting', () => {
+  withTemporaryDirectory((dir) => {
+    const github = new GitHubWorkflow(app, 'Pipeline', {
+      workflowPath: `${dir}/.github/workflows/deploy.yml`,
+      awsCreds: AwsCredentials.runnerHasPreconfiguredCreds(),
+      buildRunner: Runner.onGroup('test-group'),
+      synth: new ShellStep('Build', {
+        installCommands: ['yarn'],
+        commands: ['yarn build'],
+      }),
+    });
+
+    app.synth();
+
+    expect(readFileSync(github.workflowPath, 'utf-8')).toMatchSnapshot();
+  });
+});
+
+test('pipeline with a dedicated buildRunner setting and labels', () => {
+  withTemporaryDirectory((dir) => {
+    const github = new GitHubWorkflow(app, 'Pipeline', {
+      workflowPath: `${dir}/.github/workflows/deploy.yml`,
+      awsCreds: AwsCredentials.runnerHasPreconfiguredCreds(),
+      buildRunner: Runner.onGroup('test-group', ['withLabel']),
+      synth: new ShellStep('Build', {
+        installCommands: ['yarn'],
+        commands: ['yarn build'],
+      }),
+    });
+
+    app.synth();
+
+    expect(readFileSync(github.workflowPath, 'utf-8')).toMatchSnapshot();
+  });
+});
+
 test('pipeline with aws credentials using awsCreds', () => {
   withTemporaryDirectory((dir) => {
     const github = new GitHubWorkflow(app, 'Pipeline', {
