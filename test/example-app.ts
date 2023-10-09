@@ -1,7 +1,6 @@
 /** @format */
 
 import * as fs from 'fs';
-import * as os from 'os';
 import * as path from 'path';
 import { App, CfnOutput, RemovalPolicy, Stack, Stage, StageProps } from 'aws-cdk-lib';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
@@ -50,10 +49,10 @@ export class GitHubExampleApp extends App {
   public workflowFile: YamlFile;
 
   constructor(props: GitHubExampleAppProps) {
-    const repoDir = props.repoDir ?? fs.mkdtempSync(path.join(os.tmpdir(), 'github-engine.'));
+    //const repoDir = props.repoDir ?? fs.mkdtempSync(path.join(os.tmpdir(), 'github-engine.'));
 
     super({
-      outdir: path.join(repoDir, 'cdk.out'),
+      outdir: '/tmp/exampleApp.out',
       context: {
         '@aws-cdk/core:newStyleStackSynthesis': '1',
       },
@@ -62,7 +61,7 @@ export class GitHubExampleApp extends App {
       treeMetadata: false,
     });
 
-    const workflowsDir = path.join(repoDir, '.github/workflows');
+    const workflowsDir = path.join(props.repoDir, '.github/workflows');
     fs.mkdirSync(workflowsDir, { recursive: true });
 
     const pipeline = new GitHubWorkflow(this, 'Pipeline', {

@@ -26,13 +26,13 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz runner-provided.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -44,15 +44,13 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
-      - id: Diff
-        run: exit 0
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - id: Deploy
-        run: npx cdk deploy MyStack/MyStack
+        run: npx cdk --app runner-provided.out deploy MyStack/MyStack
 "
 `;

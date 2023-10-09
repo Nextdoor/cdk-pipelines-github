@@ -25,6 +25,8 @@ import { GitHubWave } from './wave';
 import * as github from './workflows-model';
 import { YamlFile } from './yaml-file';
 
+const CDK_OUT_ARTIFACT_NAME = 'cdk.out';
+const CDK_OUT_ARTIFACT_PATH = 'cdk.out.tgz';
 const RETENTION_DAYS = 1;
 
 /**
@@ -139,6 +141,7 @@ export class GitHubWorkflow extends PipelineBase {
   public readonly workflowFile: YamlFile;
 
   private readonly awsCredentials: AwsCredentialsProvider;
+  private readonly cdkoutDir: string;
   private readonly workflowTriggers: github.WorkflowTriggers;
   private readonly buildContainer?: github.ContainerOptions;
   private readonly buildRunner: github.Runner;
@@ -170,8 +173,8 @@ export class GitHubWorkflow extends PipelineBase {
     this.postBuildSteps = props.postBuildSteps ?? [];
     this.jobSettings = props.jobSettings;
     this.diffFirst = props.diffFirst ?? false;
-
     this.workflowPath = props.workflowPath ?? '.github/workflows/deploy.yml';
+
     if (!this.workflowPath.endsWith('.yml') && !this.workflowPath.endsWith('.yaml')) {
       throw new Error('workflow file is expected to be a yaml file');
     }
@@ -185,6 +188,12 @@ export class GitHubWorkflow extends PipelineBase {
       push: { branches: ['main'] },
       workflowDispatch: {},
     };
+
+    const app = Stage.of(this);
+    if (!app) {
+      throw new Error('The GitHub Workflow must be defined in the scope of an App');
+    }
+    this.cdkoutDir = app.outdir;
 
     this.runner = props.runner ?? github.Runner.UBUNTU_LATEST;
     this.buildRunner = props.buildRunner ?? this.runner;
@@ -274,7 +283,9 @@ export class GitHubWorkflow extends PipelineBase {
 
   protected doBuildPipeline() {
     this.builtGH = true;
+
     const app = Stage.of(this);
+
     if (!app) {
       throw new Error('The GitHub Workflow must be defined in the scope of an App');
     }
@@ -433,20 +444,9 @@ export class GitHubWorkflow extends PipelineBase {
         needs: this.renderDependencies(node),
         runsOn: this.runner.runsOn,
         steps: [
-          ...this.stepsToDownloadAssembly('source'),
-          {
-            name: 'Unpackage',
-            run: 'tar -zxvf workspace.tgz',
-          },
+          ...this.stepsToUnpackageAssembly,
           ...this.awsCredentials.credentialSteps(region),
-          {
-            id: 'Diff',
-            run: this.diffFirst ? `npx cdk diff ${stack.constructPath}` : 'exit 0',
-          },
-          {
-            id: 'Deploy',
-            run: `npx cdk deploy ${stack.constructPath}`,
-          },
+          ...this.stepsToDeploy(stack),
         ],
       },
     };
@@ -499,16 +499,9 @@ export class GitHubWorkflow extends PipelineBase {
           ...this.preBuildSteps,
           ...installSteps,
           ...this.awsCredentials.credentialSteps(),
-          {
-            name: 'Build',
-            run: step.commands.join('\n'),
-          },
+          { name: 'Build', run: step.commands.join('\n') },
           ...this.postBuildSteps,
-          {
-            name: 'Package',
-            run: 'tar -zcf /tmp/workspace.tgz .',
-          },
-          ...this.stepsToUplodArtifact('/tmp/workspace.tgz', true),
+          ...this.stepsToPackageAssembly,
         ],
       },
     };
@@ -554,11 +547,11 @@ export class GitHubWorkflow extends PipelineBase {
     const uploadOutputs = new Array<github.JobStep>();
 
     for (const input of step.inputs) {
-      downloadInputs.push(...this.stepsToDownloadAssembly(input.directory));
+      downloadInputs.push(...this.stepsToDownloadArtifact(input.fileSet.id, input.directory));
     }
 
     for (const output of step.outputs) {
-      uploadOutputs.push(...this.stepsToUplodArtifact(output.directory));
+      uploadOutputs.push(...this.stepsToUplodArtifact(output.fileSet.id, output.directory));
     }
 
     const installSteps =
@@ -616,14 +609,34 @@ export class GitHubWorkflow extends PipelineBase {
     ];
   }
 
-  private stepsToUplodArtifact(targetDir: string, errIfNoFilesFound: boolean = false): github.JobStep[] {
+  private get stepsToPackageAssembly() {
     return [
       {
-        name: `Upload ${targetDir}`,
+        name: `Package ${CDK_OUT_ARTIFACT_NAME}`,
+        run: `tar -zcf ${CDK_OUT_ARTIFACT_PATH} ${this.cdkoutDir}`,
+      },
+      ...this.stepsToUplodArtifact(CDK_OUT_ARTIFACT_NAME, CDK_OUT_ARTIFACT_PATH, true),
+    ];
+  }
+
+  private get stepsToUnpackageAssembly() {
+    return [
+      ...this.stepsToDownloadArtifact(CDK_OUT_ARTIFACT_NAME),
+      {
+        name: `Unpackage ${CDK_OUT_ARTIFACT_NAME}`,
+        run: `tar -zxf ${CDK_OUT_ARTIFACT_PATH}`,
+      },
+    ];
+  }
+
+  private stepsToUplodArtifact(name: string, sourcePath: string, errIfNoFilesFound: boolean = false): github.JobStep[] {
+    return [
+      {
+        name: `Upload ${name}`,
         uses: 'actions/upload-artifact@v3',
         with: {
-          name: targetDir,
-          path: targetDir,
+          name: name,
+          path: sourcePath,
           'retention-days': RETENTION_DAYS,
           'if-no-files-found': errIfNoFilesFound == true ? 'error' : undefined,
         },
@@ -631,20 +644,33 @@ export class GitHubWorkflow extends PipelineBase {
     ];
   }
 
-  private stepsToDownloadAssembly(artifactName: string, targetDir?: string): github.JobStep[] {
-    //if (this.preSynthed) {
-    //  return this.stepsToCheckout();
-    //}
+  private stepsToDownloadArtifact(name: string, targetPath?: string): github.JobStep[] {
     return [
       {
-        name: `Download ${artifactName}`,
+        name: `Download ${name}`,
         uses: 'actions/download-artifact@v3',
         with: {
-          name: artifactName,
-          path: targetDir,
+          name: name,
+          path: targetPath,
         },
       },
     ];
+  }
+
+  private stepsToDeploy(stack: StackDeployment): github.JobStep[] {
+    var steps: github.JobStep[] = [];
+    if (this.diffFirst) {
+      steps.push({
+        id: 'Diff',
+        run: `npx cdk --app ${this.cdkoutDir} diff ${stack.constructPath}`,
+      });
+    }
+    steps.push({
+      id: 'Deploy',
+      run: `npx cdk --app ${this.cdkoutDir} deploy ${stack.constructPath}`,
+    });
+
+    return steps;
   }
 
   private renderDependencies(node: AGraphNode) {
