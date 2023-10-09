@@ -38,13 +38,13 @@ jobs:
       - name: Build
         run: echo \\"nothing to do (cdk.out is committed)\\"
       - run: echo post-build
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz /tmp/exampleApp.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
   StageA-Pre:
@@ -67,12 +67,12 @@ jobs:
       - StageA-Pre
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -81,10 +81,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Diff
-        run: exit 0
       - id: Deploy
-        run: npx cdk deploy StageA/BucketStack
+        run: npx cdk --app /tmp/exampleApp.out deploy StageA/BucketStack
   StageA-FunctionStack-Deploy:
     name: Deploy StageA/FunctionStack
     permissions:
@@ -96,12 +94,12 @@ jobs:
       - StageA-Pre
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -110,10 +108,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Diff
-        run: exit 0
       - id: Deploy
-        run: npx cdk deploy StageA/FunctionStack
+        run: npx cdk --app /tmp/exampleApp.out deploy StageA/FunctionStack
     outputs:
       myout: \${{ steps.Deploy.outputs.myout }}
   StageA-Post:
@@ -143,12 +139,12 @@ jobs:
       - StageA-Post
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -157,10 +153,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Diff
-        run: exit 0
       - id: Deploy
-        run: npx cdk deploy StageB/BucketStack
+        run: npx cdk --app /tmp/exampleApp.out deploy StageB/BucketStack
   StageB-FunctionStack-Deploy:
     name: Deploy StageB/FunctionStack
     permissions:
@@ -175,12 +169,12 @@ jobs:
       - StageA-Post
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -189,10 +183,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Diff
-        run: exit 0
       - id: Deploy
-        run: npx cdk deploy StageB/FunctionStack
+        run: npx cdk --app /tmp/exampleApp.out deploy StageB/FunctionStack
 "
 `;
 
@@ -230,13 +222,13 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: yarn build
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
 "
@@ -270,13 +262,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: source
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
+          retention-days: 1
           if-no-files-found: error
 "
 `;
@@ -310,13 +303,14 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: source
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
+          retention-days: 1
           if-no-files-found: error
 "
 `;
@@ -356,13 +350,13 @@ jobs:
           aws-session-token: \${{ secrets.MY_SESSION_TOKEN }}
       - name: Build
         run: yarn build
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -374,12 +368,12 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -389,10 +383,8 @@ jobs:
           aws-access-key-id: \${{ secrets.MY_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.MY_SECRET_ACCESS_KEY }}
           aws-session-token: \${{ secrets.MY_SESSION_TOKEN }}
-      - id: Diff
-        run: exit 0
       - id: Deploy
-        run: npx cdk deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack
 "
 `;
 
@@ -430,13 +422,13 @@ jobs:
           role-session-name: my-github-actions-session
       - name: Build
         run: yarn build
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -448,12 +440,12 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - name: Authenticate Via OIDC Role
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -462,10 +454,8 @@ jobs:
           role-skip-session-tagging: true
           role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role
           role-session-name: my-github-actions-session
-      - id: Diff
-        run: exit 0
       - id: Deploy
-        run: npx cdk deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack
 "
 `;
 
@@ -502,13 +492,13 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: \\"\\"
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -521,12 +511,12 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -535,10 +525,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Diff
-        run: exit 0
       - id: Deploy
-        run: npx cdk deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack
 "
 `;
 
@@ -568,13 +556,13 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
 "
@@ -612,13 +600,13 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: \\"\\"
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -630,12 +618,12 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -644,10 +632,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Diff
-        run: exit 0
       - id: Deploy
-        run: npx cdk deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack
 "
 `;
 
@@ -688,13 +674,13 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: yarn build
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
 "
@@ -732,13 +718,13 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: \\"\\"
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -750,12 +736,12 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -765,9 +751,9 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Diff
-        run: npx cdk diff MyStack/MyStack
+        run: npx cdk --app github.out diff MyStack/MyStack
       - id: Deploy
-        run: npx cdk deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack
 "
 `;
 
@@ -803,13 +789,13 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build
         run: \\"\\"
-      - name: Package
-        run: tar -zcf /tmp/workspace.tgz .
-      - name: Upload /tmp/workspace.tgz
+      - name: Package cdk.out
+        run: tar -zcf cdk.out.tgz github.out
+      - name: Upload cdk.out
         uses: actions/upload-artifact@v3
         with:
-          name: /tmp/workspace.tgz
-          path: /tmp/workspace.tgz
+          name: cdk.out
+          path: cdk.out.tgz
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -821,12 +807,12 @@ jobs:
       - Build-Build
     runs-on: ubuntu-latest
     steps:
-      - name: Download source
+      - name: Download cdk.out
         uses: actions/download-artifact@v3
         with:
-          name: source
-      - name: Unpackage
-        run: tar -zxvf workspace.tgz
+          name: cdk.out
+      - name: Unpackage cdk.out
+        run: tar -zxf cdk.out.tgz
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -835,9 +821,7 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - id: Diff
-        run: exit 0
       - id: Deploy
-        run: npx cdk deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack
 "
 `;
