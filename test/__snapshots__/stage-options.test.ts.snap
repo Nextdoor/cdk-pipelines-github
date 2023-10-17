@@ -86,6 +86,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyPrePostStack/MyStack
+          --require-approval=never
   MyPrePostStack-PostDeployAction:
     name: PostDeployAction
     if: contains(fromJson('[\\"push\\", \\"pull_request\\"]'), github.event_name)
@@ -174,7 +175,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStack/MyStack
+        run: npx cdk --app stage.out deploy MyStack/MyStack --require-approval=never
 "
 `;
 
@@ -245,7 +246,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStack/MyStack
+        run: npx cdk --app stage.out deploy MyStack/MyStack --require-approval=never
 "
 `;
 
@@ -317,7 +318,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStage1/MyStack
+        run: npx cdk --app stage.out deploy MyStage1/MyStack --require-approval=never
   MyStage2-MyStack-Deploy:
     name: Deploy MyStage2/MyStack
     permissions:
@@ -344,7 +345,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStage2/MyStack
+        run: npx cdk --app stage.out deploy MyStage2/MyStack --require-approval=never
 "
 `;
 
@@ -435,7 +436,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStageA/MyStackA
+        run: npx cdk --app stage.out deploy MyStageA/MyStackA --require-approval=never
   MyWave-MyStageB-MyStackB-Deploy:
     name: Deploy MyStageB/MyStackB
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
@@ -462,7 +463,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStageB/MyStackB
+        run: npx cdk --app stage.out deploy MyStageB/MyStackB --require-approval=never
   MyWave-PostWaveAction:
     name: PostWaveAction
     if: contains(github.event.issue.labels.*.name, 'deployToA') ||
@@ -554,7 +555,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStack/MyStack
+        run: npx cdk --app stage.out deploy MyStack/MyStack --require-approval=never
 "
 `;
 
@@ -626,7 +627,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStageA/MyStackA
+        run: npx cdk --app stage.out deploy MyStageA/MyStackA --require-approval=never
   MyWave-MyStageB-MyStackB-Deploy:
     name: Deploy MyStageB/MyStackB
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
@@ -652,7 +653,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStageB/MyStackB
+        run: npx cdk --app stage.out deploy MyStageB/MyStackB --require-approval=never
 "
 `;
 
@@ -724,7 +725,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStageA/MyStackA
+        run: npx cdk --app stage.out deploy MyStageA/MyStackA --require-approval=never
   MyStageB-MyStackB-Deploy:
     name: Deploy MyStageB/MyStackB
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
@@ -751,6 +752,6 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app stage.out deploy MyStageB/MyStackB
+        run: npx cdk --app stage.out deploy MyStageB/MyStackB --require-approval=never
 "
 `;

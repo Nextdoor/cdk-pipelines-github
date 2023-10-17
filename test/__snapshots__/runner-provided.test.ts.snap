@@ -52,5 +52,6 @@ jobs:
         run: tar -zxf cdk.out.tgz
       - id: Deploy
         run: npx cdk --app runner-provided.out deploy MyStack/MyStack
+          --require-approval=never
 "
 `;

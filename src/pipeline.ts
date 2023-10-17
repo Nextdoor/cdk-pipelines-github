@@ -109,6 +109,19 @@ export interface GitHubWorkflowProps extends PipelineBaseProps {
   readonly postBuildSteps?: github.JobStep[];
 
   /**
+   * What approval level is required for deployments? By default this is
+   * `never` to ensure that all automated deployments succeed.
+   *
+   * @default "never"
+   */
+  readonly requireApproval?: 'never' | 'any-change' | 'broadening';
+
+  /**
+   * Optional deploy aguments appended to the `cdk deploy ...` command.
+   */
+  readonly deployArgs?: string[];
+
+  /**
    * Whether or not to run a "diff" job first. Adds some time to the deploy
    * process, but useful for understanding what changes are being applied.
    */
@@ -147,6 +160,7 @@ export class GitHubWorkflow extends PipelineBase {
   private readonly buildRunner: github.Runner;
   private readonly preBuildSteps: github.JobStep[];
   private readonly postBuildSteps: github.JobStep[];
+  private readonly deployArgs: string[];
   private readonly diffFirst: boolean;
   private readonly jobOutputs: Record<string, github.JobStepOutput[]> = {};
   private readonly runner: github.Runner;
@@ -173,6 +187,7 @@ export class GitHubWorkflow extends PipelineBase {
     this.postBuildSteps = props.postBuildSteps ?? [];
     this.jobSettings = props.jobSettings;
     this.diffFirst = props.diffFirst ?? false;
+    this.deployArgs = props.deployArgs ?? [];
     this.workflowPath = props.workflowPath ?? '.github/workflows/deploy.yml';
 
     if (!this.workflowPath.endsWith('.yml') && !this.workflowPath.endsWith('.yaml')) {
@@ -197,6 +212,8 @@ export class GitHubWorkflow extends PipelineBase {
 
     this.runner = props.runner ?? github.Runner.UBUNTU_LATEST;
     this.buildRunner = props.buildRunner ?? this.runner;
+
+    this.deployArgs.push(`--require-approval=${props.requireApproval ?? 'never'}`);
   }
 
   /**
@@ -667,7 +684,7 @@ export class GitHubWorkflow extends PipelineBase {
     }
     steps.push({
       id: 'Deploy',
-      run: `npx cdk --app ${this.cdkoutDir} deploy ${stack.constructPath}`,
+      run: `npx cdk --app ${this.cdkoutDir} deploy ${stack.constructPath} ${this.deployArgs.join(' ')}`,
     });
 
     return steps;
