@@ -83,6 +83,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app /tmp/exampleApp.out deploy StageA/BucketStack
+          --require-approval=never
   StageA-FunctionStack-Deploy:
     name: Deploy StageA/FunctionStack
     permissions:
@@ -110,6 +111,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app /tmp/exampleApp.out deploy StageA/FunctionStack
+          --require-approval=never
     outputs:
       myout: \${{ steps.Deploy.outputs.myout }}
   StageA-Post:
@@ -155,6 +157,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app /tmp/exampleApp.out deploy StageB/BucketStack
+          --require-approval=never
   StageB-FunctionStack-Deploy:
     name: Deploy StageB/FunctionStack
     permissions:
@@ -185,6 +188,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app /tmp/exampleApp.out deploy StageB/FunctionStack
+          --require-approval=never
 "
 `;
 
@@ -384,7 +388,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.MY_SECRET_ACCESS_KEY }}
           aws-session-token: \${{ secrets.MY_SESSION_TOKEN }}
       - id: Deploy
-        run: npx cdk --app github.out deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
 "
 `;
 
@@ -455,7 +459,7 @@ jobs:
           role-to-assume: arn:aws:iam::111111111111:role/my-github-actions-role
           role-session-name: my-github-actions-session
       - id: Deploy
-        run: npx cdk --app github.out deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
 "
 `;
 
@@ -526,7 +530,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app github.out deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
 "
 `;
 
@@ -633,7 +637,7 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app github.out deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
 "
 `;
 
@@ -753,7 +757,7 @@ jobs:
       - id: Diff
         run: npx cdk --app github.out diff MyStack/MyStack
       - id: Deploy
-        run: npx cdk --app github.out deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
 "
 `;
 
@@ -822,6 +826,6 @@ jobs:
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
-        run: npx cdk --app github.out deploy MyStack/MyStack
+        run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
 "
 `;

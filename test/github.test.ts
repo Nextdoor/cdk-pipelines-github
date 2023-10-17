@@ -32,6 +32,7 @@ test('pipeline with only a synth step', () => {
         installCommands: ['yarn'],
         commands: ['yarn build'],
       }),
+      deployArgs: ['--arg1', '--arg2=foo'],
     });
 
     app.synth();

@@ -2315,10 +2315,12 @@ const gitHubWorkflowProps: GitHubWorkflowProps = { ... }
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.buildContainer">buildContainer</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.ContainerOptions">ContainerOptions</a></code> | Build container options. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.buildRunner">buildRunner</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a></code> | The type of Github Runner that the build workflow runs on. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version of the CDK CLI to use. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.deployArgs">deployArgs</a></code> | <code>string[]</code> | Optional deploy aguments appended to the `cdk deploy ...` command. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.diffFirst">diffFirst</a></code> | <code>boolean</code> | Whether or not to run a "diff" job first. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.jobSettings">jobSettings</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobSettings">JobSettings</a></code> | Job level settings that will be applied to all jobs in the workflow, including synth and asset deploy jobs. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.postBuildSteps">postBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute after build. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preBuildSteps">preBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute before build. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.requireApproval">requireApproval</a></code> | <code>string</code> | What approval level is required for deployments? |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.runner">runner</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a></code> | The type of runner that the entire workflow runs on. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.workflowName">workflowName</a></code> | <code>string</code> | Name of the workflow. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.workflowPath">workflowPath</a></code> | <code>string</code> | File path for the GitHub workflow. |
@@ -2396,6 +2398,18 @@ Version of the CDK CLI to use.
 
 ---
 
+##### `deployArgs`<sup>Optional</sup> <a name="deployArgs" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.deployArgs"></a>
+
+```typescript
+public readonly deployArgs: string[];
+```
+
+- *Type:* string[]
+
+Optional deploy aguments appended to the `cdk deploy ...` command.
+
+---
+
 ##### `diffFirst`<sup>Optional</sup> <a name="diffFirst" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.diffFirst"></a>
 
 ```typescript
@@ -2451,6 +2465,22 @@ public readonly preBuildSteps: JobStep[];
 - *Default:* []
 
 GitHub workflow steps to execute before build.
+
+---
+
+##### `requireApproval`<sup>Optional</sup> <a name="requireApproval" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.requireApproval"></a>
+
+```typescript
+public readonly requireApproval: string;
+```
+
+- *Type:* string
+- *Default:* "never"
+
+What approval level is required for deployments?
+
+By default this is
+`never` to ensure that all automated deployments succeed.
 
 ---
 
