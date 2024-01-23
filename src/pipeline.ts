@@ -213,7 +213,11 @@ export class GitHubWorkflow extends PipelineBase {
     this.runner = props.runner ?? github.Runner.UBUNTU_LATEST;
     this.buildRunner = props.buildRunner ?? this.runner;
 
+    /** By default, deploy! */
     this.deployArgs.push(`--require-approval=${props.requireApproval ?? 'never'}`);
+
+    /** The pipeline handles dependency ordering, no need to re-deploy dependency stacks */
+    this.deployArgs.push('--exclusively');
   }
 
   /**

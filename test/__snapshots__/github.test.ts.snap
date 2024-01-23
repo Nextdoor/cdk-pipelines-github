@@ -83,7 +83,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app /tmp/exampleApp.out deploy StageA/BucketStack
-          --require-approval=never
+          --require-approval=never --exclusively
   StageA-FunctionStack-Deploy:
     name: Deploy StageA/FunctionStack
     permissions:
@@ -111,7 +111,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app /tmp/exampleApp.out deploy StageA/FunctionStack
-          --require-approval=never
+          --require-approval=never --exclusively
     outputs:
       myout: \${{ steps.Deploy.outputs.myout }}
   StageA-Post:
@@ -157,7 +157,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app /tmp/exampleApp.out deploy StageB/BucketStack
-          --require-approval=never
+          --require-approval=never --exclusively
   StageB-FunctionStack-Deploy:
     name: Deploy StageB/FunctionStack
     permissions:
@@ -188,7 +188,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app /tmp/exampleApp.out deploy StageB/FunctionStack
-          --require-approval=never
+          --require-approval=never --exclusively
 "
 `;
 
@@ -389,6 +389,7 @@ jobs:
           aws-session-token: \${{ secrets.MY_SESSION_TOKEN }}
       - id: Deploy
         run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
+          --exclusively
 "
 `;
 
@@ -460,6 +461,7 @@ jobs:
           role-session-name: my-github-actions-session
       - id: Deploy
         run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
+          --exclusively
 "
 `;
 
@@ -531,6 +533,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
+          --exclusively
 "
 `;
 
@@ -638,6 +641,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
+          --exclusively
 "
 `;
 
@@ -758,6 +762,7 @@ jobs:
         run: npx cdk --app github.out diff MyStack/MyStack
       - id: Deploy
         run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
+          --exclusively
 "
 `;
 
@@ -827,5 +832,6 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app github.out deploy MyStack/MyStack --require-approval=never
+          --exclusively
 "
 `;

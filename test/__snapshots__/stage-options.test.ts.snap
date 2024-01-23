@@ -86,7 +86,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyPrePostStack/MyStack
-          --require-approval=never
+          --require-approval=never --exclusively
   MyPrePostStack-PostDeployAction:
     name: PostDeployAction
     if: contains(fromJson('[\\"push\\", \\"pull_request\\"]'), github.event_name)
@@ -176,6 +176,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStack/MyStack --require-approval=never
+          --exclusively
 "
 `;
 
@@ -247,6 +248,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStack/MyStack --require-approval=never
+          --exclusively
 "
 `;
 
@@ -319,6 +321,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStage1/MyStack --require-approval=never
+          --exclusively
   MyStage2-MyStack-Deploy:
     name: Deploy MyStage2/MyStack
     permissions:
@@ -346,6 +349,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStage2/MyStack --require-approval=never
+          --exclusively
 "
 `;
 
@@ -437,6 +441,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStageA/MyStackA --require-approval=never
+          --exclusively
   MyWave-MyStageB-MyStackB-Deploy:
     name: Deploy MyStageB/MyStackB
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
@@ -464,6 +469,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStageB/MyStackB --require-approval=never
+          --exclusively
   MyWave-PostWaveAction:
     name: PostWaveAction
     if: contains(github.event.issue.labels.*.name, 'deployToA') ||
@@ -556,6 +562,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStack/MyStack --require-approval=never
+          --exclusively
 "
 `;
 
@@ -628,6 +635,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStageA/MyStackA --require-approval=never
+          --exclusively
   MyWave-MyStageB-MyStackB-Deploy:
     name: Deploy MyStageB/MyStackB
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
@@ -654,6 +662,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStageB/MyStackB --require-approval=never
+          --exclusively
 "
 `;
 
@@ -726,6 +735,7 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStageA/MyStackA --require-approval=never
+          --exclusively
   MyStageB-MyStackB-Deploy:
     name: Deploy MyStageB/MyStackB
     if: success() && contains(github.event.issue.labels.*.name, 'deployToB')
@@ -753,5 +763,6 @@ jobs:
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - id: Deploy
         run: npx cdk --app stage.out deploy MyStageB/MyStackB --require-approval=never
+          --exclusively
 "
 `;
