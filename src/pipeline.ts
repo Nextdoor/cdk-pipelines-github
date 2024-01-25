@@ -18,7 +18,7 @@ import { AGraphNode, Graph, PipelineGraph, isGraph } from 'aws-cdk-lib/pipelines
 import { Construct } from 'constructs';
 import * as decamelize from 'decamelize';
 import { AwsCredentials, AwsCredentialsProvider } from './aws-credentials';
-import { AddGitHubStageOptions, GitHubEnvironment } from './github-common';
+import { AddGitHubStageOptions, AwsCredsCommonProps, GitHubEnvironment } from './github-common';
 import { GitHubStage } from './stage';
 import { GitHubActionStep } from './steps/github-action-step';
 import { GitHubWave } from './wave';
@@ -44,7 +44,7 @@ export interface JobSettings {
 /**
  * Props for `GitHubWorkflow`.
  */
-export interface GitHubWorkflowProps extends PipelineBaseProps {
+export interface GitHubWorkflowProps extends PipelineBaseProps, AwsCredsCommonProps {
   /**
    * File path for the GitHub workflow.
    *
@@ -72,13 +72,6 @@ export interface GitHubWorkflowProps extends PipelineBaseProps {
    * @default - automatic
    */
   readonly cdkCliVersion?: string;
-
-  /**
-   * Configure provider for AWS credentials used for deployment.
-   *
-   * @default - Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
-   */
-  readonly awsCreds?: AwsCredentialsProvider;
 
   /**
    * Build container options.
@@ -170,6 +163,7 @@ export class GitHubWorkflow extends PipelineBase {
       environment: AddGitHubStageOptions['gitHubEnvironment'];
       capabilities: AddGitHubStageOptions['stackCapabilities'];
       settings: AddGitHubStageOptions['jobSettings'];
+      awsCreds: AddGitHubStageOptions['awsCreds'];
     }
   > = {};
   private readonly jobSettings?: JobSettings;
@@ -234,6 +228,7 @@ export class GitHubWorkflow extends PipelineBase {
     this.addStackProps(stacks, 'environment', options?.gitHubEnvironment);
     this.addStackProps(stacks, 'capabilities', options?.stackCapabilities);
     this.addStackProps(stacks, 'settings', options?.jobSettings);
+    this.addStackProps(stacks, 'awsCreds', options?.awsCreds);
 
     return stageDeployment;
   }
@@ -288,6 +283,7 @@ export class GitHubWorkflow extends PipelineBase {
     this.addStackProps(stacks, 'environment', ghStage?.props?.gitHubEnvironment ?? options?.gitHubEnvironment);
     this.addStackProps(stacks, 'capabilities', ghStage?.props?.stackCapabilities ?? options?.stackCapabilities);
     this.addStackProps(stacks, 'settings', ghStage?.props?.jobSettings ?? options?.jobSettings);
+    this.addStackProps(stacks, 'awsCreds', ghStage?.props?.awsCreds ?? options?.awsCreds);
   }
 
   private addStackProps(stacks: StackDeployment[], key: string, value: any) {
@@ -451,22 +447,26 @@ export class GitHubWorkflow extends PipelineBase {
       throw new Error('"account" and "region" are required');
     }
 
+    // check if the stack has specific awsCreds injected by the stage
+    const stackProperties = this.stackProperties[stack.stackArtifactId];
+    const awsCredentials: AwsCredentialsProvider = stackProperties?.awsCreds ?? this.awsCredentials;
+
     return {
       id: node.uniqueId,
       definition: {
         name: `Deploy ${stack.constructPath}`,
         ...this.renderJobSettingParameters(),
-        ...this.stackProperties[stack.stackArtifactId]?.settings,
+        ...stackProperties?.settings,
         permissions: {
           contents: github.JobPermission.READ,
-          idToken: this.awsCredentials.jobPermission(),
+          idToken: awsCredentials.jobPermission(),
         },
-        ...this.renderGitHubEnvironment(this.stackProperties[stack.stackArtifactId]?.environment),
+        ...this.renderGitHubEnvironment(stackProperties?.environment),
         needs: this.renderDependencies(node),
         runsOn: this.runner.runsOn,
         steps: [
           ...this.stepsToUnpackageAssembly,
-          ...this.awsCredentials.credentialSteps(region),
+          ...awsCredentials.credentialSteps(region),
           ...this.stepsToDeploy(stack),
         ],
       },
