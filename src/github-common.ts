@@ -1,6 +1,7 @@
 /** @format */
 
 import { AddStageOpts } from 'aws-cdk-lib/pipelines';
+import { AwsCredentialsProvider } from './aws-credentials';
 import { JobSettings } from './pipeline';
 import { StackCapabilities } from './stage-options';
 
@@ -23,6 +24,15 @@ export interface GitHubEnvironment {
    * @see https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-environment-name-and-url
    */
   readonly url?: string;
+}
+
+export interface AwsCredsCommonProps {
+  /**
+   * Configure provider for AWS credentials used for deployment.
+   *
+   * @default - Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+   */
+  readonly awsCreds?: AwsCredentialsProvider;
 }
 
 /**
@@ -66,4 +76,4 @@ export interface GitHubCommonProps {
 /**
  * Options to pass to `addStageWithGitHubOpts`.
  */
-export interface AddGitHubStageOptions extends AddStageOpts, GitHubCommonProps {}
+export interface AddGitHubStageOptions extends AddStageOpts, GitHubCommonProps, AwsCredsCommonProps {}

@@ -950,6 +950,7 @@ on a nested stage, returns its parent.
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStage.property.parentStage">parentStage</a></code> | <code>aws-cdk-lib.Stage</code> | The parent stage or `undefined` if this is the app. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStage.property.region">region</a></code> | <code>string</code> | The default region for all resources defined within this stage. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStage.property.props">props</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStageProps">GitHubStageProps</a></code> | *No description.* |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStage.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | *No description.* |
 
 ---
 
@@ -1063,6 +1064,16 @@ public readonly props: GitHubStageProps;
 ```
 
 - *Type:* <a href="#@nextdoor/cdk-pipelines-github.GitHubStageProps">GitHubStageProps</a>
+
+---
+
+##### `awsCreds`<sup>Optional</sup> <a name="awsCreds" id="@nextdoor/cdk-pipelines-github.GitHubStage.property.awsCreds"></a>
+
+```typescript
+public readonly awsCreds: AwsCredentialsProvider;
+```
+
+- *Type:* <a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a>
 
 ---
 
@@ -1378,6 +1389,7 @@ const addGitHubStageOptions: AddGitHubStageOptions = { ... }
 | <code><a href="#@nextdoor/cdk-pipelines-github.AddGitHubStageOptions.property.gitHubEnvironment">gitHubEnvironment</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubEnvironment">GitHubEnvironment</a></code> | Run the stage in a specific GitHub Environment. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.AddGitHubStageOptions.property.jobSettings">jobSettings</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobSettings">JobSettings</a></code> | Job level settings that will be applied to all jobs in the stage. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.AddGitHubStageOptions.property.stackCapabilities">stackCapabilities</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.StackCapabilities">StackCapabilities</a>[]</code> | In some cases, you must explicitly acknowledge that your CloudFormation stack template contains certain capabilities in order for CloudFormation to create the stack. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.AddGitHubStageOptions.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for deployment. |
 
 ---
 
@@ -1474,6 +1486,19 @@ error.
 
 ---
 
+##### `awsCreds`<sup>Optional</sup> <a name="awsCreds" id="@nextdoor/cdk-pipelines-github.AddGitHubStageOptions.property.awsCreds"></a>
+
+```typescript
+public readonly awsCreds: AwsCredentialsProvider;
+```
+
+- *Type:* <a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a>
+- *Default:* Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+Configure provider for AWS credentials used for deployment.
+
+---
+
 ### AwsCredentialsSecrets <a name="AwsCredentialsSecrets" id="@nextdoor/cdk-pipelines-github.AwsCredentialsSecrets"></a>
 
 Names of secrets for AWS credentials.
@@ -1526,6 +1551,37 @@ public readonly sessionToken: string;
 
 - *Type:* string
 - *Default:* no session token is used
+
+---
+
+### AwsCredsCommonProps <a name="AwsCredsCommonProps" id="@nextdoor/cdk-pipelines-github.AwsCredsCommonProps"></a>
+
+#### Initializer <a name="Initializer" id="@nextdoor/cdk-pipelines-github.AwsCredsCommonProps.Initializer"></a>
+
+```typescript
+import { AwsCredsCommonProps } from '@nextdoor/cdk-pipelines-github'
+
+const awsCredsCommonProps: AwsCredsCommonProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredsCommonProps.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for deployment. |
+
+---
+
+##### `awsCreds`<sup>Optional</sup> <a name="awsCreds" id="@nextdoor/cdk-pipelines-github.AwsCredsCommonProps.property.awsCreds"></a>
+
+```typescript
+public readonly awsCreds: AwsCredentialsProvider;
+```
+
+- *Type:* <a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a>
+- *Default:* Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+Configure provider for AWS credentials used for deployment.
 
 ---
 
@@ -2179,6 +2235,7 @@ const gitHubStageProps: GitHubStageProps = { ... }
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStageProps.property.gitHubEnvironment">gitHubEnvironment</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubEnvironment">GitHubEnvironment</a></code> | Run the stage in a specific GitHub Environment. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStageProps.property.jobSettings">jobSettings</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobSettings">JobSettings</a></code> | Job level settings that will be applied to all jobs in the stage. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStageProps.property.stackCapabilities">stackCapabilities</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.StackCapabilities">StackCapabilities</a>[]</code> | In some cases, you must explicitly acknowledge that your CloudFormation stack template contains certain capabilities in order for CloudFormation to create the stack. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStageProps.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for deployment. |
 
 ---
 
@@ -2291,6 +2348,19 @@ In some cases, you must explicitly acknowledge that your CloudFormation stack te
 
 If insufficiently specified, CloudFormation returns an `InsufficientCapabilities`
 error.
+
+---
+
+##### `awsCreds`<sup>Optional</sup> <a name="awsCreds" id="@nextdoor/cdk-pipelines-github.GitHubStageProps.property.awsCreds"></a>
+
+```typescript
+public readonly awsCreds: AwsCredentialsProvider;
+```
+
+- *Type:* <a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a>
+- *Default:* Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+Configure provider for AWS credentials used for deployment.
 
 ---
 

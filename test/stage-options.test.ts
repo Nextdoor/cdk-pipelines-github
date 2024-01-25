@@ -12,6 +12,7 @@ import {
   AddGitHubStageOptions,
   GitHubStage,
   GitHubStageProps,
+  AwsCredentials,
 } from '../src';
 
 let app: TestApp;
@@ -504,6 +505,120 @@ test('stages in pipeline works with `if`', () => {
         },
         'MyStageB-MyStackB-Deploy': {
           if: stageBOptions.jobSettings?.if,
+        },
+      },
+    });
+  });
+});
+
+test('create stages with different awsCreds', () => {
+  withTemporaryDirectory((dir) => {
+    const pipeline = new GitHubWorkflow(app, 'Pipeline', {
+      workflowPath: `${dir}/.github/workflows/deploy.yml`,
+      awsCreds: AwsCredentials.fromOpenIdConnect({ gitHubActionRoleArn: 'arn:...' }),
+      synth: new ShellStep('Build', {
+        installCommands: ['yarn'],
+        commands: ['yarn build'],
+      }),
+    });
+
+    // Should use the github role arn from the workflow
+    const stageA = new Stage(app, 'MyStageA', {
+      env: { account: '111111111111', region: 'us-east-1' },
+    });
+    new Stack(stageA, 'MyStackA');
+    pipeline.addStage(stageA);
+
+    // Should use its own aws credentials that are supplied
+    const stageB = new GitHubStage(app, 'MyStageB', {
+      env: { account: '222222222222', region: 'us-east-1' },
+      awsCreds: AwsCredentials.fromGitHubSecrets({ accessKeyId: 'abcd', secretAccessKey: '1234' }),
+    });
+    new Stack(stageB, 'MyStackB');
+    pipeline.addStage(stageB);
+
+    // Should use its own aws credentials that are supplied
+    const stageC = new GitHubStage(app, 'MyStageC', {
+      env: { account: '222222222222', region: 'us-east-1' },
+    });
+    new Stack(stageC, 'MyStackC');
+    pipeline.addStageWithGitHubOptions(stageC, {
+      awsCreds: AwsCredentials.fromGitHubSecrets(),
+    });
+
+    app.synth();
+
+    const workflowFileContents = readFileSync(pipeline.workflowPath, 'utf-8');
+    expect(workflowFileContents).toMatchSnapshot();
+    expect(workflowFileContents).toContain('actions/checkout@v3');
+
+    const yaml = YAML.parse(workflowFileContents);
+    expect(yaml).toMatchObject({
+      jobs: {
+        'MyStageA-MyStackA-Deploy': {
+          name: 'Deploy MyStageA/MyStackA',
+          permissions: {
+            contents: 'read',
+            'id-token': 'write',
+          },
+          steps: expect.arrayContaining([
+            {
+              name: 'Authenticate Via OIDC Role',
+              uses: 'aws-actions/configure-aws-credentials@v4',
+              with: {
+                'aws-region': 'us-east-1',
+                'role-duration-seconds': 1800,
+                'role-skip-session-tagging': true,
+                'role-to-assume': 'arn:...',
+              },
+            },
+          ]),
+        },
+      },
+    });
+    expect(yaml).toMatchObject({
+      jobs: {
+        'MyStageB-MyStackB-Deploy': {
+          name: 'Deploy MyStageB/MyStackB',
+          permissions: {
+            contents: 'read',
+          },
+          steps: expect.arrayContaining([
+            {
+              name: 'Authenticate Via GitHub Secrets',
+              uses: 'aws-actions/configure-aws-credentials@v4',
+              with: {
+                'aws-access-key-id': '${{ secrets.abcd }}',
+                'aws-secret-access-key': '${{ secrets.1234 }}',
+                'aws-region': 'us-east-1',
+                'role-duration-seconds': 1800,
+                'role-skip-session-tagging': true,
+              },
+            },
+          ]),
+        },
+      },
+    });
+    expect(yaml).toMatchObject({
+      jobs: {
+        'MyStageC-MyStackC-Deploy': {
+          name: 'Deploy MyStageC/MyStackC',
+          permissions: {
+            contents: 'read',
+          },
+          steps: expect.arrayContaining([
+            {
+              name: 'Authenticate Via GitHub Secrets',
+              uses: 'aws-actions/configure-aws-credentials@v4',
+              with: {
+                'aws-access-key-id': '${{ secrets.AWS_ACCESS_KEY_ID }}',
+                'aws-secret-access-key': '${{ secrets.AWS_SECRET_ACCESS_KEY }}',
+                'aws-region': 'us-east-1',
+                'role-duration-seconds': 1800,
+                'role-skip-session-tagging': true,
+              },
+            },
+          ]),
         },
       },
     });
