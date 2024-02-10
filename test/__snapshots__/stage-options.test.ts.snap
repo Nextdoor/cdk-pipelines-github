@@ -13,7 +13,7 @@ on:
 jobs:
   Build-Synth:
     name: Synthesize
-    if: contains(fromJson('[\\"push\\", \\"pull_request\\"]'), github.event_name)
+    if: contains(fromJson('["push", "pull_request"]'), github.event_name)
     permissions:
       contents: read
       id-token: none
@@ -46,7 +46,7 @@ jobs:
           if-no-files-found: error
   MyPrePostStack-PreDeployAction:
     name: PreDeployAction
-    if: contains(fromJson('[\\"push\\", \\"pull_request\\"]'), github.event_name)
+    if: contains(fromJson('["push", "pull_request"]'), github.event_name)
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -89,7 +89,7 @@ jobs:
           --require-approval=never --exclusively
   MyPrePostStack-PostDeployAction:
     name: PostDeployAction
-    if: contains(fromJson('[\\"push\\", \\"pull_request\\"]'), github.event_name)
+    if: contains(fromJson('["push", "pull_request"]'), github.event_name)
     permissions:
       contents: write
     runs-on: ubuntu-latest

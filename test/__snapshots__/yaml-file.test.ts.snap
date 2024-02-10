@@ -6,7 +6,7 @@ exports[`yaml file comments comment at top works: commentAtTopTest.yml 1`] = `
 first:
   second:
     array:
-      - \\"0\\"
+      - "0"
 "
 `;
 
@@ -21,6 +21,6 @@ exports[`yaml file comments multi-line comments work: multilineCommentAtTopAndBo
 first:
   second:
     array:
-      - \\"0\\"
+      - "0"
 "
 `;

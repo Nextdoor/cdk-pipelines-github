@@ -16,7 +16,10 @@ import {
 } from 'aws-cdk-lib/pipelines';
 import { AGraphNode, Graph, PipelineGraph, isGraph } from 'aws-cdk-lib/pipelines/lib/helpers-internal';
 import { Construct } from 'constructs';
-import * as decamelize from 'decamelize';
+
+// eslint-disable-next-line
+import decamelize = require('decamelize');
+
 import { AwsCredentials, AwsCredentialsProvider } from './aws-credentials';
 import { AddGitHubStageOptions, AwsCredsCommonProps, GitHubEnvironment } from './github-common';
 import { GitHubStage } from './stage';
@@ -433,8 +436,9 @@ export class GitHubWorkflow extends PipelineBase {
       default:
         // The 'as any' is temporary, until the change upstream rolls out
         throw new Error(
-          `GitHubWorfklow does not support graph nodes of type '${(node.data as any)
-            ?.type}'. You are probably using a feature this CDK Pipelines implementation does not support.`,
+          `GitHubWorfklow does not support graph nodes of type '${
+            (node.data as any)?.type
+          }'. You are probably using a feature this CDK Pipelines implementation does not support.`,
         );
     }
   }
