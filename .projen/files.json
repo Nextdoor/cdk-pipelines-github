@@ -9,7 +9,6 @@
     ".github/workflows/upgrade-nextdoor.yml",
     ".gitignore",
     ".mergify.yml",
-    ".npmrc",
     ".prettierignore",
     ".prettierrc.yml",
     ".projen/deps.json",

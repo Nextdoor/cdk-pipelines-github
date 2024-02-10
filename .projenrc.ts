@@ -1,8 +1,7 @@
 /** @format */
 
-import { JsonPatch } from 'projen';
 import { AwsCdkConstructLibrary } from 'projen/lib/awscdk';
-import { NpmAccess, UpdateSnapshot } from 'projen/lib/javascript';
+import { NpmAccess } from 'projen/lib/javascript';
 
 const project = new AwsCdkConstructLibrary({
   projenrcTs: true,
@@ -11,6 +10,7 @@ const project = new AwsCdkConstructLibrary({
   author: 'Amazon Web Services',
   authorAddress: 'aws-cdk-dev@amazon.com',
   cdkVersion: '2.9.0',
+  jsiiVersion: '^5.3.0',
   constructsVersion: '10.0.46',
   defaultReleaseBranch: 'nextdoor',
   repositoryUrl: 'https://github.com/Nextdoor/cdk-pipelines-github.git',
@@ -22,9 +22,6 @@ const project = new AwsCdkConstructLibrary({
     '@aws-cdk/integ-tests-alpha',
   ],
   peerDeps: ['aws-cdk-lib'],
-  jestOptions: {
-    updateSnapshot: UpdateSnapshot.NEVER,
-  },
 
   /**
    * Automatic publishing of our packages to Github Packages as a private package.
@@ -63,9 +60,5 @@ const project = new AwsCdkConstructLibrary({
     },
   },
 });
-
-// JSII sets this to `false` so we need to be compatible
-const tsConfigDev = project.tryFindObjectFile('tsconfig.dev.json');
-tsConfigDev?.patch(JsonPatch.replace('/compilerOptions/esModuleInterop', false));
 
 project.synth();
