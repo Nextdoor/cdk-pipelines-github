@@ -629,7 +629,7 @@ export class GitHubWorkflow extends PipelineBase {
     return [
       {
         name: 'Checkout',
-        uses: 'actions/checkout@v3',
+        uses: 'actions/checkout@v4',
       },
     ];
   }
