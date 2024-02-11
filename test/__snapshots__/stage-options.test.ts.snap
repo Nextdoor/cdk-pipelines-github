@@ -22,7 +22,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
@@ -99,7 +99,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: post deploy action
         uses: my-post-deploy-action@1.0.0
         with:
@@ -129,7 +129,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
@@ -201,7 +201,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
@@ -273,7 +273,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         run: yarn
       - name: Authenticate Via OIDC Role
@@ -397,7 +397,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
@@ -500,7 +500,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
@@ -608,7 +608,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: post wave action
         uses: my-post-wave-action@1.0.0
         with:
@@ -638,7 +638,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
@@ -711,7 +711,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
@@ -811,7 +811,7 @@ jobs:
     env: {}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         run: yarn
       - name: Authenticate Via GitHub Secrets
