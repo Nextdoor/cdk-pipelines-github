@@ -1,8 +1,11 @@
 /** @format */
 
 import { readFileSync } from 'fs';
-import { Stack, Stage } from 'aws-cdk-lib';
+import { Aspects, IAspect, Stack, Stage, Tag } from 'aws-cdk-lib';
+import { Match, Template } from 'aws-cdk-lib/assertions';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { ShellStep } from 'aws-cdk-lib/pipelines';
+import { IConstruct } from 'constructs';
 import * as YAML from 'yaml';
 import { withTemporaryDirectory, TestApp } from './testutil';
 import {
@@ -51,6 +54,59 @@ describe('github environment', () => {
       app.synth();
 
       expect(readFileSync(pipeline.workflowPath, 'utf-8')).toContain('environment: test\n');
+    });
+  });
+
+  // https://github.com/aws/aws-pdk/pull/94/files
+  test('aspects are passed between stages from parent app', () => {
+    withTemporaryDirectory((dir) => {
+      // Example Aspect that we expect to be copied into all of the Stages
+      class Tagger implements IAspect {
+        public visit(node: IConstruct): void {
+          new Tag('TestKey', 'TestValue').visit(node);
+        }
+      }
+      Aspects.of(app).add(new Tagger());
+
+      const pipeline = new GitHubWorkflow(app, 'Pipeline', {
+        workflowPath: `${dir}/.github/workflows/deploy.yml`,
+        synth: new ShellStep('Build', {
+          installCommands: ['yarn'],
+          commands: ['yarn build'],
+        }),
+      });
+
+      // "Wave" Test: Create a Wave and add the Stage to the Wave. This
+      // executes the GithubWave.addStage() call.
+      const wave = pipeline.addWave('Wave');
+      const stageA = new Stage(app, 'AspectStageA', {
+        env: { account: '111111111111', region: 'us-east-1' },
+      });
+      const stackA = new Stack(stageA, 'MyStackA');
+      new Bucket(stackA, 'TestBucket');
+      wave.addStage(stageA);
+
+      // "Pipeline" Test: Create a Stage directly from the Pipeline
+      const stageB = new Stage(app, 'AspectStageB', {
+        env: { account: '111111111111', region: 'us-east-1' },
+      });
+      const stackB = new Stack(stageB, 'MyStackB');
+      new Bucket(stackB, 'TestBucket');
+      pipeline.addStage(stageB);
+
+      // First, snapshot test to look for any odd unexpected differences
+      const templateA = Template.fromStack(stackA);
+      const templateB = Template.fromStack(stackB);
+      expect(templateA.toJSON()).toMatchSnapshot();
+      expect(templateB.toJSON()).toMatchSnapshot();
+
+      // Next, test that the Bucket in both Stacks (in different stages) have the appropriate tags
+      templateA.hasResourceProperties('AWS::S3::Bucket', {
+        Tags: Match.arrayWith([Match.objectEquals({ Key: 'TestKey', Value: 'TestValue' })]),
+      });
+      templateB.hasResourceProperties('AWS::S3::Bucket', {
+        Tags: Match.arrayWith([Match.objectEquals({ Key: 'TestKey', Value: 'TestValue' })]),
+      });
     });
   });
 

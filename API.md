@@ -494,6 +494,8 @@ Deploy a single Stage by itself.
 Add a Stage to the pipeline, to be deployed in sequence with other
 Stages added to the pipeline. All Stacks in the stage will be deployed
 in an order automatically determined by their relative dependencies.
+https://github.com/aws/aws-pdk/pull/94/files
+https://github.com/aws/aws-cdk/issues/20468
 
 ###### `stage`<sup>Required</sup> <a name="stage" id="@nextdoor/cdk-pipelines-github.GitHubWorkflow.addStage.parameter.stage"></a>
 
