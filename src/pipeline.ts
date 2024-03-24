@@ -2,8 +2,9 @@
 
 import { existsSync, mkdirSync, readFileSync } from 'fs';
 import * as path from 'path';
-import { Stage } from 'aws-cdk-lib';
+import { Aspects, Stage } from 'aws-cdk-lib';
 import {
+  AddStageOpts,
   PipelineBase,
   PipelineBaseProps,
   ShellStep,
@@ -215,6 +216,18 @@ export class GitHubWorkflow extends PipelineBase {
 
     /** The pipeline handles dependency ordering, no need to re-deploy dependency stacks */
     this.deployArgs.push('--exclusively');
+  }
+
+  /**
+   * @inheritDoc
+   *
+   * https://github.com/aws/aws-pdk/pull/94/files
+   * https://github.com/aws/aws-cdk/issues/20468
+   */
+  addStage(stage: Stage, options?: AddStageOpts): StageDeployment {
+    // Add any root Aspects to the stage level as currently this doesn't happen automatically
+    Aspects.of(stage.node.root).all.forEach((aspect) => Aspects.of(stage).add(aspect));
+    return super.addStage(stage, options);
   }
 
   /**

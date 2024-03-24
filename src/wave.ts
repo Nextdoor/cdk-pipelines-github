@@ -1,6 +1,6 @@
 /** @format */
 
-import { Stage } from 'aws-cdk-lib';
+import { Aspects, Stage } from 'aws-cdk-lib';
 import { AddStageOpts, StageDeployment, Wave, WaveProps } from 'aws-cdk-lib/pipelines';
 import { AddGitHubStageOptions } from './github-common';
 import { GitHubWorkflow } from './pipeline';
@@ -13,7 +13,6 @@ import { GitHubWorkflow } from './pipeline';
  * Create with `GitHubWorkflow.addWave()` or `GitHubWorkflow.addGitHubWave()`.
  * You should not have to instantiate a GitHubWave yourself.
  */
-
 export class GitHubWave extends Wave {
   /**
    * Create with `GitHubWorkflow.addWave()` or `GitHubWorkflow.addGitHubWave()`.
@@ -46,6 +45,12 @@ export class GitHubWave extends Wave {
    * wave.
    */
   public addStageWithGitHubOptions(stage: Stage, options?: AddGitHubStageOptions): StageDeployment {
+    /**
+     * https://github.com/aws/aws-pdk/pull/94/files
+     * https://github.com/aws/aws-cdk/issues/20468
+     */
+    Aspects.of(stage.node.root).all.forEach((aspect) => Aspects.of(stage).add(aspect));
+
     const stageDeployment = super.addStage(stage, options);
     this.pipeline._addStageFromWave(stage, stageDeployment, options);
     return stageDeployment;
