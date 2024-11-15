@@ -11,7 +11,6 @@ const project = new AwsCdkConstructLibrary({
   authorAddress: 'aws-cdk-dev@amazon.com',
   cdkVersion: '2.9.0',
   jsiiVersion: '^5.3.0',
-  constructsVersion: '10.0.46',
   defaultReleaseBranch: 'nextdoor',
   repositoryUrl: 'https://github.com/Nextdoor/cdk-pipelines-github.git',
   bundledDeps: ['decamelize', 'yaml', 'fast-json-patch'],
