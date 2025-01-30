@@ -4515,28 +4515,28 @@ GitHubWorkflow that this wave is part of.
 ##### `addPost` <a name="addPost" id="@nextdoor/cdk-pipelines-github.GitHubWave.addPost"></a>
 
 ```typescript
-public addPost(steps: Step): void
+public addPost(steps: ...Step[]): void
 ```
 
 Add an additional step to run after all of the stages in this wave.
 
 ###### `steps`<sup>Required</sup> <a name="steps" id="@nextdoor/cdk-pipelines-github.GitHubWave.addPost.parameter.steps"></a>
 
-- *Type:* aws-cdk-lib.pipelines.Step
+- *Type:* ...aws-cdk-lib.pipelines.Step[]
 
 ---
 
 ##### `addPre` <a name="addPre" id="@nextdoor/cdk-pipelines-github.GitHubWave.addPre"></a>
 
 ```typescript
-public addPre(steps: Step): void
+public addPre(steps: ...Step[]): void
 ```
 
 Add an additional step to run before any of the stages in this wave.
 
 ###### `steps`<sup>Required</sup> <a name="steps" id="@nextdoor/cdk-pipelines-github.GitHubWave.addPre.parameter.steps"></a>
 
-- *Type:* aws-cdk-lib.pipelines.Step
+- *Type:* ...aws-cdk-lib.pipelines.Step[]
 
 ---
 
@@ -4716,7 +4716,7 @@ JsonPatch.add('/biscuits/1', { "name": "Ginger Nut" })
 ```typescript
 import { JsonPatch } from '@nextdoor/cdk-pipelines-github'
 
-JsonPatch.apply(document: any, ops: JsonPatch)
+JsonPatch.apply(document: any, ops: ...JsonPatch[])
 ```
 
 Applies a set of JSON-Patch (RFC-6902) operations to `document` and returns the result.
@@ -4731,7 +4731,7 @@ The document to patch.
 
 ###### `ops`<sup>Required</sup> <a name="ops" id="@nextdoor/cdk-pipelines-github.JsonPatch.apply.parameter.ops"></a>
 
-- *Type:* <a href="#@nextdoor/cdk-pipelines-github.JsonPatch">JsonPatch</a>
+- *Type:* ...<a href="#@nextdoor/cdk-pipelines-github.JsonPatch">JsonPatch</a>[]
 
 The operations to apply.
 
@@ -5054,7 +5054,7 @@ new YamlFile(filePath: string, options?: YamlFileOptions)
 ##### `patch` <a name="patch" id="@nextdoor/cdk-pipelines-github.YamlFile.patch"></a>
 
 ```typescript
-public patch(patches: JsonPatch): void
+public patch(patches: ...JsonPatch[]): void
 ```
 
 Applies an RFC 6902 JSON-patch to the synthesized object file. See https://datatracker.ietf.org/doc/html/rfc6902 for more information.
@@ -5092,7 +5092,7 @@ on:
 
 ###### `patches`<sup>Required</sup> <a name="patches" id="@nextdoor/cdk-pipelines-github.YamlFile.patch.parameter.patches"></a>
 
-- *Type:* <a href="#@nextdoor/cdk-pipelines-github.JsonPatch">JsonPatch</a>
+- *Type:* ...<a href="#@nextdoor/cdk-pipelines-github.JsonPatch">JsonPatch</a>[]
 
 The patch operations to apply.
 

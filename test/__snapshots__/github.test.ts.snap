@@ -41,10 +41,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz /tmp/exampleApp.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   StageA-Pre:
@@ -229,10 +230,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 "
@@ -269,10 +271,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 "
@@ -310,10 +313,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 "
@@ -357,10 +361,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -430,10 +435,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -501,10 +507,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -566,10 +573,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 "
@@ -610,10 +618,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -685,10 +694,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 "
@@ -729,10 +739,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -801,10 +812,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz github.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:

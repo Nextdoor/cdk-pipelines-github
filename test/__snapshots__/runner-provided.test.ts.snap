@@ -29,10 +29,11 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz runner-provided.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
