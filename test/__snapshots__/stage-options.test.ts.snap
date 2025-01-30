@@ -38,7 +38,7 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz stage.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
@@ -145,7 +145,7 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz stage.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
@@ -217,7 +217,7 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz stage.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
@@ -288,7 +288,7 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz stage.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
@@ -521,7 +521,7 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz stage.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
@@ -624,7 +624,7 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz stage.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
@@ -762,7 +762,7 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz stage.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
@@ -835,7 +835,7 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz stage.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
@@ -935,7 +935,7 @@ jobs:
       - name: Package cdk.out
         run: tar -zcf cdk.out.tgz stage.out
       - name: Upload cdk.out
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cdk.out
           path: cdk.out.tgz
