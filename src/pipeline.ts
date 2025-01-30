@@ -675,6 +675,7 @@ export class GitHubWorkflow extends PipelineBase {
         with: {
           name: name,
           path: sourcePath,
+          ['include-hidden-files']: true,
           'retention-days': RETENTION_DAYS,
           'if-no-files-found': errIfNoFilesFound == true ? 'error' : undefined,
         },
