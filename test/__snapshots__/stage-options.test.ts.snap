@@ -42,6 +42,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyPrePostStack-PreDeployAction:
@@ -149,6 +150,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -221,6 +223,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -292,6 +295,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStageA-MyStackA-Deploy:
@@ -525,6 +529,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStage1-MyStack-Deploy:
@@ -628,6 +633,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyWave-PreWaveAction:
@@ -766,6 +772,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -839,6 +846,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyWave-MyStageA-MyStackA-Deploy:
@@ -939,6 +947,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStageA-MyStackA-Deploy:

@@ -45,6 +45,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   StageA-Pre:
@@ -233,6 +234,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 "
@@ -273,6 +275,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 "
@@ -314,6 +317,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 "
@@ -361,6 +365,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -434,6 +439,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -505,6 +511,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -570,6 +577,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 "
@@ -614,6 +622,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -689,6 +698,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 "
@@ -733,6 +743,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
@@ -805,6 +816,7 @@ jobs:
         with:
           name: cdk.out
           path: cdk.out.tgz
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
   MyStack-MyStack-Deploy:
