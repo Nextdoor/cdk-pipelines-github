@@ -1,6 +1,7 @@
 /** @format */
 
 import { AwsCdkConstructLibrary } from 'projen/lib/awscdk';
+import { GithubCredentials } from 'projen/lib/github';
 import { NpmAccess } from 'projen/lib/javascript';
 
 const project = new AwsCdkConstructLibrary({
@@ -30,6 +31,13 @@ const project = new AwsCdkConstructLibrary({
   npmDistTag: 'latest',
   npmRegistryUrl: 'https://npm.pkg.github.com',
   npmTokenSecret: 'GITHUB_TOKEN',
+
+  /**
+   * Allow the self-mutation job to commit back to the repository using the
+   * default GITHUB_TOKEN for the workflow. This token is automatically
+   * generated and refreshed for us.
+   */
+  projenCredentials: GithubCredentials.fromPersonalAccessToken({ secret: 'CDK_GITHUB_TOKEN' }),
 
   /**
    * Style
