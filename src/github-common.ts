@@ -33,6 +33,13 @@ export interface AwsCredsCommonProps {
    * @default - Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
    */
   readonly awsCreds?: AwsCredentialsProvider;
+
+  /**
+   * Configure provider for AWS credentials used for synthesis.
+   *
+   * @default - Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+   */
+  readonly synthAwsCreds?: AwsCredentialsProvider;
 }
 
 /**

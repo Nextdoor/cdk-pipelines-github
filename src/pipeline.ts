@@ -151,6 +151,7 @@ export class GitHubWorkflow extends PipelineBase {
   public readonly workflowFile: YamlFile;
 
   private readonly awsCredentials: AwsCredentialsProvider;
+  private readonly synthAwsCredentials: AwsCredentialsProvider;
   private readonly cdkoutDir: string;
   private readonly workflowTriggers: github.WorkflowTriggers;
   private readonly buildContainer?: github.ContainerOptions;
@@ -180,6 +181,7 @@ export class GitHubWorkflow extends PipelineBase {
     super(scope, id, props);
 
     this.awsCredentials = props.awsCreds || AwsCredentials.fromGitHubSecrets();
+    this.synthAwsCredentials = props.synthAwsCreds || props.awsCreds || AwsCredentials.fromGitHubSecrets();
     this.buildContainer = props.buildContainer;
     this.preBuildSteps = props.preBuildSteps ?? [];
     this.postBuildSteps = props.postBuildSteps ?? [];
@@ -526,7 +528,7 @@ export class GitHubWorkflow extends PipelineBase {
           contents: github.JobPermission.READ,
           // The Synthesize job does not use the GitHub Action Role on its own, but it's possible
           // that it is being used in the preBuildSteps.
-          idToken: this.awsCredentials.jobPermission(),
+          idToken: this.synthAwsCredentials.jobPermission(),
         },
         runsOn: this.buildRunner.runsOn,
         needs: this.renderDependencies(node),
@@ -534,9 +536,9 @@ export class GitHubWorkflow extends PipelineBase {
         container: this.buildContainer,
         steps: [
           ...this.stepsToCheckout(),
+          ...this.synthAwsCredentials.credentialSteps(),
           ...this.preBuildSteps,
           ...installSteps,
-          ...this.awsCredentials.credentialSteps(),
           { name: 'Build', run: step.commands.join('\n') },
           ...this.postBuildSteps,
           ...this.stepsToPackageAssembly,

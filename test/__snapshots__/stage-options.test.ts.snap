@@ -23,8 +23,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install
-        run: yarn
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -33,6 +31,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Install
+        run: yarn
       - name: Build
         run: yarn build
       - name: Package cdk.out
@@ -131,8 +131,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install
-        run: yarn
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -141,6 +139,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Install
+        run: yarn
       - name: Build
         run: yarn build
       - name: Package cdk.out
@@ -204,8 +204,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install
-        run: yarn
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -214,6 +212,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Install
+        run: yarn
       - name: Build
         run: yarn build
       - name: Package cdk.out
@@ -277,8 +277,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install
-        run: yarn
       - name: Authenticate Via OIDC Role
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -286,6 +284,8 @@ jobs:
           role-duration-seconds: 1800
           role-skip-session-tagging: true
           role-to-assume: arn:...
+      - name: Install
+        run: yarn
       - name: Build
         run: yarn build
       - name: Package cdk.out
@@ -510,8 +510,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install
-        run: yarn
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -520,6 +518,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Install
+        run: yarn
       - name: Build
         run: yarn build
       - name: Package cdk.out
@@ -614,8 +614,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install
-        run: yarn
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -624,6 +622,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Install
+        run: yarn
       - name: Build
         run: yarn build
       - name: Package cdk.out
@@ -753,8 +753,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install
-        run: yarn
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -763,6 +761,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Install
+        run: yarn
       - name: Build
         run: yarn build
       - name: Package cdk.out
@@ -827,8 +827,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install
-        run: yarn
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -837,6 +835,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Install
+        run: yarn
       - name: Build
         run: yarn build
       - name: Package cdk.out
@@ -928,8 +928,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install
-        run: yarn
       - name: Authenticate Via GitHub Secrets
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -938,6 +936,8 @@ jobs:
           role-skip-session-tagging: true
           aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Install
+        run: yarn
       - name: Build
         run: yarn build
       - name: Package cdk.out
