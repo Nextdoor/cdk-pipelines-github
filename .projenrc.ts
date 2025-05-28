@@ -26,7 +26,7 @@ const project = new AwsCdkConstructLibrary({
   /**
    * Automatic publishing of our packages to Github Packages as a private package.
    */
-  npmAccess: NpmAccess.RESTRICTED,
+  npmAccess: NpmAccess.PUBLIC,
   npmDistTag: 'latest',
   npmRegistryUrl: 'https://npm.pkg.github.com',
   npmTokenSecret: 'GITHUB_TOKEN',
