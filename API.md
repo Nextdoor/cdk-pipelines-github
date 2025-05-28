@@ -738,6 +738,7 @@ const addGitHubStageOptions: AddGitHubStageOptions = { ... }
 | <code><a href="#@nextdoor/cdk-pipelines-github.AddGitHubStageOptions.property.jobSettings">jobSettings</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobSettings">JobSettings</a></code> | Job level settings that will be applied to all jobs in the stage. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.AddGitHubStageOptions.property.stackCapabilities">stackCapabilities</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.StackCapabilities">StackCapabilities</a>[]</code> | In some cases, you must explicitly acknowledge that your CloudFormation stack template contains certain capabilities in order for CloudFormation to create the stack. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.AddGitHubStageOptions.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for deployment. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.AddGitHubStageOptions.property.synthAwsCreds">synthAwsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for synthesis. |
 
 ---
 
@@ -847,6 +848,19 @@ Configure provider for AWS credentials used for deployment.
 
 ---
 
+##### `synthAwsCreds`<sup>Optional</sup> <a name="synthAwsCreds" id="@nextdoor/cdk-pipelines-github.AddGitHubStageOptions.property.synthAwsCreds"></a>
+
+```typescript
+public readonly synthAwsCreds: AwsCredentialsProvider;
+```
+
+- *Type:* <a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a>
+- *Default:* Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+Configure provider for AWS credentials used for synthesis.
+
+---
+
 ### AwsCredentialsSecrets <a name="AwsCredentialsSecrets" id="@nextdoor/cdk-pipelines-github.AwsCredentialsSecrets"></a>
 
 Names of secrets for AWS credentials.
@@ -917,6 +931,7 @@ const awsCredsCommonProps: AwsCredsCommonProps = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredsCommonProps.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for deployment. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredsCommonProps.property.synthAwsCreds">synthAwsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for synthesis. |
 
 ---
 
@@ -930,6 +945,19 @@ public readonly awsCreds: AwsCredentialsProvider;
 - *Default:* Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 
 Configure provider for AWS credentials used for deployment.
+
+---
+
+##### `synthAwsCreds`<sup>Optional</sup> <a name="synthAwsCreds" id="@nextdoor/cdk-pipelines-github.AwsCredsCommonProps.property.synthAwsCreds"></a>
+
+```typescript
+public readonly synthAwsCreds: AwsCredentialsProvider;
+```
+
+- *Type:* <a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a>
+- *Default:* Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+Configure provider for AWS credentials used for synthesis.
 
 ---
 
@@ -1584,6 +1612,7 @@ const gitHubStageProps: GitHubStageProps = { ... }
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStageProps.property.jobSettings">jobSettings</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobSettings">JobSettings</a></code> | Job level settings that will be applied to all jobs in the stage. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStageProps.property.stackCapabilities">stackCapabilities</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.StackCapabilities">StackCapabilities</a>[]</code> | In some cases, you must explicitly acknowledge that your CloudFormation stack template contains certain capabilities in order for CloudFormation to create the stack. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStageProps.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for deployment. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStageProps.property.synthAwsCreds">synthAwsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for synthesis. |
 
 ---
 
@@ -1712,6 +1741,19 @@ Configure provider for AWS credentials used for deployment.
 
 ---
 
+##### `synthAwsCreds`<sup>Optional</sup> <a name="synthAwsCreds" id="@nextdoor/cdk-pipelines-github.GitHubStageProps.property.synthAwsCreds"></a>
+
+```typescript
+public readonly synthAwsCreds: AwsCredentialsProvider;
+```
+
+- *Type:* <a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a>
+- *Default:* Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+Configure provider for AWS credentials used for synthesis.
+
+---
+
 ### GitHubWorkflowProps <a name="GitHubWorkflowProps" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps"></a>
 
 Props for `GitHubWorkflow`.
@@ -1730,6 +1772,7 @@ const gitHubWorkflowProps: GitHubWorkflowProps = { ... }
 | --- | --- | --- |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.synth">synth</a></code> | <code>aws-cdk-lib.pipelines.IFileSetProducer</code> | The build step that produces the CDK Cloud Assembly. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.awsCreds">awsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for deployment. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.synthAwsCreds">synthAwsCreds</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a></code> | Configure provider for AWS credentials used for synthesis. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.buildContainer">buildContainer</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.ContainerOptions">ContainerOptions</a></code> | Build container options. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.buildRunner">buildRunner</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a></code> | The type of Github Runner that the build workflow runs on. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.cdkCliVersion">cdkCliVersion</a></code> | <code>string</code> | Version of the CDK CLI to use. |
@@ -1774,6 +1817,19 @@ public readonly awsCreds: AwsCredentialsProvider;
 - *Default:* Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 
 Configure provider for AWS credentials used for deployment.
+
+---
+
+##### `synthAwsCreds`<sup>Optional</sup> <a name="synthAwsCreds" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.synthAwsCreds"></a>
+
+```typescript
+public readonly synthAwsCreds: AwsCredentialsProvider;
+```
+
+- *Type:* <a href="#@nextdoor/cdk-pipelines-github.AwsCredentialsProvider">AwsCredentialsProvider</a>
+- *Default:* Get AWS credentials from GitHub secrets `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+Configure provider for AWS credentials used for synthesis.
 
 ---
 

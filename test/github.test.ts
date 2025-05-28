@@ -41,6 +41,27 @@ test('pipeline with only a synth step', () => {
   });
 });
 
+test('pipeline with a dedicated synthesis-specific AWS role', () => {
+  withTemporaryDirectory((dir) => {
+    const github = new GitHubWorkflow(app, 'Pipeline', {
+      workflowPath: `${dir}/.github/workflows/deploy.yml`,
+      awsCreds: AwsCredentials.runnerHasPreconfiguredCreds(),
+      synthAwsCreds: AwsCredentials.fromGitHubSecrets({
+        accessKeyId: 'SYNTH_AWS_ACCESS_KEY_ID',
+        secretAccessKey: 'SYNTH_AWS_SECRET_ACCESS_KEY',
+      }),
+      synth: new ShellStep('Build', {
+        installCommands: ['yarn'],
+        commands: ['yarn build'],
+      }),
+    });
+
+    app.synth();
+
+    expect(readFileSync(github.workflowPath, 'utf-8')).toMatchSnapshot();
+  });
+});
+
 test('pipeline with a dedicated buildRunner setting', () => {
   withTemporaryDirectory((dir) => {
     const github = new GitHubWorkflow(app, 'Pipeline', {
