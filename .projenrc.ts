@@ -29,8 +29,8 @@ const project = new AwsCdkConstructLibrary({
    */
   npmAccess: NpmAccess.PUBLIC,
   npmDistTag: 'latest',
-  npmRegistryUrl: 'https://npm.pkg.github.com',
-  npmTokenSecret: 'GITHUB_TOKEN',
+  npmRegistryUrl: 'https://registry.npmjs.org/',
+  npmTokenSecret: 'NPMJS_TOKEN',
 
   /**
    * Allow the self-mutation job to commit back to the repository using the
