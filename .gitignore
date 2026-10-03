@@ -43,12 +43,13 @@ junit.xml
 !/.prettierignore
 !/.prettierrc.yml
 !/test/
-!/tsconfig.dev.json
+!/tsconfig.json
+!/test/tsconfig.json
 !/src/
 /lib
 /dist/
 !/.eslintrc.yml
+!/projenrc/tsconfig.json
 .jsii
-tsconfig.json
 !/API.md
 !/.projenrc.ts
