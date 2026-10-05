@@ -106,6 +106,14 @@ export interface GitHubWorkflowProps extends PipelineBaseProps, AwsCredsCommonPr
   readonly postBuildSteps?: github.JobStep[];
 
   /**
+   * GitHub workflow steps to execute at the start of every deploy job, before
+   * AWS credentials are configured.
+   *
+   * @default []
+   */
+  readonly preDeploySteps?: github.JobStep[];
+
+  /**
    * What approval level is required for deployments? By default this is
    * `never` to ensure that all automated deployments succeed.
    *
@@ -158,6 +166,7 @@ export class GitHubWorkflow extends PipelineBase {
   private readonly buildRunner: github.Runner;
   private readonly preBuildSteps: github.JobStep[];
   private readonly postBuildSteps: github.JobStep[];
+  private readonly preDeploySteps: github.JobStep[];
   private readonly deployArgs: string[];
   private readonly diffFirst: boolean;
   private readonly jobOutputs: Record<string, github.JobStepOutput[]> = {};
@@ -185,6 +194,7 @@ export class GitHubWorkflow extends PipelineBase {
     this.buildContainer = props.buildContainer;
     this.preBuildSteps = props.preBuildSteps ?? [];
     this.postBuildSteps = props.postBuildSteps ?? [];
+    this.preDeploySteps = props.preDeploySteps ?? [];
     this.jobSettings = props.jobSettings;
     this.diffFirst = props.diffFirst ?? false;
     this.deployArgs = props.deployArgs ?? [];
@@ -484,6 +494,7 @@ export class GitHubWorkflow extends PipelineBase {
         needs: this.renderDependencies(node),
         runsOn: this.runner.runsOn,
         steps: [
+          ...this.preDeploySteps,
           ...this.stepsToUnpackageAssembly,
           ...awsCredentials.credentialSteps(region),
           ...this.stepsToDeploy(stack),

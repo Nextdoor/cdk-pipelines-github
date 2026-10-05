@@ -1781,6 +1781,7 @@ const gitHubWorkflowProps: GitHubWorkflowProps = { ... }
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.jobSettings">jobSettings</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobSettings">JobSettings</a></code> | Job level settings that will be applied to all jobs in the workflow, including synth and asset deploy jobs. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.postBuildSteps">postBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute after build. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preBuildSteps">preBuildSteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute before build. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preDeploySteps">preDeploySteps</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]</code> | GitHub workflow steps to execute at the start of every deploy job, before AWS credentials are configured. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.requireApproval">requireApproval</a></code> | <code>string</code> | What approval level is required for deployments? |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.runner">runner</a></code> | <code><a href="#@nextdoor/cdk-pipelines-github.Runner">Runner</a></code> | The type of runner that the entire workflow runs on. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.workflowName">workflowName</a></code> | <code>string</code> | Name of the workflow. |
@@ -1939,6 +1940,19 @@ public readonly preBuildSteps: JobStep[];
 - *Default:* []
 
 GitHub workflow steps to execute before build.
+
+---
+
+##### `preDeploySteps`<sup>Optional</sup> <a name="preDeploySteps" id="@nextdoor/cdk-pipelines-github.GitHubWorkflowProps.property.preDeploySteps"></a>
+
+```typescript
+public readonly preDeploySteps: JobStep[];
+```
+
+- *Type:* <a href="#@nextdoor/cdk-pipelines-github.JobStep">JobStep</a>[]
+- *Default:* []
+
+GitHub workflow steps to execute at the start of every deploy job, before AWS credentials are configured.
 
 ---
 
