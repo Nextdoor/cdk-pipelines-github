@@ -315,6 +315,34 @@ test('single wave/stage/stack', () => {
     expect(readFileSync(pipeline.workflowPath, 'utf-8')).toMatchSnapshot();
   });
 });
+test('single wave/stage/stack - with pre-deploy steps', () => {
+  withTemporaryDirectory((dir) => {
+    const pipeline = new GitHubWorkflow(app, 'Pipeline', {
+      workflowPath: `${dir}/.github/workflows/deploy.yml`,
+      synth: new ShellStep('Build', {
+        commands: [],
+      }),
+      preDeploySteps: [{ name: 'Pre Deploy', run: 'echo pre-deploy' }],
+    });
+
+    const stage = new Stage(app, 'MyStack', {
+      env: { account: '111111111111', region: 'us-east-1' },
+    });
+
+    new Stack(stage, 'MyStack');
+
+    pipeline.addStage(stage);
+
+    app.synth();
+
+    const workflow = readFileSync(pipeline.workflowPath, 'utf-8');
+    const deployJob = workflow.slice(workflow.indexOf('name: Deploy MyStack/MyStack'));
+    expect(deployJob.indexOf('name: Pre Deploy')).toBeGreaterThan(-1);
+    expect(deployJob.indexOf('name: Pre Deploy')).toBeLessThan(deployJob.indexOf('name: Download cdk.out'));
+    expect(workflow.split('name: Pre Deploy').length - 1).toBe(1);
+    expect(workflow).toMatchSnapshot();
+  });
+});
 test('single wave/stage/stack - with diff enabled', () => {
   withTemporaryDirectory((dir) => {
     const pipeline = new GitHubWorkflow(app, 'Pipeline', {
