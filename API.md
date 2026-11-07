@@ -56,6 +56,7 @@ new GitHubActionRole(scope: Construct, id: string, props: GitHubActionRoleProps)
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubActionRole.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubActionRole.with">with</a></code> | Applies one or more mixins to this construct. |
 
 ---
 
@@ -67,6 +68,27 @@ public toString(): string
 
 Returns a string representation of this construct.
 
+##### `with` <a name="with" id="@nextdoor/cdk-pipelines-github.GitHubActionRole.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+Use multiple `with()` calls if subsequent mixins should apply to added
+constructs.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="@nextdoor/cdk-pipelines-github.GitHubActionRole.with.parameter.mixins"></a>
+
+- *Type:* ...constructs.IMixin[]
+
+The mixins to apply.
+
+---
+
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
 | **Name** | **Description** |
@@ -76,7 +98,7 @@ Returns a string representation of this construct.
 
 ---
 
-##### ~~`isConstruct`~~ <a name="isConstruct" id="@nextdoor/cdk-pipelines-github.GitHubActionRole.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@nextdoor/cdk-pipelines-github.GitHubActionRole.isConstruct"></a>
 
 ```typescript
 import { GitHubActionRole } from '@nextdoor/cdk-pipelines-github'
@@ -85,6 +107,20 @@ GitHubActionRole.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
 
 ###### `x`<sup>Required</sup> <a name="x" id="@nextdoor/cdk-pipelines-github.GitHubActionRole.isConstruct.parameter.x"></a>
 
@@ -191,6 +227,7 @@ new GitHubStage(scope: Construct, id: string, props?: GitHubStageProps)
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStage.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStage.with">with</a></code> | Applies one or more mixins to this construct. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubStage.synth">synth</a></code> | Synthesize this stage into a cloud assembly. |
 
 ---
@@ -202,6 +239,27 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `with` <a name="with" id="@nextdoor/cdk-pipelines-github.GitHubStage.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+Use multiple `with()` calls if subsequent mixins should apply to added
+constructs.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="@nextdoor/cdk-pipelines-github.GitHubStage.with.parameter.mixins"></a>
+
+- *Type:* ...constructs.IMixin[]
+
+The mixins to apply.
+
+---
 
 ##### `synth` <a name="synth" id="@nextdoor/cdk-pipelines-github.GitHubStage.synth"></a>
 
@@ -230,7 +288,7 @@ calls will return the same assembly.
 
 ---
 
-##### ~~`isConstruct`~~ <a name="isConstruct" id="@nextdoor/cdk-pipelines-github.GitHubStage.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@nextdoor/cdk-pipelines-github.GitHubStage.isConstruct"></a>
 
 ```typescript
 import { GitHubStage } from '@nextdoor/cdk-pipelines-github'
@@ -239,6 +297,20 @@ GitHubStage.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
 
 ###### `x`<sup>Required</sup> <a name="x" id="@nextdoor/cdk-pipelines-github.GitHubStage.isConstruct.parameter.x"></a>
 
@@ -467,6 +539,7 @@ new GitHubWorkflow(scope: Construct, id: string, props: GitHubWorkflowProps)
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflow.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflow.with">with</a></code> | Applies one or more mixins to this construct. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflow.addStage">addStage</a></code> | Deploy a single Stage by itself. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflow.addWave">addWave</a></code> | Add a Wave to the pipeline, for deploying multiple Stages in parallel. |
 | <code><a href="#@nextdoor/cdk-pipelines-github.GitHubWorkflow.buildPipeline">buildPipeline</a></code> | Send the current pipeline definition to the engine, and construct the pipeline. |
@@ -482,6 +555,27 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `with` <a name="with" id="@nextdoor/cdk-pipelines-github.GitHubWorkflow.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+Use multiple `with()` calls if subsequent mixins should apply to added
+constructs.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="@nextdoor/cdk-pipelines-github.GitHubWorkflow.with.parameter.mixins"></a>
+
+- *Type:* ...constructs.IMixin[]
+
+The mixins to apply.
+
+---
 
 ##### `addStage` <a name="addStage" id="@nextdoor/cdk-pipelines-github.GitHubWorkflow.addStage"></a>
 
@@ -600,7 +694,7 @@ All Stacks in the stage will be deployed in an order automatically determined by
 
 ---
 
-##### ~~`isConstruct`~~ <a name="isConstruct" id="@nextdoor/cdk-pipelines-github.GitHubWorkflow.isConstruct"></a>
+##### `isConstruct` <a name="isConstruct" id="@nextdoor/cdk-pipelines-github.GitHubWorkflow.isConstruct"></a>
 
 ```typescript
 import { GitHubWorkflow } from '@nextdoor/cdk-pipelines-github'
@@ -609,6 +703,20 @@ GitHubWorkflow.isConstruct(x: any)
 ```
 
 Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
 
 ###### `x`<sup>Required</sup> <a name="x" id="@nextdoor/cdk-pipelines-github.GitHubWorkflow.isConstruct.parameter.x"></a>
 
